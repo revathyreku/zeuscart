@@ -61,7 +61,8 @@ class Lib_FormValidation extends Lib_Validation_Handler
 		else if($form=='attributes')
 			$this->validateAttributes();
 		else if($form=='editattributes')
-attributes		else if($form=='adminemail')
+			$this->validateEditAttributes();	
+		else if($form=='adminemail')
 			$this->validateAdminEmail();			
 		else if($form=='productupdate')
 			$this->validateUpdateEntry();
