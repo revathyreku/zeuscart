@@ -61,8 +61,7 @@ class Lib_FormValidation extends Lib_Validation_Handler
 		else if($form=='attributes')
 			$this->validateAttributes();
 		else if($form=='editattributes')
-			$this->validateEditAttributes();		
-		else if($form=='adminemail')
+attributes		else if($form=='adminemail')
 			$this->validateAdminEmail();			
 		else if($form=='productupdate')
 			$this->validateUpdateEntry();
@@ -1337,8 +1336,7 @@ class Lib_FormValidation extends Lib_Validation_Handler
 		
 		$this->Assign("attributes",$_POST['attributes'],"noempty","Attribute Name - ".$message);
 
-		$message = "No special characters allowed";	
-		$this->Assign("attributes",$_POST['attributes'],"nospecial","Attribute Name - ".$message);
+	
 
 		if($_POST['attributes']!='')
 		{
