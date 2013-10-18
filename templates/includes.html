@@ -89,7 +89,11 @@ $(document).ready(function() {
             alwaysOn:false
         });
 });
-
+function changeVariation(pid,vid)
+{
+document.frmcart.action='?do=prodetail&action=showprod&prodid='+pid+'&varid='+vid;
+document.frmcart.submit();
+}
 
 </script>
 <script type="text/javascript">
