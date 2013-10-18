@@ -210,18 +210,18 @@ class Display_DProductDetail
 		if (count($var_arr)>0)
 		{
 			
-			$output.='<li style="padding-bottom:20px;">Choose Variation : ';
+			$output.='<li style="padding-bottom:20px;">Size : ';
 			
 			$variation_id=(int)$_GET['varid'];
 			
 			
-			$output.='<select name="variations" >';
+			$output.='<select name="variations" onchange="changeVariation('.$arr[0]['product_id'].',this.value);">';
 	
-			$output.='<option  value="'.$variations['variation_id'].'" '.(($variation_id==$variations['variation_id']) ? 'selected="selected"' : '').' onclick="document.frmcart.action=\'?do=prodetail&action=showprod&prodid='.(int)$_GET['prodid'].'\';document.frmcart.submit();">Default</option>';
+			$output.='<option  value="'.$variations['variation_id'].'" '.(($variation_id==$variations['variation_id']) ? 'selected="selected"' : '').' >Default</option>';
 
 			foreach($var_arr as $variations)
 			{
-				$output.='<option value="'.$variations['variation_id'].'" '.(($variation_id==$variations['variation_id']) ? 'selected="selected"' : '').' onclick="document.frmcart.action=\'?do=prodetail&action=showprod&prodid='.(int)$_GET['prodid'].'&varid='.$variations['variation_id'].'\';document.frmcart.submit();">'.$variations['variation_name'].'</option>';
+				$output.='<option value="'.$variations['variation_id'].'" '.(($variation_id==$variations['variation_id']) ? 'selected="selected"' : '').' >'.$variations['variation_name'].'</option>';
 			}
 			$output.='</select></li>';
 			
