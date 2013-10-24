@@ -510,7 +510,7 @@ class Core_CQuery
 		('TOP', 'TONGA', 'Pa''anga', 776),
 		('TTD', 'TRINIDAD AND TOBAGO', 'Trinidad and Tobago Dollar', 780),
 		('TND', 'TUNISIA', 'Tunisian Dinar', 788),
-		('TRY', 'TURKEY', 'Turkish Lira', 949),shipments_master_tablellar', 840),
+		('TRY', 'TURKEY', 'Turkish Lira', 949),
 		('XPF', 'WALLIS AND FUTUNA', 'CFP Franc', 953),
 		('MAD', 'WESTERN SAHARA', 'Moroccan Dirham', 504),
 		('YER', 'YEMEN', 'Yemeni Rial', 886),
