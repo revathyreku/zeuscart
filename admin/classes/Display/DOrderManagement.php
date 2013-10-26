@@ -48,7 +48,6 @@ class Display_DOrderManagement
 	{
 
 
-
 		$obj=new Display_DOrderManagement();
 		$orderst=array('','Pending','Processing','Delivered');
 		$orderstatuslist='<select name=selorderstatus><option value=""></option>';
@@ -313,6 +312,7 @@ class Display_DOrderManagement
 	 */
 	function displayDetailOrders($result,$cmbStr,$recordsinv)
 	{
+
 		if($_GET['action']=='viewdetail')
 		{
 			if((count($result))>0)
@@ -355,8 +355,24 @@ class Display_DOrderManagement
 					$ip_address =$row['ip_address'];
 					$shipment_id=$row['shipment_id_selected'];
 					$shipment_trackid=$row['shipment_track_id'];
+					$shipment_name=$row['shipment_name'];
+
+					if($shipment_id!='1')
+					{
+						$shipdurationrecords=array("0"=>"Select","1D"=>"Next Day Air Early AM","1DA"=>"Next Day Ai","1DP"=>"Next Day Air Saver","2DM"=>"2nd Day Air AM","2DA"=>"2nd Day Air","3DS"=>"3 Day Select","GND"=>"Ground","STD"=>"Canada Standar","XPR"=>"Worldwide Express","XDM"=>"Worldwide Express Plus","XPD"=>"Worldwide Expedited","WXS"=>"Worldwide Save");
+						foreach($shipdurationrecords as $key=>$value)	
+						{
+							if($key==$shipping_method)
+							{		
+								$ups_ship_duration=$value;
+							}
+						}
+						$ups_ship_duration='<div class="row-fluid">
+						<div class="span3">
+						<label>
+						Shipping Duration</label></div>  <div class="span6">'.$ups_ship_duration.'</div></div>';
+					}
 					
-					//$prcssarray=array("Pending","Processing","Delivered","AwaitingPayment","AwaitingFulfillment","AwaitingShipment","AwaitingPickup","Completed","Shipped","Cancelled");
 					$prcssarray=array("Pending","Processing","Delivered","AwaitingPayment","Cancel");
 					
 					$pur_date_time = explode(" ",$date_purchased);
@@ -382,9 +398,9 @@ class Display_DOrderManagement
 					$output='
 					<div class="menu_new clsBtm_20">
 					<div class="row-fluid">
-					<div class="span9"><h2>Order Detail </h2>
+					<div class="span7"><h2>Order Detail </h2>
 					</div>
-					<div class="span3" >
+					<div >
 
 					<ul class="bttn_right">
 					<li><a href="javascript:history.go(-1)" class="back_icon1"  ></a></li>
@@ -394,14 +410,14 @@ class Display_DOrderManagement
 					</div>
 
 					</div>
-					</div>
+					</div>'.$_SESSION['errmsg'].'	
 
 					<div class="row-fluid">
 					<div class="span12">
 					<h2 class="box_head green_bg">Order Detail : #'.$orders_id.'</h2>
 					<div class="toggle_container">
 					<div class="clsblock">
-					<div class="clearfix">
+					<div class="clearfix"><div class="span6">
 					<div class="row-fluid">
 					<div class="span3">
 					<label>Order ID</label></div>  <div class="span6">
@@ -416,7 +432,7 @@ class Display_DOrderManagement
 
 					<div class="row-fluid">
 					<div class="span3">
-					<label>Order Status</label></div>  <div class="span6"> '.$orders_status.'</div></div>
+					<label>Order Status</label></div>  <div class="span6"> <span class="label label-inverse">'.$orders_status.'</span></div></div>
 					
 
 					<div class="row-fluid">
@@ -430,8 +446,24 @@ class Display_DOrderManagement
 					<label>
 					Close Date</label></div>  <div class="span6"> '.$ordercloseddate.'</div></div>
 
-					</div></div></div></div></div><br/>';
 
+					<div class="row-fluid">
+					<div class="span3">
+					<label>
+					Paid Through</label></div>  <div class="span6"> <span class="label">'.$row['gateway_name'].'</span></div></div>
+
+					</div><div class="span6">
+					<div class="row-fluid">
+					<div class="span3">
+					<label>
+					Ship Through</label></div>  <div class="span6"> <span class="label label-info">'.$shipment_name.'</span></div></div>
+					
+					'.$ups_ship_duration.'';
+					$output.='<div class="row-fluid">
+					<div class="span3">
+					<label>
+					Shipment Track ID</label></div>  <div class="span6"> <span class="label label-important">'.$shipment_trackid.'</span></div></div>';
+					$output.='</div></div></div></div></div></div><br/>';
 				}
 				return $output;
 			}
@@ -474,13 +506,29 @@ class Display_DOrderManagement
 					$orders_date_closed=$row['orders_date_closed'];
 					$orders_status=$row['orders_status_name'];
 					$order_total=$row['order_total']; 
-					$order_tax =$row['order_tax'];
+					$order_tax =$row['order_tax'];						
 					$paypal_ipn_id=$row['paypal_ipn_id'];
 					$ip_address =$row['ip_address'];
 					$shipment_id=$row['shipment_id_selected'];
 					$shipment_trackid=$row['shipment_track_id'];
+					$shipment_name=$row['shipment_name'];
 
-					  //$prcssarray=array("Pending","Processing","Delivered","AwaitingPayment","AwaitingFulfillment","AwaitingShipment","AwaitingPickup","Completed","Shipped","Cancelled");
+					if($shipment_id!='1')
+					{
+						$shipdurationrecords=array("0"=>"Select","1D"=>"Next Day Air Early AM","1DA"=>"Next Day Ai","1DP"=>"Next Day Air Saver","2DM"=>"2nd Day Air AM","2DA"=>"2nd Day Air","3DS"=>"3 Day Select","GND"=>"Ground","STD"=>"Canada Standar","XPR"=>"Worldwide Express","XDM"=>"Worldwide Express Plus","XPD"=>"Worldwide Expedited","WXS"=>"Worldwide Save");
+						foreach($shipdurationrecords as $key=>$value)	
+						{
+							if($key==$shipping_method)
+							{		
+								$ups_ship_duration=$value;
+							}
+						}
+						$ups_ship_duration='<div class="row-fluid">
+						<div class="span3">
+						<label>
+						Shipping Duration</label></div>  <div class="span6">'.$ups_ship_duration.'</div></div>';
+					}
+					
 					$prcssarray=array("Pending","Processing","Delivered","AwaitingPayment","Cancel");
 
 					$pur_date_time = explode(" ",$date_purchased);
@@ -500,7 +548,7 @@ class Display_DOrderManagement
 						$orderclose_time = explode(":",$orderclosed_date_time[1]);
 						$ordercloseddate=date("l, M d, Y H:i:s",mktime($orderclose_time[0],$orderclose_time[1],$orderclose_time[2],$orderclosed_date[1],$orderclosed_date[2],$orderclosed_date[0]));
 					}
-					$processComboStr='<select name="processCombo" id="processCombo" onchange="javascript: if (this.value==\'2\') document.getElementById(\'shipmentStatus\').style.display=\'\' ; else document.getElementById(\'shipmentStatus\').style.display=\'none\';">';
+					$processComboStr='<select name="processCombo" id="processCombo" >';
 
 					for($iprc=0;$iprc<count($prcssarray);$iprc++)
 					{
@@ -508,17 +556,7 @@ class Display_DOrderManagement
 						$processComboStr.='<option '.$tmpStr.' value="'.($iprc+1).'">'.$prcssarray[$iprc].'</option>';
 					}
 					$processComboStr.='</select>';
-
-
-					$selShipmentsComboStr='<select name="shipmentsCombo" id="shipmentsCombo">';
-					for($ssi=0;$ssi<count($cmbStr);$ssi++)
-					{
-						$tmpStr2=($cmbStr[$ssi]['shipment_id']==$shipment_id) ? ' selected="selected" ':'';
-						$selShipmentsComboStr.='<option '.$tmpStr2.' value="'.$cmbStr[$ssi]['shipment_id'].'">'.$cmbStr[$ssi]['shipment_name'].'</option>';
-					}
-					$selShipmentsComboStr.='</select>';
-
-					$tmpStr1= ($orders_status!='Processing') ? ' display: none " ':'';
+					
 					$output='
 					<div class="menu_new clsBtm_20">
 					<div class="row-fluid">
@@ -540,17 +578,24 @@ class Display_DOrderManagement
 					</div>
 					</div>
 					'.$_SESSION['errmsg'].'	
+					
 					<div class="row-fluid">
 					<div class="span12">
 					<h2 class="box_head green_bg">Order Detail : #'.$orders_id.'</h2>
 					<div class="toggle_container">
 					<div class="clsblock">
+					
+					<div class="row-fluid">	
+					<div class="span6">
 					<div class="clearfix">
 
 
 					<!-- <table align="center" border=0 width="100%"><tr>'.(isset($_GET['msg'])? '<td align="left"><div class="success_msgbox"  width="100%" style="width:915px;">'.$_GET['msg'].'</div></td>' : "" ).'</tr><tr><td style="padding-bottom:5px;" align="left" width="100%"><a href="?do=disporders">Back To Order List</a>&nbsp;<a target="_blank" href="../'.$recordsinv['invoice_path'].'"><img src="images/pdf_small.png"></a></td></tr></table> -->
+					
 					<form name="processFrm" method="post" id="orderDetailsupdate" action="?do=disporders&action=update">
-					<div class="row-fluid">
+					
+
+					<div class="row-fluid">						
 					<div class="span3">
 					<label>Order ID </label></div><div class="span9"><input type="hidden" name="orderId" value="'.$orders_id.'">#'.$orders_id.'</div></div>
 					<div class="row-fluid">
@@ -560,17 +605,10 @@ class Display_DOrderManagement
 					<div class="row-fluid">
 					<div class="span3">
 					<label>Order Status </label></div><div class="span9">'.$processComboStr.'</div>
-					</div>
+					</div>				
+					
 
-					<div class="row-fluid" style="'.$tmpStr1.';" id="shipmentStatus">
-					<div class="span3">
-					<label>Shipment Name & Track Id </label></div>
-					<div class="span9">'.$selShipmentsComboStr.'&nbsp;&nbsp;<input type="text" class="input-text" style="height:13px;" name="shippmentId" id="shippmentId"  value="'.$shipment_trackid.'"/>
-
-					</div>
-					</div>
-
-
+					
 					<div class="row-fluid">
 					<div class="span3">
 					<label>Order Date </label></div><div class="span9">'.$purchasedate.'</div>
@@ -581,19 +619,35 @@ class Display_DOrderManagement
 					'.$ordercloseddate.'</div></div>
 					<div class="row-fluid">
 					<div class="span3">
+					<label>
+					Paid Through</label></div>  <div class="span6"> <span class="label">'.$row['gateway_name'].'</span></div></div>
+
+					</div></div>
+					<div class="span6">
+	
+							
+
+					<div class="row-fluid" >
+					<div class="span3">
+					<label>Shipment Name </label></div>
+					<div class="span6"><span class="label label-inverse">'.$shipment_name.'</span>
+
+					</div><div class="span2"><a data-toggle="modal" class="edit_icon1" role="button" href="#myModal"></a></div></div>'.$ups_ship_duration.'
+					<div class="row-fluid">
+					<div class="span3">
+					<label>
+					Shipment Track ID</label></div>  <div class="span6"> <span class="label label-important">'.$shipment_trackid.'</span></div></div>
+					<div class="row-fluid">
+					<div class="span3">
 					<label>Order History </label></div><div class="span9">
 					<textarea style="width: 209px; height: 107px;" name="orderhistory"></textarea></div>
 					</div>
-					</div>
-
-					</div>
 					</div></div>
-
+					</form></div></div>
 					</div>
 
-
-					<form><br/>';
-					//$output='<table width="100%" border="0" cellpadding="4" cellspacing="0"><tr><td class="content_list_txt2"  colspan="2"><h2><strong>Order Details</strong> </h2></td></tr><tr><td class="content_list_txt2"  colspan="2"><hr/></td></tr><tr><td class="content_list_txt2"  ><strong>Order Section</strong></td><td class="content_list_txt2"  >&nbsp;</td></tr><tr><td class="content_list_txt2"  >Order Id </td><td class="content_list_txt2"  >'.$orders_id.'</td></tr><tr><td class="content_list_txt2"  >Customers Name </td><td class="content_list_txt2"  >'.$customers_id.'</td></tr><tr><td class="content_list_txt2"  colspan="2"><hr/></td></tr><tr><td class="content_list_txt2"  ><strong>Shipping Section </strong></td><td class="content_list_txt2"  >&nbsp;</td></tr><tr><td class="content_list_txt2"  >Shipping Name</td><td class="content_list_txt2"  >'.$shipping_name.'</td></tr><tr><td class="content_list_txt2"  >Shipping_company</td><td class="content_list_txt2"  >'.$shipping_company.'</td></tr><tr><td class="content_list_txt2"  >Shipping_street_address</td><td class="content_list_txt2"  >'.$shipping_street_address.'</td></tr><tr>    <td class="content_list_txt2"  >Shipping_suburb</td><td class="content_list_txt2"  >'.$shipping_suburb.'</td></tr><tr><td class="content_list_txt2"  >Shipping_city</td><td class="content_list_txt2"  >'.$shipping_city.'</td></tr><tr><td class="content_list_txt2"  >Shipping_postcode</td><td class="content_list_txt2"  >'.$shipping_postcode.'</td></tr><tr><td class="content_list_txt2"  >Shipping_state</td><td class="content_list_txt2"  >'.$shipping_state.'</td></tr><tr><td class="content_list_txt2"  >Shipping_country</td><td class="content_list_txt2"  >'.$shipping_country.'</td></tr><tr><td class="content_list_txt2"  colspan="2"><hr/></td></tr><tr><td class="content_list_txt2"  ><strong>Billing Section </strong></td><td class="content_list_txt2"  >&nbsp;</td></tr><tr><td class="content_list_txt2"  >Billing_name</td><td class="content_list_txt2"  >'.$billing_name.'</td></tr><tr><td class="content_list_txt2"  >Billing_company</td><td class="content_list_txt2"  >'.$billing_company.'</td></tr><tr><td class="content_list_txt2"  >Billing_street_address</td><td class="content_list_txt2"  >'.$billing_street_address.'</td></tr><tr><td class="content_list_txt2"  >Billing_suburb</td><td class="content_list_txt2"  >'.$billing_suburb.'</td></tr><tr><td class="content_list_txt2"  >Billing_city</td><td class="content_list_txt2"  >'.$billing_city.'</td></tr><tr><td class="content_list_txt2"  >Billing_postcode</td><td class="content_list_txt2"  >'.$billing_postcode.'</td></tr><tr><td class="content_list_txt2"  >Billing_state</td><td class="content_list_txt2"  >'.$billing_state.'</td></tr><tr><td class="content_list_txt2"  >Billing_country</td><td class="content_list_txt2"  >'.$billing_country.'</td></tr><tr><td class="content_list_txt2"  colspan="2"><hr/></td></tr><tr><td class="content_list_txt2"  ><strong>Credit Card Section </strong></td><td class="content_list_txt2"  >&nbsp;</td></tr><tr><td class="content_list_txt2"  >Credit Card Type</td><td class="content_list_txt2"  >'.$cc_type.'</td></tr><tr><td class="content_list_txt2"  >Credit Card Owner</td><td class="content_list_txt2"  >'.$cc_owner.'</td></tr><tr><td class="content_list_txt2"  >Credit Card Number</td><td class="content_list_txt2"  >'.$cc_number.'</td></tr><tr><td class="content_list_txt2"  >Credit Card Expires</td><td class="content_list_txt2"  >'.$cc_expires.'</td></tr><tr><td class="content_list_txt2"  >Credit Card CVV</td><td class="content_list_txt2"  >'.$cc_cvv.'</td></tr><tr><td class="content_list_txt2"  colspan="2"><hr/></td></tr><tr><td class="content_list_txt2"  >Payment Method</td><td class="content_list_txt2"  >'.$payment_method.'</td></tr><tr><td class="content_list_txt2"  >Shipping Method</td><td class="content_list_txt2"  >'.$shipping_method.'</td></tr><tr><td class="content_list_txt2"  >Coupon Code</td><td class="content_list_txt2"  >'.$coupon_code.'</td></tr><tr><td class="content_list_txt2"  >Date Purchased</td><td class="content_list_txt2"  >'.$date_purchased.'</td></tr><tr><td class="content_list_txt2"  >Orders Date Closed</td><td class="content_list_txt2"  >'.$orders_date_closed.'</td></tr><tr><td class="content_list_txt2"  >Orders Status</td><td class="content_list_txt2"  >'.$orders_status.'</td></tr><tr><td class="content_list_txt2"  >Order Total</td><td class="content_list_txt2"  >'.$order_total.'</td></tr><tr><td class="content_list_txt2"  >Order Tax</td><td class="content_list_txt2"  >'.$order_tax.'</td></tr><tr><td class="content_list_txt2"  >Paypal IPN Id</td><td class="content_list_txt2"  >'.$paypal_ipn_id.'</td></tr><tr><td class="content_list_txt2"  >IP Address</td><td class="content_list_txt2"  >'.$ip_address.'</td></tr><tr><td class="content_list_txt2"  colspan="2"><hr/></td></tr><tr><td class="content_list_txt2" ></td><td class="content_list_txt2" ><a href="#" onclick="javascript:history.back();">Back</a></td></tr></table>';
+					</div><div>&nbsp;</div>';
+				
 				}
 				return $output;
 			}
@@ -660,15 +714,7 @@ class Display_DOrderManagement
 		</tbody>
 		</table>';
 
-		$output.='<table width="100%" align="center" cellspacing="0" class="content_list_bdr" id="product-attribute-specs-table">			<tbody>';                	
 
-		$output.=' <tr >
-		<td width="46%">Paid Through Address </td>
-		<td>'.$result['gateway_name'].'</td>
-		</tr>
-
-		</tbody>
-		</table>';
 		return $output;
 	}
 	/**
@@ -695,7 +741,7 @@ class Display_DOrderManagement
 					}
 					if($orderstatusname=='Processing')
 					{
-						$output='<span class="badge badge-important">'.$orderstatusname.'</span>';
+						$output='<span class="badge">'.$orderstatusname.'</span>';
 					}
 					if($orderstatusname=='Delivered')
 					{
@@ -725,13 +771,13 @@ class Display_DOrderManagement
 	function getOrderDesc($arr,$orderProduct)
 	{
 
-		$shippingCost=0;
-		for($i=0;$i<count($orderProduct);$i++)
-		{
-			if($orderProduct[$i]['order_id']==$arr['orders_id'])
-				$shippingCost+=$orderProduct[$i]['shipping_cost'];
-		}
-		
+// 		$shippingCost=0;
+// 		for($i=0;$i<count($orderProduct);$i++)
+// 		{
+// 			if($orderProduct[$i]['order_id']==$arr['orders_id'])
+// 				$shippingCost+=$orderProduct[$i]['shipping_cost'];
+// 		}
+		$shippingCost=$arr['order_ship'];
 		$result='<table border="0" cellpadding="0" cellspacing="0" width="90%" class="QuickViewPanel" style="padding:10px;">
 		<tbody><tr>
 
@@ -880,7 +926,6 @@ class Display_DOrderManagement
 	function displayProductsForOrder($result,$grandtotal)
 	{
 
-
 		if(count($result)>0)
 		{
 			$output='  <div class="blocks" style="opacity: 1;">
@@ -891,17 +936,29 @@ class Display_DOrderManagement
 			<th align="left" >Product Name</th>
 			<th align="left" >Price</th>
 			<th align="left" >Quantity</th>
-			<th align="left" >Shipping Charge</th>
 			<th align="left" >Sub Total</th>
 			</tr>
 			</thead>
 			<tbody>
 			';
 			$total=0;
-			$shipcost=0;
+		
 			foreach($result as $row)
 			{
 				
+
+				$variation='';
+				//select variation size
+				if(trim($row['variation_id'])!='0')
+				{
+					$sqlSize="SELECT * FROM  product_variation_table WHERE variation_id='".$row['variation_id']."' AND product_id='".$row['product_id']."'";
+					$objSize=new Bin_Query();
+					$objSize->executeQuery($sqlSize);
+					$size=$objSize->records[0]['variation_name'];
+					$variation='<span class="label">Size - '.''.$size.'</span>';
+				}
+
+
 				$title=$row['title'];
 				if(strlen($title)>25)
 					$title=substr($title,0,25). "..";
@@ -911,28 +968,29 @@ class Display_DOrderManagement
 				$shipcost=number_format($row['product_qty']*$row['shipping_cost'],2);
 				$subtotal=number_format($row['product_qty']*$row['product_unit_price'],2);    			 
 				$output.=' <tr >
-				<td class="content_list_txt1">'.$title.'</td>
-				<td class="content_list_txt1" align="center">'.$_SESSION['currency']['currency_tocken'].$price.'</td>
+				<td class="content_list_txt1">'.$title.' <br/>'.$variation.'</td>
+				<td class="content_list_txt1" align="center"><span class="label label-info">'.$_SESSION['currency']['currency_tocken'].$price.'</span></td>
 				<td class="content_list_txt1" align="center">'.$quantity.'</td>
-				<td class="content_list_txt1" align="center">'.$_SESSION['currency']['currency_tocken'].$shipcost.'</td>
-				<td class="content_list_txt1" align="center">'.$_SESSION['currency']['currency_tocken'].$subtotal.'</td>
+				
+				<td class="content_list_txt1" align="center"><span class="label label-inverse">'.$_SESSION['currency']['currency_tocken'].$subtotal.'</span></td>
 				</tr>';
 
 				$total+=$row['product_qty']*$row['product_unit_price'];
-				$shiptotal+=$shipcost;
+			
 				
 			}
-			$grandtotal=$total+$shiptotal;
+			$grandtotal=$row['order_total'];
+			$shiptotal=$row['order_ship'];
 			$output.='<tr >
-
-			<td colspan="4" style="text-align:right" ><strong>SUB TOTAL :</strong></td>
-			<td  align="center" style="padding-right:10px"><strong>'.$_SESSION['currency']['currency_tocken'].number_format($total,2).'</strong></td>
+			
+			<td colspan="3" style="text-align:right" ><strong>SUB TOTAL :</strong></td>
+			<td  align="center" style="padding-right:10px"><span class="label label-success"><strong>'.$_SESSION['currency']['currency_tocken'].number_format($total,2).'</strong></span></td>
 			</tr><tr >
-			<td colspan="4" style="text-align:right" ><strong>SHIPPING COST :</strong></td>
-			<td  align="center" style="padding-right:10px"><strong>'.$_SESSION['currency']['currency_tocken'].number_format($shiptotal,2).'</strong></td>
+			<td colspan="3" style="text-align:right" ><strong>SHIPPING COST :</strong></td>
+			<td  align="center" style="padding-right:10px"><span class="label label-warning"><strong>'.$_SESSION['currency']['currency_tocken'].number_format($shiptotal,2).'</strong></span></td>
 			</tr><tr >
-			<td colspan="4" style="text-align:right" ><strong>GRAND TOTAL :</strong></td>
-			<td  align="center" style="padding-right:10px"><strong>'.$_SESSION['currency']['currency_tocken'].number_format($grandtotal,2).'</strong></td>
+			<td colspan="3" style="text-align:right" ><strong>GRAND TOTAL :</strong></td>
+			<td  align="center" style="padding-right:10px"><strong><span class="label label-important">'.$_SESSION['currency']['currency_tocken'].number_format($grandtotal,2).'</strong></span></td>
 			</tr>
 			</tbody></table></div></div>';
 			
@@ -951,12 +1009,14 @@ class Display_DOrderManagement
 	function printOrders($arr,$orderProduct)
 	{
 
+
 		$printoutput='';
-		$shippingCost=0;
+	
 		
 		$couponcode=$arr[0]['coupon_code'];	
-		$amt=$arr[0]['order_total'];			
-		
+		$order_total=$arr[0]['order_total'];			
+		$shippingCost=$arr[0]['order_ship'];
+
 		for($j=0;$j<count($orderProduct);$j++)
 		{
 			if($orderProduct[$j]['order_id']==$arr[0]['orders_id'])
@@ -964,7 +1024,7 @@ class Display_DOrderManagement
 		}
 		//Get logo
 		$obj=new Bin_Query();
-		$sql="select * from  admin_settings_table where  set_id='3'";	
+		$sql="select * from  admin_settings_table where  set_id='1'";	
 		$obj->executeQuery($sql);
 
 		$protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on'? 'https://': 'http://';
@@ -975,9 +1035,10 @@ class Display_DOrderManagement
 		$site = str_replace("/service","",$site);
 		$site=explode('admin',$site);
 
-		$logo_path = $site[0].'/'.$obj->records[0]['set_value'].'';
+		$logo_path = $site[0].'/'.$obj->records[0]['site_logo'].'';
+		$sitename=$obj->records[0]['site_moto'];
 
-		$logo 	= '<a href="'.$site.'"><img src="'.$logo_path.'" alt="Agrocart" style="border:0;" /></a>';	
+		$logo 	= '<a href="'.$site.'"><img src="'.$logo_path.'" alt='.$sitename.' style="border:0;" /></a>';	
 
 		
 		$printoutput.='<link rel="stylesheet" href="css/zs_cart_printorder.css" type="text/css">';
@@ -989,7 +1050,7 @@ class Display_DOrderManagement
 			<td colspan="2" >'.$logo.'</td>
 			</tr>
 			<tr>
-			<td colspan="2" class="InvoiceTitle">Invoice For Order #'.$arr[$i]['orders_id'].'</td>
+			<td colspan="2" class="InvoiceTitle">Order #'.$arr[$i]['orders_id'].'</td>
 			</tr>
 			<tr>
 			<td colspan="2" class="Heading2">Order Status : '.$arr[$i]['orders_status_name'].'</td>
@@ -1095,7 +1156,7 @@ class Display_DOrderManagement
 				}
 			}
 
-			$total=$subTotal+$shippingCost;	
+			$total=$order_total;	
 
 
 			$printoutput.='
@@ -1153,10 +1214,10 @@ class Display_DOrderManagement
 	{
 
 		$emailcontent='';
-		$shippingCost=0;
 		
 		$couponcode=$arr[0]['coupon_code'];	
-		$amt=$arr[0]['order_total'];			
+		$order_total=$arr[0]['order_total'];			
+		$shippingCost=$arr[0]['order_ship'];			
 		
 		for($j=0;$j<count($orderProduct);$j++)
 		{
@@ -1165,7 +1226,7 @@ class Display_DOrderManagement
 		}
 		//Get logo
 		$obj=new Bin_Query();
-		$sql="select * from  admin_settings_table where  set_id='3'";	
+		$sql="select * from  admin_settings_table where  set_id='1'";	
 		$obj->executeQuery($sql);
 
 		$protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on'? 'https://': 'http://';
@@ -1176,9 +1237,10 @@ class Display_DOrderManagement
 		$site = str_replace("/service","",$site);
 		$site=explode('admin',$site);
 
-		$logo_path = $site[0].'/'.$obj->records[0]['set_value'].'';
+		$logo_path = $site[0].'/'.$obj->records[0]['site_logo'].'';
+		$site_moto=$obj->records[0]['site_moto'];
 
-		$logo 	= '<a href="'.$site.'"><img src="'.$logo_path.'" alt="Agrocart" style="border:0;" /></a>';	
+		$logo 	= '<a href="'.$site.'"><img src="'.$logo_path.'" alt='.$site_moto.' style="border:0;" /></a>';	
 
 		
 
@@ -1189,7 +1251,7 @@ class Display_DOrderManagement
 			<td colspan="2" >'.$logo.'</td>
 			</tr>
 			<tr>
-			<td colspan="2" class="InvoiceTitle">Invoice For Order #'.$arr[$i]['orders_id'].'</td>
+			<td colspan="2" class="InvoiceTitle">Order #'.$arr[$i]['orders_id'].'</td>
 			</tr>
 			<tr>
 			<td colspan="2" class="Heading2">Order Status : '.$arr[$i]['orders_status_name'].'</td>
@@ -1295,7 +1357,7 @@ class Display_DOrderManagement
 				}
 			}
 
-			$total=$subTotal+$shippingCost;	
+			$total=$order_total;	
 
 
 			$emailcontent.='</table>
@@ -1340,6 +1402,89 @@ class Display_DOrderManagement
 
 		return $emailcontent;
 	}	
+
+	function showChangeShipping($records,$shipment_id,$buyer_zipcode,$totalweight,$totalshipcost,$shipping_method,$shipment_track_id,$order_ship,$order_total)
+	{
+
+
+		if($shipment_id=='1')
+		{
+			$default="class=show";
+		}
+		else
+		{
+			$default="class=hide";
+		}
+		if($shipment_id=='2')
+		{
+			$ups="class=show";
+		}
+		else
+		{
+			$ups="class=hide";
+		}
+		$output='<div class="row-fluid">
+			<div class="span3"><label>
+			Shipping Method<label></div>  <div class="span6">';
+			$output.='<select name="shipment_id" id="shipment_id" onchange="selectShippingType(this.value);" >';
+			for($i=0;$i<count($records);$i++)
+			{
+				$tmpStr2=($records[$i]['shipment_id']==$shipment_id) ? ' selected="selected" ':'';
+				$output.='<option '.$tmpStr2.' value="'.$records[$i]['shipment_id'].'">'.$records[$i]['shipment_name'].'</option>';
+	
+			}
+			$output.='</select></div></div>';
+
+		$shipdurationrecords=array("0"=>"Select","1D"=>"Next Day Air Early AM","1DA"=>"Next Day Ai","1DP"=>"Next Day Air Saver","2DM"=>"2nd Day Air AM","2DA"=>"2nd Day Air","3DS"=>"3 Day Select","GND"=>"Ground","STD"=>"Canada Standar","XPR"=>"Worldwide Express","XDM"=>"Worldwide Express Plus","XPD"=>"Worldwide Expedited","WXS"=>"Worldwide Save");
+
+		$output.='<div id="duration_ups" '.$ups.'><div class="row-fluid">
+		<div class="span3"><label>
+		Shipping Duration<label></div>  <div class="span6">';
+		$output.='<select name="shipdurid" id="shipdurid" onchange="shipDuration(this.value,'.$buyer_zipcode.','.$totalweight.');" >';
+		foreach($shipdurationrecords as $key=>$vale)
+		{
+				
+			if($shipping_method==$key)
+			{
+				$selected="selected='selected'";	
+			}
+			else
+			{
+				$selected="";
+			}
+			$output.='<option value='.$key.' '.$selected.'>'.$vale.'</option>';
+		}
+		$output.='</select>
+
+		</div></div><div></div>';
+
+			$output.='<div id="ship_cost" '.$ups.'><div class="control-group" >
+					<label class="control-label" for="input01">Total Weight</label>
+					<div class="controls">
+
+					'.$totalweight.' <code>(lbs)</code>
+					</div>
+					</div><div class="control-group" >
+					<label class="control-label" for="input01">Shipping Cost</label>
+					<div class="controls"><font color="red" >'.$_SESSION['currencysetting']['selected_currency_settings']['currency_tocken'].''.'<span id="var_ship">'.$order_ship.'</span></font>
+					</div>
+					</div></div></div>';
+
+				$output.='<div id="default_ship_cost"  '.$default.'><div class="control-group" >
+					<label class="control-label" for="input01">Shipping Cost</label>
+					<div class="controls"><font color="red">'.$_SESSION['currencysetting']['selected_currency_settings']['currency_tocken'].''.''.$totalshipcost.'</font>
+					</div>
+					</div></div></div></div>';
+
+			$output.='<div class="control-group" >
+					<label class="control-label" for="input01">Track ID</label>
+					<div class="controls"><input type="text" name="shipment_track_id" id="shipment_track_id" value='.$shipment_track_id.'>
+					</div>
+					</div></div></div></div>';	
+
+		     $output.='<input type="hidden" name="default_shipping_cost" id="default_shipping_cost" value='.$totalshipcost.'><input type="hidden" name="order_total" id="order_total" value='.$order_total.'><input type="hidden" name="shipping_cost" id="shipping_cost" value='.$order_ship.'><input type="hidden" name="weight" value="'.$totalweight.'">';
+		return $output;
+	}
 }
 ?>
 
