@@ -741,6 +741,7 @@ class Core_CQuery
 
 
 
+	
 		$sql="Drop table if exists orders_status_table";
 		$result=mysql_query($sql);
 		$sql="CREATE TABLE orders_status_table(orders_status_id  INT(20) NOT NULL PRIMARY KEY AUTO_INCREMENT,orders_status_name  VARCHAR(100) NOT NULL)";
@@ -749,7 +750,8 @@ class Core_CQuery
 		( 'Pending'),
 		('Processing'),
 		( 'Delivered'),
-		('AwaitingPayment')";
+		('AwaitingPayment'),
+		('Cancel')	";
 		$result=mysql_query($sql);
 
 
