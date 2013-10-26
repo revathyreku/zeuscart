@@ -108,6 +108,10 @@ class Model_MOrderManagement
 		include('classes/Core/COrderManagement.php');
 		include('classes/Display/DOrderManagement.php');		
 		include('classes/Core/CRoleChecking.php');
+		include('classes/Core/CAdminHome.php');
+		$output['username']=Core_CAdminHome::userName();
+		$output['currentDate']=date('l, M d, Y H:i:s');	
+		$output['currency_type']=$_SESSION['currency']['currency_tocken'];
 		$output['monthlyorders']= (int)Core_CAdminHome::monthlyOrders();
 		$output['previousmonthorders']=(int)Core_CAdminHome::previousMonthOrders();
 		$output['totalorders']=(int)Core_CAdminHome::totalOrders();
@@ -182,6 +186,9 @@ class Model_MOrderManagement
 		include('classes/Display/DOrderManagement.php');		
 		include('classes/Core/CRoleChecking.php');
 		
+		$output['username']=Core_CAdminHome::userName();
+		$output['currentDate']=date('l, M d, Y H:i:s');	
+		$output['currency_type']=$_SESSION['currency']['currency_tocken'];
 		$output['monthlyorders']= (int)Core_CAdminHome::monthlyOrders();
 		$output['previousmonthorders']=(int)Core_CAdminHome::previousMonthOrders();
 		$output['totalorders']=(int)Core_CAdminHome::totalOrders();
@@ -256,6 +263,9 @@ class Model_MOrderManagement
 		include('classes/Display/DOrderManagement.php');		
 		include('classes/Core/CRoleChecking.php');
 		
+		$output['username']=Core_CAdminHome::userName();
+		$output['currentDate']=date('l, M d, Y H:i:s');	
+		$output['currency_type']=$_SESSION['currency']['currency_tocken'];
 		$output['monthlyorders']= (int)Core_CAdminHome::monthlyOrders();
 		$output['previousmonthorders']=(int)Core_CAdminHome::previousMonthOrders();
 		$output['totalorders']=(int)Core_CAdminHome::totalOrders();
@@ -386,6 +396,40 @@ class Model_MOrderManagement
 
 		include('classes/Core/COrderManagement.php');
 		$output['invoice']=Core_COrderManagement::insertInvoice();	
+
+	}
+	/**
+	 * Function is used to show the ship[ cost
+	 * 
+	 * 
+	 * @return array
+	 */
+	function calculateShipCost()
+	{
+		include('classes/Core/COrderManagement.php');	
+		Core_COrderManagement::calculateShipCost();
+
+	}
+
+	function showChangeShipping()
+	{
+		$output = array();
+		include('classes/Core/CRoleChecking.php');
+		$chkuser=Core_CRoleChecking::checkRoles();
+		if($chkuser)
+		{
+			include('classes/Core/COrderManagement.php');
+			include('classes/Display/DOrderManagement.php');
+
+			$output['changeship']=Core_COrderManagement::showChangeShipping();	
+
+			Bin_Template::createTemplate('light_change_shipping.html',$output);
+		}
+		else
+		{
+			$output['usererr'] = 'You are Not having Privilege to view this page contact your Admin for detail';
+			Bin_Template::createTemplate('Errors.html',$output);
+		}	
 
 	}
 
