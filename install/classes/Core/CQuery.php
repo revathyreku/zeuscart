@@ -1135,7 +1135,7 @@ class Core_CQuery
 		
 
 
-		$sql="Drop table if exists shipments_master_table";
+	$sql="Drop table if exists shipments_master_table";
 		$result=mysql_query($sql);
 		$sql="CREATE TABLE IF NOT EXISTS `shipments_master_table` (
 		`shipment_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1147,15 +1147,9 @@ class Core_CQuery
 		PRIMARY KEY (`shipment_id`)
 		) ";
 		$result=mysql_query($sql);
-		$sql="INSERT INTO `shipments_master_table` (`shipment_id`, `shipment_name`, `status`) VALUES
-		(1, 'DHL', 1),
-		(2, 'Fedex', 1),
-		(3, 'United Parcel Service', 1),
-		(4, 'US Postal Service', 1),
-		(5, 'Canada Post', 1),
-		(6, 'Australia Post ', 1),
-		(7, 'Intershipper', 1),
-		(8, 'City Link', 1)";
+		$sql="INSERT INTO `shipments_master_table` (`shipment_id`, `shipment_name`, `shipment_user_id`, `shipment_password`, `shipment_accesskey`, `status`) VALUES
+		(1, 'Arrange shipping by our company', '', '', '', 1),
+		(2, 'United Parcel Service', '', '', '', 1);";
 		$result=mysql_query($sql);
 
 		$sql="Drop table if exists shopping_cart_products_table";
