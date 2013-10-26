@@ -1344,23 +1344,66 @@ class Core_CAddCart
 
 		if(isset($_SESSION['mycart']))
 		{
-			
-			$cnt=count($_SESSION['mycart']);	
-			if($cnt>0)
+		
+			$sqlCheck="SELECT * FROM shopping_cart_table WHERE cart_id ='".$_SESSION['mycart'][0]['cartid']."'";
+			$objCheck=new Bin_Query();
+			if($objCheck->executeQuery($sqlCheck))	
 			{
-				$totalweight=0;
-				for($i=0;$i<$cnt;$i++)
-				{
-				
-					
-					$sqlProduct="SELECT product_id,weight FROM products_table WHERE product_id='".$_SESSION['mycart'][$i]['product_id']."'";
-					$objProduct=new Bin_Query();
-					$objProduct->executeQuery($sqlProduct);
-					$productWeight=$objProduct->records[0]['weight'];
-					
-					$weight=$objProduct->records[0]['weight']*$_SESSION['mycart'][$i]['qty'];
+				$cartid=Core_CAddCart::getCartIdOfUser();	
 	
-					$totalweight=$totalweight+$weight;
+				$sqlWeight="SELECT * FROM  shopping_cart_products_table WHERE cart_id='".$cartid."'";
+				$objWeight=new Bin_Query();
+				$objWeight->executeQuery($sqlWeight);
+				$recordsWeight=$objWeight->records;
+		
+				if(count($recordsWeight)>0)
+				{
+					$totalweight=0;
+					$productWeight='';
+					$shipping_cost='';
+					$totalshipcost=0;
+					for($i=0;$i<count($recordsWeight);$i++)
+					{
+					
+						
+						$sqlProduct="SELECT product_id,weight,shipping_cost FROM products_table WHERE product_id='".$recordsWeight[$i]['product_id']."'";
+						$objProduct=new Bin_Query();
+						$objProduct->executeQuery($sqlProduct);
+						$productWeight=$objProduct->records[0]['weight'];
+						$shipping_cost=$objProduct->records[0]['shipping_cost'];
+
+						$weight=$productWeight*$recordsWeight[$i]['product_qty'];
+						$shipcost=$shipping_cost*$recordsWeight[$i]['product_qty'];
+						$totalweight=$totalweight+$weight;
+						$totalshipcost=$totalshipcost+$shipcost;
+					}
+				}
+			}
+			else
+			{
+			
+				$cnt=count($_SESSION['mycart']);	
+				if($cnt>0)
+				{
+					$totalweight=0;
+					$totalshipcost=0;
+					$productWeight='';
+					$shipping_cost='';
+					for($i=0;$i<$cnt;$i++)
+					{
+					
+						
+						$sqlProduct="SELECT product_id,weight,shipping_cost FROM products_table WHERE product_id='".$_SESSION['mycart'][$i]['product_id']."'";
+						$objProduct=new Bin_Query();
+						$objProduct->executeQuery($sqlProduct);
+						$productWeight=$objProduct->records[0]['weight'];
+						$shipping_cost=$objProduct->records[0]['shipping_cost'];
+	
+						$weight=$productWeight*$_SESSION['mycart'][$i]['qty'];
+						$shipcost=$shipping_cost*$_SESSION['mycart'][$i]['qty'];
+						$totalweight=$totalweight+$weight;
+						$totalshipcost=$totalshipcost+$shipcost;
+					}
 				}
 			}
 		}
@@ -1376,6 +1419,9 @@ class Core_CAddCart
 			if(count($recordsWeight)>0)
 			{
 				$totalweight=0;
+				$totalshipcost=0;
+				$productWeight='';
+				$shipping_cost='';
 				for($i=0;$i<count($recordsWeight);$i++)
 				{
 				
@@ -1384,13 +1430,14 @@ class Core_CAddCart
 					$objProduct=new Bin_Query();
 					$objProduct->executeQuery($sqlProduct);
 					$productWeight=$objProduct->records[0]['weight'];
-					
-					$weight=$objProduct->records[0]['weight']*$recordsWeight[$i]['product_qty'];
-	
+					$weight=$productWeight*$recordsWeight[$i]['product_qty'];
+					$shipcost=$shipping_cost*$recordsWeight[$i]['product_qty'];
 					$totalweight=$totalweight+$weight;
+					$totalshipcost=$totalshipcost+$shipcost;
 				}
 			}
 		}
+
 		$sql="SELECT * FROM shipments_master_table WHERE status=1";		
 	 	$obj=new Bin_Query();
 		$obj->executeQuery($sql);
@@ -1407,7 +1454,7 @@ class Core_CAddCart
 
 		
 
-		return Display_DAddCart::showShippingMethod($obj->records,$Err,$totalweight);
+		return Display_DAddCart::showShippingMethod($obj->records,$Err,$totalweight,$totalshipcost);
 	
 
 	}
@@ -2316,41 +2363,81 @@ class Core_CAddCart
 	function countCart()
 	{
 
-
-		if(!isset($_SESSION['user_id']) || isset($_SESSION['mycart']))
+		if(isset($_SESSION['mycart']) )
 		{
-				$sum=0;
-				if(count($_SESSION['mycart'])>0)
+
+			$sqlCheck="SELECT * FROM shopping_cart_table WHERE cart_id ='".$_SESSION['mycart'][0]['cartid']."'";
+			$objCheck=new Bin_Query();
+			if($objCheck->executeQuery($sqlCheck))	
+			{
+				$sqlShop="SELECT a.*,b.* FROM shopping_cart_table AS a  JOIN shopping_cart_products_table AS b ON a.cart_id=b.cart_id WHERE a.user_id='". $_SESSION['user_id']."'"; 
+				$objShop=new Bin_Query();
+				$objShop->executeQuery($sqlShop);
+				$records=$objShop->records;
+				if(count($records)>0)
 				{
-					sort($_SESSION['mycart']);
-					for($i=0;$i<count($_SESSION['mycart']);$i++)
+					$cartId=$objShop->records[0]['cart_id'];	
+					$updateCart="UPDATE  shopping_cart_table SET cart_id ='".$cartId."'   WHERE user_id='". $_SESSION['user_id']."'";
+					$objCart=new Bin_Query($updateCart);
+					$objCart->updateQuery();
+					for($i=0;$i<count($records);$i++)
 					{
-						
-						 $sum=$sum+$_SESSION['mycart'][$i]['qty'];
+			
+						$sqlDel="DELETE FROM shopping_cart_table WHERE cart_id !='".$cartId."' AND user_id='". $_SESSION['user_id']."'";
+						$objDel=new Bin_Query();
+						$objDel->updateQuery($sqlDel);
+			
+
+						$shopProduct="UPDATE  shopping_cart_products_table  SET cart_id ='".$cartId."' WHERE id='".$objShop->records[$i]['id']."'"; 
+						$objProduct=new Bin_Query($updateCart);
+						$objProduct->updateQuery($shopProduct);
 					}
+					$carts=count($records); 
+					return $carts;
 				}
-				$carts=count($_SESSION['mycart']);
-				return $carts;
+
+			}
+			else
+			{
+					$sum=0;
+					if(count($_SESSION['mycart'])>0)
+					{
+						sort($_SESSION['mycart']);
+						for($i=0;$i<count($_SESSION['mycart']);$i++)
+						{
+							
+								$sum=$sum+$_SESSION['mycart'][$i]['qty'];
+						}
+					}
+					$carts=count($_SESSION['mycart']);
+					return $carts;
+			}
+			
 		}
 		
 		else if(isset($_SESSION['user_id']))
 		{
-			 $sql='SELECT pt.title, pt.model, pt.product_id, pt.brand, shopping_cart_products_table.shipping_cost AS shipingamount, pt.sku, pt.msrp, pt.msrp as msrp1,pt.image, pt.thumb_image, pinv.soh, shopping_cart_products_table. * , shopping_cart_table. * FROM (
+
+			$sql='SELECT pt.title, pt.model, pt.product_id, pt.brand, shopping_cart_products_table.shipping_cost AS shipingamount, pt.sku, pt.msrp, pt.msrp as msrp1,pt.image, pt.thumb_image, pinv.soh, shopping_cart_products_table. * , shopping_cart_table. * FROM (
 			products_table pt INNER JOIN shopping_cart_products_table ON pt.product_id = shopping_cart_products_table.product_id) LEFT JOIN shopping_cart_table ON shopping_cart_products_table.cart_id = shopping_cart_table.cart_id INNER JOIN product_inventory_table AS pinv ON pinv.product_id = shopping_cart_products_table.product_id WHERE shopping_cart_table.user_id ='. $_SESSION['user_id']; 
-				 
-					$query = new Bin_Query();
-					$query->executeQuery($sql);
-					$sum=0;
-					if($query->totrows>0)
-					for($i=0;$i<$query->totrows;$i++)
-						$sum=$sum+$query->records[$i]['product_qty'];
-					$carts=count($query->records);
-					return $carts;
+
+			$query = new Bin_Query();
+			if($query->executeQuery($sql))
+			{
+				
+				$sum=0;
+				if($query->totrows>0)
+				for($i=0;$i<$query->totrows;$i++)
+					$sum=$sum+$query->records[$i]['product_qty'];
+				$carts=count($query->records);
+				return $carts;
+			}
+			else 
+			{
+				return '0';
+			}
 		}
-		else 
- 		{
-			return '0';
-		}
+		
 	
 	}
 	/**
@@ -2418,11 +2505,10 @@ class Core_CAddCart
 	function calculateShipCost()
 	{
 
-
 		include_once('classes/Lib/UPS/UPSRate.php');
 
 
-		$sql="SELECT * FROM shipments_master_table WHERE shipment_id=3";
+		$sql="SELECT * FROM shipments_master_table WHERE shipment_id=2";
 		$obj=new Bin_Query();
 		$obj->executeQuery($sql);
 		$records=$obj->records[0];
