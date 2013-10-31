@@ -216,7 +216,7 @@ class Display_DOrderManagement
 		<th  align="left">Order Date</th>
 		<th  align="left" >Bill Name</th>
 		<th  align="left">Ship Name</th>
-		<th  align="left">Order total ('.$_SESSION['currency']['currency_tocken'].')</th>
+		<th  align="left">Order total</th>
 		<th  align="left">Status</th>
 		<th  align="left">Options</th>
 		</tr>
@@ -253,7 +253,8 @@ class Display_DOrderManagement
 				$shipname= $row['shipping_name'];
 				$status  = $row['orders_status_name'];
 				$statusid=$row['orders_status_id'];
-				
+				$currency_tocken=$row['currency_tocken'];				
+
 				$amount=$row['order_total'];
 				$dropdowndata=$obj->dropdownOrderStatus($dropdown,$statusid);
 				$purchaseddatetime=$row['date_purchased'];
@@ -263,12 +264,12 @@ class Display_DOrderManagement
 				$purchaseddate=date("l, M d, Y ",mktime(0,0,0,$purchased_date[1],$purchased_date[2],$purchased_date[0]));
 				if($i%2==0)
 				{
-					$output.='<tr   class="content_list_txt2" id="order'.$i.'"><td align="left" class="content_list_txt2"><img src="images/plus.gif" onclick="showOrderDetail('.$i.')" id="quick'.$i.'" title="Click to Quick View">'.$id.'</td><td  class="content_list_txt2"><a href="?do=customerdetail&action=detail&userid='.$customerid.'">'.$dispname.'</a></td><td  class="content_list_txt2">'.$purchaseddate.'</td><td  class="content_list_txt2"">'.$bilname.'</td><td   class="content_list_txt2">'.$shipname.'</td><td   class="content_list_txt2" align="right">'.$amount.'</td><td   class="content_list_txt2">'.$dropdowndata.'</td><td class="content_list_txt1"><a href="?do=disporders&action=viewdetail&id='.$id.'" title="View Order"><i class="icon icon-eye-open"></i></a>&nbsp;&nbsp;<a href="?do=disporders&action=detail&id='.$id.'"><i class="icon icon-edit"></i></a>&nbsp;&nbsp;<a href="?do=disporders&action=cancel&id='.$id.'" onclick="return confirm(\'Are you sure you want to Cancel this Order?\')"><i class="icon-trash"></i></a>&nbsp;&nbsp;<a href="javascript:window.open (\'?do=disporders&action=print&id='.$id.'\',\'mywindow\',\'location=1,status=1,scrollbars=1,width=920,height=700\');void(0);"><i class="icon icon-print"></i> </a>&nbsp;&nbsp;<a href="?do=disporders&action=mail&id='.$id.'"><i class="icon icon-inbox"></i> </a></td><tr>';
+					$output.='<tr   class="content_list_txt2" id="order'.$i.'"><td align="left" class="content_list_txt2"><img src="images/plus.gif" onclick="showOrderDetail('.$i.')" id="quick'.$i.'" title="Click to Quick View">'.$id.'</td><td  class="content_list_txt2"><a href="?do=customerdetail&action=detail&userid='.$customerid.'">'.$dispname.'</a></td><td  class="content_list_txt2">'.$purchaseddate.'</td><td  class="content_list_txt2"">'.$bilname.'</td><td   class="content_list_txt2">'.$shipname.'</td><td   class="content_list_txt2" align="right"><span class="badge badge-success">'.$currency_tocken.' '.''.$amount.'</span></td><td   class="content_list_txt2">'.$dropdowndata.'</td><td class="content_list_txt1"><a href="?do=disporders&action=viewdetail&id='.$id.'" title="View Order"><i class="icon icon-eye-open"></i></a>&nbsp;&nbsp;<a href="?do=disporders&action=detail&id='.$id.'"><i class="icon icon-edit"></i></a>&nbsp;&nbsp;<a href="?do=disporders&action=cancel&id='.$id.'" onclick="return confirm(\'Are you sure you want to Cancel this Order?\')"><i class="icon-trash"></i></a>&nbsp;&nbsp;<a href="javascript:window.open (\'?do=disporders&action=print&id='.$id.'\',\'mywindow\',\'location=1,status=1,scrollbars=1,width=920,height=700\');void(0);"><i class="icon icon-print"></i> </a>&nbsp;&nbsp;<a href="?do=disporders&action=mail&id='.$id.'"><i class="icon icon-inbox"></i> </a></td><tr>';
 
 				}
 				else
 				{
-					$output.='<tr  class="content_list_txt1" id="order'.$i.'"><td  class="content_list_txt1" align="left"><img src="images/plus.gif" onclick="showOrderDetail('.$i.')" id="quick'.$i.'" title="Click to Quick View">'.$id.'</td><td  class="content_list_txt1"><a href="?do=customerdetail&action=detail&userid='.$customerid.'">'.$dispname.'</a></td><td  class="content_list_txt1">'.$purchaseddate.'</td><td  class="content_list_txt1"">'.$bilname.'</td><td class="content_list_txt1">'.$shipname.'</td><td class="content_list_txt1" align="right">'.$amount.'</td><td class="content_list_txt1">'.$dropdowndata.'</td><td class="content_list_txt1"><a href="?do=disporders&action=viewdetail&id='.$id.'"><i class="icon icon-eye-open"></i></a>&nbsp;&nbsp;<a href="?do=disporders&action=detail&id='.$id.'"><i class="icon icon-edit"></i></a>&nbsp;&nbsp;<a href="?do=disporders&action=cancel&id='.$id.'" onclick="return confirm(\'Are you sure you want to Cancel this Order?\')"><i class="icon-trash"></i></a>&nbsp;&nbsp;<a href="javascript:window.open (\'?do=disporders&action=print&id='.$id.'\',\'mywindow\',\'location=1,status=1,scrollbars=1,width=920,height=700\');void(0);"><i class="icon icon-print"></i> </a>&nbsp;&nbsp;<a href="?do=disporders&action=mail&id='.$id.'"><i class="icon icon-inbox"></i> </a></td><tr>';
+					$output.='<tr  class="content_list_txt1" id="order'.$i.'"><td  class="content_list_txt1" align="left"><img src="images/plus.gif" onclick="showOrderDetail('.$i.')" id="quick'.$i.'" title="Click to Quick View">'.$id.'</td><td  class="content_list_txt1"><a href="?do=customerdetail&action=detail&userid='.$customerid.'">'.$dispname.'</a></td><td  class="content_list_txt1">'.$purchaseddate.'</td><td  class="content_list_txt1"">'.$bilname.'</td><td class="content_list_txt1">'.$shipname.'</td><td class="content_list_txt1" align="right"><span class="badge badge-success">'.$currency_tocken.' '.''.$amount.'</span></td><td class="content_list_txt1">'.$dropdowndata.'</td><td class="content_list_txt1"><a href="?do=disporders&action=viewdetail&id='.$id.'"><i class="icon icon-eye-open"></i></a>&nbsp;&nbsp;<a href="?do=disporders&action=detail&id='.$id.'"><i class="icon icon-edit"></i></a>&nbsp;&nbsp;<a href="?do=disporders&action=cancel&id='.$id.'" onclick="return confirm(\'Are you sure you want to Cancel this Order?\')"><i class="icon-trash"></i></a>&nbsp;&nbsp;<a href="javascript:window.open (\'?do=disporders&action=print&id='.$id.'\',\'mywindow\',\'location=1,status=1,scrollbars=1,width=920,height=700\');void(0);"><i class="icon icon-print"></i> </a>&nbsp;&nbsp;<a href="?do=disporders&action=mail&id='.$id.'"><i class="icon icon-inbox"></i> </a></td><tr>';
 
 				}
 				$output.='<tr class="clshiderow'.$i.' dlsrow" >
@@ -356,7 +357,7 @@ class Display_DOrderManagement
 					$shipment_id=$row['shipment_id_selected'];
 					$shipment_trackid=$row['shipment_track_id'];
 					$shipment_name=$row['shipment_name'];
-
+					
 					if($shipment_id!='1')
 					{
 						$shipdurationrecords=array("0"=>"Select","1D"=>"Next Day Air Early AM","1DA"=>"Next Day Ai","1DP"=>"Next Day Air Saver","2DM"=>"2nd Day Air AM","2DA"=>"2nd Day Air","3DS"=>"3 Day Select","GND"=>"Ground","STD"=>"Canada Standar","XPR"=>"Worldwide Express","XDM"=>"Worldwide Express Plus","XPD"=>"Worldwide Expedited","WXS"=>"Worldwide Save");
@@ -630,13 +631,13 @@ class Display_DOrderManagement
 					<div class="row-fluid" >
 					<div class="span3">
 					<label>Shipment Name </label></div>
-					<div class="span6"><span class="label label-inverse">'.$shipment_name.'</span>
+					<div class="span6">'.$shipment_name.'
 
 					</div><div class="span2"><a data-toggle="modal" class="edit_icon1" role="button" href="#myModal"></a></div></div>'.$ups_ship_duration.'
 					<div class="row-fluid">
 					<div class="span3">
 					<label>
-					Shipment Track ID</label></div>  <div class="span6"> <span class="label label-important">'.$shipment_trackid.'</span></div></div>
+					Shipment Track ID</label></div>  <div class="span6"> '.$shipment_trackid.'</div></div>
 					<div class="row-fluid">
 					<div class="span3">
 					<label>Order History </label></div><div class="span9">
@@ -969,10 +970,10 @@ class Display_DOrderManagement
 				$subtotal=number_format($row['product_qty']*$row['product_unit_price'],2);    			 
 				$output.=' <tr >
 				<td class="content_list_txt1">'.$title.' <br/>'.$variation.'</td>
-				<td class="content_list_txt1" align="center"><span class="label label-info">'.$_SESSION['currency']['currency_tocken'].$price.'</span></td>
+				<td class="content_list_txt1" align="center"><span class="label label-info">'.$row['currency_tocken'] .$price.'</span></td>
 				<td class="content_list_txt1" align="center">'.$quantity.'</td>
 				
-				<td class="content_list_txt1" align="center"><span class="label label-inverse">'.$_SESSION['currency']['currency_tocken'].$subtotal.'</span></td>
+				<td class="content_list_txt1" align="center"><span class="label label-inverse">'.$row['currency_tocken'].$subtotal.'</span></td>
 				</tr>';
 
 				$total+=$row['product_qty']*$row['product_unit_price'];
@@ -984,13 +985,13 @@ class Display_DOrderManagement
 			$output.='<tr >
 			
 			<td colspan="3" style="text-align:right" ><strong>SUB TOTAL :</strong></td>
-			<td  align="center" style="padding-right:10px"><span class="label label-success"><strong>'.$_SESSION['currency']['currency_tocken'].number_format($total,2).'</strong></span></td>
+			<td  align="center" style="padding-right:10px"><span class="label label-success"><strong>'.$row['currency_tocken'] .number_format($total,2).'</strong></span></td>
 			</tr><tr >
 			<td colspan="3" style="text-align:right" ><strong>SHIPPING COST :</strong></td>
-			<td  align="center" style="padding-right:10px"><span class="label label-warning"><strong>'.$_SESSION['currency']['currency_tocken'].number_format($shiptotal,2).'</strong></span></td>
+			<td  align="center" style="padding-right:10px"><span class="label label-warning"><strong>'.$row['currency_tocken'] .number_format($shiptotal,2).'</strong></span></td>
 			</tr><tr >
 			<td colspan="3" style="text-align:right" ><strong>GRAND TOTAL :</strong></td>
-			<td  align="center" style="padding-right:10px"><strong><span class="label label-important">'.$_SESSION['currency']['currency_tocken'].number_format($grandtotal,2).'</strong></span></td>
+			<td  align="center" style="padding-right:10px"><strong><span class="label label-important">'.$row['currency_tocken'] .number_format($grandtotal,2).'</strong></span></td>
 			</tr>
 			</tbody></table></div></div>';
 			
@@ -1008,7 +1009,6 @@ class Display_DOrderManagement
 	 */
 	function printOrders($arr,$orderProduct)
 	{
-
 
 		$printoutput='';
 	
@@ -1173,20 +1173,20 @@ class Display_DOrderManagement
 			<table width="300">
 			<tr>
 			<td align="right" style="padding-right:10px">Sub Total:</td>
-			<td>'.$_SESSION['currency']['currency_tocken'].number_format($subTotal,2).'</td>
+			<td>'.$arr[0]['currency_tocken'].number_format($subTotal,2).'</td>
 			</tr>
 			
 			<tr>
 			<td align="right" style="padding-right:10px">Shipping Cost:</td>
-			<td>'.$_SESSION['currency']['currency_tocken'].number_format($shippingCost,2).'</td>
+			<td>'.$arr[0]['currency_tocken'].number_format($shippingCost,2).'</td>
 			</tr>
 			<tr>
 			<td align="right" style="padding-right:10px">Tax:</td>
-			<td>'.$_SESSION['currency']['currency_tocken'].number_format($tax,2).'</td>
+			<td>'.$arr[0]['currency_tocken'].number_format($tax,2).'</td>
 			</tr>				
 			<tr>
 			<td align="right" style="padding-right:10px"><strong>Total:</strong></td>
-			<td><strong>'.$_SESSION['currency']['currency_tocken'].number_format($total,2).'</strong></td>
+			<td><strong>'.$arr[0]['currency_tocken'].number_format($total,2).'</strong></td>
 			</tr>			
 			</table>
 			</td>
@@ -1373,20 +1373,20 @@ class Display_DOrderManagement
 			<table width="300">
 			<tr>
 			<td align="right" style="padding-right:10px">Sub Total:</td>
-			<td>'.$_SESSION['currency']['currency_tocken'].number_format($subTotal,2).'</td>
+			<td>'.$arr[0]['currency_tocken'].number_format($subTotal,2).'</td>
 			</tr>
 			
 			<tr>
 			<td align="right" style="padding-right:10px">Shipping Cost:</td>
-			<td>'.$_SESSION['currency']['currency_tocken'].number_format($shippingCost,2).'</td>
+			<td>'.$arr[0]['currency_tocken'].number_format($shippingCost,2).'</td>
 			</tr>
 			<tr>
 			<td align="right" style="padding-right:10px">Tax:</td>
-			<td>'.$_SESSION['currency']['currency_tocken'].number_format($tax,2).'</td>
+			<td>'.$arr[0]['currency_tocken'].number_format($tax,2).'</td>
 			</tr>				
 			<tr>
 			<td align="right" style="padding-right:10px"><strong>Total:</strong></td>
-			<td><strong>'.$_SESSION['currency']['currency_tocken'].number_format($total,2).'</strong></td>
+			<td><strong>'.$arr[0]['currency_tocken'].number_format($total,2).'</strong></td>
 			</tr>			
 			</table>
 			</td>
