@@ -61,7 +61,7 @@ class Lib_FormValidation extends Lib_Validation_Handler
 		else if($form=='attributes')
 			$this->validateAttributes();
 		else if($form=='editattributes')
-			$this->validateEditAttributes();	
+			$this->validateEditAttributes();		
 		else if($form=='adminemail')
 			$this->validateAdminEmail();			
 		else if($form=='productupdate')
@@ -128,7 +128,8 @@ class Lib_FormValidation extends Lib_Validation_Handler
 			$this->validateLiveChat();
 		else if($form=='productinventory')
 			$this->validateProductInventory();
-		
+		else if($form=='homepagecontent')
+			$this->validateHomePageContent();
 		
 	}
 
@@ -160,6 +161,15 @@ class Lib_FormValidation extends Lib_Validation_Handler
 			return false;
 	}
 	
+
+	function validateHomePageContent()
+	{
+		$message = "Required Field Cannot be blank";
+		$this->Assign("home_page_content",trim($_POST['home_page_content']),"noempty","Home Page Content - " .$message);
+
+		$this->PerformValidation("?do=homepage&action=content");
+		
+	}
 
 	function validateProductInventory()
 	{
@@ -232,7 +242,7 @@ class Lib_FormValidation extends Lib_Validation_Handler
 	function validateAddNews()
 	{
 
-		
+	
 		$message = "Required Field Cannot be blank";
 		$this->Assign("newstitle",trim($_POST['newstitle']),"noempty","News Title- " .$message);
 
@@ -243,6 +253,16 @@ class Lib_FormValidation extends Lib_Validation_Handler
 	function validateFooterConnect()
 	{
 		$message = "Required Field Cannot be blank";
+		$this->Assign("free_shipping_cost",trim($_POST['free_shipping_cost']),"noempty","Free Shipping Cost- " .$message);
+
+
+		if(trim($_POST['free_shipping_cost'])!='' && !is_numeric($_POST['free_shipping_cost']))
+		{
+
+			$message = "Only numeric values allowed";
+			$this->Assign("free_shipping_cost","","noempty","Free Shipping Cost - " .$message);
+		}
+
 		$this->Assign("callus",trim($_POST['callus']),"noempty","Call Us - " .$message);
 	
 		if(trim($_POST['callus'])!='' && (!(preg_match("([0-9-]+)", $_POST['callus']) )))
@@ -251,6 +271,8 @@ class Lib_FormValidation extends Lib_Validation_Handler
 			$message = "Invalid";
 			$this->Assign("callus","","noempty","Call Us - " .$message);
 		}
+	
+		
 		$message = "Required Field Cannot be blank";
 		$this->Assign("email",trim($_POST['email']),"noempty","Email - " .$message);
 
@@ -259,13 +281,14 @@ class Lib_FormValidation extends Lib_Validation_Handler
 		$this->Assign("fax",trim($_POST['fax']),"noempty","Fax  - " .$message);
 		if(trim($_POST['fax'])!='' && (!(preg_match("([0-9-]+)", $_POST['fax']) )))
 		{
-
 			$message = "Invalid";
 			$this->Assign("fax","","noempty","Fax- " .$message);
 		}
 		$message = "Required Field Cannot be blank";
 		$this->Assign("location",trim($_POST['location']),"noempty","Location  - " .$message);
 		$this->Assign("footercontent",trim($_POST['footercontent']),"noempty","Footer Content - " .$message);
+
+		
 
 		$this->PerformValidation("?do=footersettings&action=connect");
 	}
@@ -430,7 +453,7 @@ class Lib_FormValidation extends Lib_Validation_Handler
 
 		$this->Assign("txtState",trim($_POST['txtState']),"noempty","State - " .$message);
 		$this->Assign("txtState",trim($_POST['txtState']),"nonumber","State - " .$message);
-		$message = "Only numeric values allowed";
+		
 		$this->Assign("txtzipcode",trim($_POST['txtzipcode']),"noempty","Zip Code -" .$message);
 
 		if(trim($_POST['txtzipcode'])!='' && !is_numeric($_POST['txtzipcode']))
@@ -1338,7 +1361,6 @@ class Lib_FormValidation extends Lib_Validation_Handler
 		$this->Assign("attributes",$_POST['attributes'],"noempty","Attribute Name - ".$message);
 
 	
-
 		if($_POST['attributes']!='')
 		{
 			$sql = "SELECT * FROM attribute_table WHERE attrib_name ='".$_POST['attributes']."' AND attrib_id !=".(int)$_GET['id'];
