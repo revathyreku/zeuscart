@@ -332,7 +332,7 @@ class Model_MUserRegistration
 		$output['googleanalytics']=Core_CHome::getGoogleAnalyticsCode();
 		$output['googlead']=Core_CHome::getGoogleAd();
 		$output['homepageads']= Core_CHome::showHomePageAds();
-
+		$output['homepagecontent']= Core_CHome::showHomePageContent();
 		$output['footer']=Core_CHome::footer();
 		$output['footerconnect']=Core_CHome::getfooterconnect();
 		$output['sociallink']=Core_CHome::showSocialLinks();
@@ -350,7 +350,7 @@ class Model_MUserRegistration
 		$output['maincatimage']=$default->showMainCategory();
 		$output['allfeaturedproducts']=$default->featuredProducts();
 		$output['allfeaturedproductshidden']=$default->featuredProductsHidden();
-
+		$output['newarrivalproducts']=$default->newArrivalProducts();
 		$output['showBestSellingProducts']=$default->showBestSellingProducts();
 		
 		$default=new Core_CNewProducts();
@@ -445,6 +445,7 @@ class Model_MUserRegistration
 		$output['maincatimage']=$default->showMainCategory();
 		$output['categories'] = Display_DUserRegistration::showMainCat();
 		$output['allfeaturedproducts']=$default->featuredProducts();
+		$output['newarrivalproducts']=$default->newArrivalProducts();
 		$default=new Core_CNewProducts();
 		$output['newproducts']=$default->newProducts();
 		if($_SESSION['user_id']!='')
