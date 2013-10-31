@@ -2395,7 +2395,10 @@ class Core_CAddCart
 					$carts=count($records); 
 					return $carts;
 				}
-
+				else 
+				{
+					return '0';
+				}
 			}
 			else
 			{
@@ -2408,13 +2411,18 @@ class Core_CAddCart
 							
 								$sum=$sum+$_SESSION['mycart'][$i]['qty'];
 						}
+						$carts=count($_SESSION['mycart']);
+						return $carts;
 					}
-					$carts=count($_SESSION['mycart']);
-					return $carts;
+					else 
+					{
+						return '0';
+					}
+				
 			}
 			
-		}
-		
+			
+		}		
 		else if(isset($_SESSION['user_id']))
 		{
 
@@ -2435,9 +2443,13 @@ class Core_CAddCart
 			else 
 			{
 				return '0';
-			}
+			}	
+			
 		}
-		
+		else 
+		{
+			return '0';
+		}
 	
 	}
 	/**
@@ -2501,12 +2513,10 @@ class Core_CAddCart
 			return ;
 	
 	}
-
 	function calculateShipCost()
 	{
 
 		include_once('classes/Lib/UPS/UPSRate.php');
-
 
 		$sql="SELECT * FROM shipments_master_table WHERE shipment_id=2";
 		$obj=new Bin_Query();
