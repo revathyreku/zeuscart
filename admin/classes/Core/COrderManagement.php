@@ -69,7 +69,7 @@
 			$ordertotalto=$_POST['ordertotalto'];
 			$ordertotalfrom=$_POST['ordertotalfrom'];						
 			$orderstatus=$_POST['selorderstatus'];			
-			  $sql='select a.orders_id,a.customers_id,a.order_ship,b.user_display_name as Name,a.date_purchased,a.billing_name,a.billing_company,a.billing_street_address,a.billing_suburb,a.billing_city,a.billing_postcode,a.billing_state,d.cou_name as billing_country,a.shipping_name,a.shipping_company,a.shipping_street_address,a.shipping_suburb,a.shipping_city,a.shipping_postcode,a.shipping_state,e.cou_name as shipping_country,c.orders_status_name,c.orders_status_id,a.order_total,f.gateway_name,g.shipment_name from orders_table a inner join users_table b on a.customers_id=b.user_id inner join orders_status_table c on c.orders_status_id=a.orders_status inner join country_table d on d.cou_code=a.billing_country inner join country_table e on e.cou_code=a.shipping_country inner join 	paymentgateways_table f on f.gateway_id=a.payment_method left join shipments_master_table g on g.shipment_id=a.shipment_id_selected';
+			  $sql='select a.orders_id,a.customers_id,a.order_ship,a.currency_id,q.id,q.currency_tocken,b.user_display_name as Name,a.date_purchased,a.billing_name,a.billing_company,a.billing_street_address,a.billing_suburb,a.billing_city,a.billing_postcode,a.billing_state,d.cou_name as billing_country,a.shipping_name,a.shipping_company,a.shipping_street_address,a.shipping_suburb,a.shipping_city,a.shipping_postcode,a.shipping_state,e.cou_name as shipping_country,c.orders_status_name,c.orders_status_id,a.order_total,f.gateway_name,g.shipment_name from orders_table a inner join users_table b on a.customers_id=b.user_id inner join orders_status_table c on c.orders_status_id=a.orders_status inner join country_table d on d.cou_code=a.billing_country inner join country_table e on e.cou_code=a.shipping_country inner join 	paymentgateways_table f on f.gateway_id=a.payment_method left join shipments_master_table g on g.shipment_id=a.shipment_id_selected left join currency_master_table q on q.id=a.currency_id';
 			  
 			if($name!='')
 			{
@@ -112,8 +112,7 @@
 			}
 	
 		
-		$sqlOrderProduct="select a.order_id,a.product_id,c.title,c.brand,a.product_qty,a.product_unit_price,
-		a.product_qty*a.product_unit_price as amt,a.shipping_cost from order_products_table a,orders_table b,products_table c where a.order_id=b.orders_id and a.product_id=c.product_id order by a.order_id";
+		$sqlOrderProduct="select a.order_id,a.product_id,a.currency_id,c.title,c.brand,a.product_qty,a.product_unit_price,f.id=a.currency_id,a.product_qty*a.product_unit_price as amt,a.shipping_cost from order_products_table a,orders_table b,products_table c,currency_master_table f where a.order_id=b.orders_id and f.id=a.currency_id and a.product_id=c.product_id order by a.order_id";
 		$objOrderProduct=new Bin_Query();
 		$objOrderProduct->executeQuery($sqlOrderProduct); 
 		
@@ -317,8 +316,9 @@
 	function dispDetailOrders()
 	{
 		$id=$_GET['id'];
-		$sql='select a.*,b.user_display_name,d.gateway_name,c.orders_status_name,s.shipment_name from orders_table a inner join users_table b on a.customers_id=b.user_id inner join orders_status_table c on c.orders_status_id=a.orders_status left join paymentgateways_table d on a.payment_method=d.gateway_id 
-		left join shipments_master_table s on s.shipment_id=a.shipment_id_selected where a.orders_id='.$id;
+		$sql='select a.*,b.user_display_name,d.gateway_name,c.orders_status_name,s.shipment_name,f.id,f.currency_tocken from orders_table a inner join users_table b on a.customers_id=b.user_id inner join orders_status_table c on c.orders_status_id=a.orders_status left join paymentgateways_table d on a.payment_method=d.gateway_id 
+		left join shipments_master_table s on s.shipment_id=a.shipment_id_selected 		
+		left join currency_master_table f on f.id=a.currency_id where a.orders_id='.$id;
 		$obj=new Bin_Query();
 		$obj->executeQuery($sql);
 		
@@ -492,7 +492,7 @@
 	
 	function displayProductsForOrder()
 	{
-		$sql="SELECT a.title,c.date_purchased,b.product_unit_price,b.variation_id,b.product_qty,a.product_id,b.shipping_cost,((b.product_qty*b.product_unit_price)+b.shipping_cost)as subtotal,c.order_ship,c.order_total  from products_table a inner join order_products_table b on a.product_id=b.product_id inner join orders_table c on b.order_id=c.orders_id and b.order_id=".(int)$_GET['id']." order by c.date_purchased desc ";
+		$sql="SELECT a.title,c.date_purchased,b.product_unit_price,b.variation_id,c.currency_id,f.id,f.currency_tocken,b.product_qty,a.product_id,b.shipping_cost,((b.product_qty*b.product_unit_price)+b.shipping_cost)as subtotal,c.order_ship,c.order_total  from products_table a inner join order_products_table b on a.product_id=b.product_id inner join orders_table c on b.order_id=c.orders_id inner join currency_master_table f on f.id=c.currency_id and b.order_id=".(int)$_GET['id']." order by c.date_purchased desc ";
 		$obj = new Bin_Query();
 		if($obj->executeQuery($sql))
 		{		
@@ -711,7 +711,7 @@
 			header('Location:?do=disporders');
 		}	
 			
-		$sql='select a.orders_id,b.user_display_name as Name,b.user_email,a.date_purchased,a.order_ship,a.billing_name,a.billing_company,a.billing_street_address,a.billing_suburb,a.billing_city,a.billing_postcode,a.billing_state,d.cou_name as billing_country,a.shipping_name,a.shipping_company,a.shipping_street_address,a.shipping_suburb,a.shipping_city,a.shipping_postcode,a.shipping_state,e.cou_name as shipping_country,c.orders_status_name,c.orders_status_id,a.order_total,f.gateway_name,g.shipment_name,a.coupon_code,h.transaction_id from orders_table a inner join users_table b on a.customers_id=b.user_id inner join orders_status_table c on c.orders_status_id=a.orders_status inner join country_table d on d.cou_code=a.billing_country inner join country_table e on e.cou_code=a.shipping_country inner join paymentgateways_table f on f.gateway_id=a.payment_method inner join payment_transactions_table h on h.order_id=a.orders_id left join shipments_master_table g on g.shipment_id=a.shipment_id_selected where  a.orders_id="'.$id.'" group by a.orders_id';
+		$sql='select a.orders_id,b.user_display_name as Name,b.user_email,a.date_purchased,a.order_ship,a.billing_name,a.billing_company,a.billing_street_address,a.billing_suburb,a.billing_city,a.billing_postcode,a.billing_state,d.cou_name as billing_country,a.shipping_name,a.shipping_company,a.shipping_street_address,a.shipping_suburb,a.shipping_city,a.shipping_postcode,a.shipping_state,e.cou_name as shipping_country,c.orders_status_name,c.orders_status_id,a.order_total,f.gateway_name,g.shipment_name,a.coupon_code,h.transaction_id,a.currency_id,q.id,q.currency_tocken from orders_table a inner join users_table b on a.customers_id=b.user_id inner join orders_status_table c on c.orders_status_id=a.orders_status inner join country_table d on d.cou_code=a.billing_country inner join country_table e on e.cou_code=a.shipping_country inner join paymentgateways_table f on f.gateway_id=a.payment_method inner join payment_transactions_table h on h.order_id=a.orders_id left join shipments_master_table g on g.shipment_id=a.shipment_id_selected  left join currency_master_table q on q.id=a.currency_id where  a.orders_id="'.$id.'" group by a.orders_id';
 		$orderdetails=new Bin_Query();
 		$orderdetails->executeQuery($sql);					
 		
@@ -743,7 +743,7 @@
 		}	
 			
 			
-		$sql='select a.orders_id,b.user_display_name as Name,b.user_email,a.date_purchased,a.order_ship,a.billing_name,a.billing_company,a.billing_street_address,a.billing_suburb,a.billing_city,a.billing_postcode,a.billing_state,d.cou_name as billing_country,a.shipping_name,a.shipping_company,a.shipping_street_address,a.shipping_suburb,a.shipping_city,a.shipping_postcode,a.shipping_state,e.cou_name as shipping_country,c.orders_status_name,c.orders_status_id,a.order_total,f.gateway_name,g.shipment_name,a.coupon_code,h.transaction_id from orders_table a inner join users_table b on a.customers_id=b.user_id inner join orders_status_table c on c.orders_status_id=a.orders_status inner join country_table d on d.cou_code=a.billing_country inner join country_table e on e.cou_code=a.shipping_country inner join paymentgateways_table f on f.gateway_id=a.payment_method inner join payment_transactions_table h on h.order_id=a.orders_id left join shipments_master_table g on g.shipment_id=a.shipment_id_selected where  a.orders_id="'.$id.'" group by a.orders_id';
+		$sql='select a.orders_id,b.user_display_name as Name,b.user_email,a.date_purchased,a.order_ship,a.billing_name,a.billing_company,a.billing_street_address,a.billing_suburb,a.billing_city,a.billing_postcode,a.billing_state,d.cou_name as billing_country,a.shipping_name,a.shipping_company,a.shipping_street_address,a.shipping_suburb,a.shipping_city,a.shipping_postcode,a.shipping_state,e.cou_name as shipping_country,c.orders_status_name,c.orders_status_id,a.order_total,f.gateway_name,g.shipment_name,a.coupon_code,h.transaction_id,a.currency_id,q.id,q.currency_tocken from orders_table a inner join users_table b on a.customers_id=b.user_id inner join orders_status_table c on c.orders_status_id=a.orders_status inner join country_table d on d.cou_code=a.billing_country inner join country_table e on e.cou_code=a.shipping_country inner join paymentgateways_table f on f.gateway_id=a.payment_method inner join payment_transactions_table h on h.order_id=a.orders_id left join shipments_master_table g on g.shipment_id=a.shipment_id_selected  left join currency_master_table q on q.id=a.currency_id where  a.orders_id="'.$id.'" group by a.orders_id';
 		$orderdetails=new Bin_Query();
 		$orderdetails->executeQuery($sql);					
 		
