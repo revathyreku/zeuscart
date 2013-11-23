@@ -126,7 +126,7 @@ class Core_CHome
    		include_once('classes/Display/DHome.php');
 		if($_GET['prodid']!='')
 		{
-			$sql= "SELECT product_id,title,meta_desc,meta_keywords FROM products_table where  	product_id= '".$_GET['prodid']."' and status=1"; 
+			$sql= "SELECT product_id,title,alias,meta_desc,meta_keywords FROM products_table where  	product_id= '".$_GET['prodid']."' and status=1"; 
 			$query = new Bin_Query();
 			$query->executeQuery($sql);		
 			return  Display_DHome::pageTitle($query->records);
