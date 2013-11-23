@@ -66,10 +66,53 @@ function assignSubCat(id)
 function productalias(val)
 {
 
+
+	var prodid='<AJDF:output>$smarty.get.prodid</AJDF:output>';
 	if(val!='')
 	{
-		var url='?do=productentry&action=productalias&alias='+ val;
-		ajax(url,'checkalias');	
+			$.ajax({
+			url:'?do=manageproducts&action=productalias',
+			data: 'alias='+val+'&prodid='+prodid,
+			type: 'GET',
+			success: function (resp) {
+				if(resp ==1)
+				{
+					document.getElementById('checkalias').innerHTML="<code >Product alias already exists</code>";
+				}
+				else
+				{
+					document.getElementById('checkalias').innerHTML="";
+				
+				}
+	
+			}
+		});
+		
+	}
+}
+function checksku(val)
+{
+
+	var prodid='<AJDF:output>$smarty.get.prodid</AJDF:output>';
+	if(val!='')
+	{
+		$.ajax({
+		url:'?do=manageproducts&action=productsku',
+		data: 'sku='+val+'&prodid='+prodid,
+		type: 'GET',
+		success: function (resp) {
+
+				if(resp ==1)
+				{
+					document.getElementById('uniquesku').innerHTML="<code >Product sku already exists</code>";
+				}
+				else
+				{
+					document.getElementById('uniquesku').innerHTML="";
+				
+				}
+			}
+		});
 		
 	}
 
@@ -254,7 +297,7 @@ function checkInputs()
 	}
 	else
 	{
-		if ((document.productupdate.product_title.value=='') || (document.productupdate.sku.value==''))
+		if ((document.productupdate.product_title.value=='') || (document.productupdate.sku.value=='') || (document.productupdate.txtweight.value=='') || (document.productupdate.product_alias.value=='') )
 		{
 			alert('Please enter the mandatory fields In General');
 			tabOpenvalidation('2');
@@ -262,7 +305,21 @@ function checkInputs()
 		}
 		else
 		{
+			if(!$('#uniquesku').is(':empty'))
+			{
+				alert('Please enter the unique sku');
+				tabOpenvalidation('2');
+				return false;
 
+			}
+			alias=$('#checkalias').html();
+			if(!$('#checkalias').is(':empty'))
+			{
+				alert('Please enter the product alias');
+				tabOpenvalidation('2');
+				return false;
+
+			}
 			if(isNaN(document.productupdate.txtweight.value))
 			{
 				alert('Invalid Inputs In Weight');
@@ -510,7 +567,7 @@ for(i=1;i<=num;i++)
 			var tablecl="   class='alert_row1' onmouseover=\"mouse_event(this, 'listrow_bg');\" onmouseout=\"mouse_event(this, 'alert_row1');\" "; 
 		}
 		
-		newdiv.innerHTML = "<table width='100%' border='0' align='center' cellpadding='0' cellspacing='0'><tr "+tablecl+" ><td width='15%' ><input id='varianname"+i+"' name='varianname[]' type='text' class='span12'/></td><td width='5%'><input id='prsku"+i+"' name='prsku[]' type='text' class='span12' /></td><td width='5%'><input id='prprice"+i+"' name='prprice[]' type='text'  class='span12'/></td><td width='5%' ><input id='prmsrp"+i+"' name='prmsrp[]' type='text' class='span12'/></td><td width='15%' ><input id='prvarimage"+i+"' name='prvarimage[]' type='file'   size='3' /></td><td width='5%'  ><img src='../images/noimage.jpg' width='35' height='35'></td><td width='20%'><input id='prwidth"+i+"' name='prwidth[]' type='text' class=\"variation_date\"/><input id='prheight"+i+"' name='prheight[]' type='text' class=\"variation_date\"/><input id='prdepth"+i+"' name='prdepth[]' type='text'  class=\"variation_date\"/></td><td width='5%' ><input id='prweight"+i+"' name='prweight[]' type='text' class='span12'/></td><td  width='10%' ><input id='prshipcost"+i+"' name='prshipcost[]' type='text' class='span12'/></td><td  width='5%' ><input id='prsoh"+i+"' name='prsoh[]' type='text' class='span12' /></td><td width='5%' ><input id='prrol"+i+"' name='prrol[]' type='text' class='span12' /></td><td width='5%'  ><a href=\"javascript:;\"  onclick=\"removeVariation(\'"+divIdName+"\')\"><i class='icon-remove'></i></a></td></tr></table>";
+		newdiv.innerHTML = "<table width='100%' border='0' align='center' cellpadding='0' cellspacing='0'><tr "+tablecl+" ><td width='15%' ><input id='varianname"+i+"' name='varianname[]' type='text' class='span12'/></td><td width='5%'><input id='prsku"+i+"' name='prsku[]' type='text' class='span12' /></td><td width='5%'><input id='prprice"+i+"' name='prprice[]' type='text'  class='span12'/></td><td width='5%' ><input id='prmsrp"+i+"' name='prmsrp[]' type='text' class='span12'/></td><td width='15%' ><input id='prvarimage"+i+"' name='prvarimage[]' type='file'   size='3' style='width: 173px ! important;'/></td><td width='5%'  ><img src='../images/noimage.jpg' width='35' height='35'></td><td width='20%'><input id='prwidth"+i+"' name='prwidth[]' type='text' class=\"variation_date\"/><input id='prheight"+i+"' name='prheight[]' type='text' class=\"variation_date\"/><input id='prdepth"+i+"' name='prdepth[]' type='text'  class=\"variation_date\"/></td><td width='5%' ><input id='prweight"+i+"' name='prweight[]' type='text' class='span12'/></td><td  width='10%' ><input id='prshipcost"+i+"' name='prshipcost[]' type='text' class='span12'/></td><td  width='5%' ><input id='prsoh"+i+"' name='prsoh[]' type='text' class='span12' /></td><td width='5%' ><input id='prrol"+i+"' name='prrol[]' type='text' class='span12' /></td><td width='5%'  ><a href=\"javascript:;\"  onclick=\"removeVariation(\'"+divIdName+"\')\"><i class='icon-remove'></i></a></td></tr></table>";
 
 		
 		ni.appendChild(newdiv);
@@ -659,8 +716,8 @@ function removeVariation(rdiv)
                                     </div></div>
                             </div>
 			<div class="row-fluid">
-        		<div class="span12"><label>Product Alias </label>
-        			<input name="product_alias" id="product_alias" value="<AJDF:output>$product_alias</AJDF:output>"   type="text" size="50" onblur="productalias(this.value);"/>&nbsp;<div style="color:#FF0000" id="checkalias"></div>
+        		<div class="span12"><label>Product Alias <font color="#FF0000">*</font></label>
+        			<input name="product_alias" id="product_alias" value="<AJDF:output>$product_alias</AJDF:output>"   type="text" size="50" onblur="productalias(this.value);" onkeyup="productalias(this.value);"/>&nbsp;<span id="checkalias"></span>
         		</div>
         	</div>
                          <div class="row-fluid">
@@ -669,7 +726,7 @@ function removeVariation(rdiv)
                             </div>
                               <div class="row-fluid">
  		<div class="span12"><label> SKU <font color="#FF0000">*</font></label>
-                                <input name="sku" id="sku" type="text" value="<AJDF:output>$sku</AJDF:output>"/>
+                                <input name="sku" id="sku" type="text" value="<AJDF:output>$sku</AJDF:output>" onblur="checksku(this.value);" onkeyup="checksku(this.value);"/>&nbsp;<span id="uniquesku"></span>
 			
                                     <div style="color:#FF0000">
                                         <AJDF:output>$msg.sku</AJDF:output>
@@ -686,7 +743,7 @@ function removeVariation(rdiv)
                             </div>
                             
                                        <div class="row-fluid">
- 		<div class="span12"><label> Weight</label>
+ 		<div class="span12"><label> Weight <font color="#FF0000">*</font></label>
                                 <input name="txtweight" id="txtweight"  type="text" value="<AJDF:output>$txtweight</AJDF:output>" />(lbs) <div style="color:#FF0000">
                                         <AJDF:output>$msg.txtweight</AJDF:output>
                                     </div></div>
