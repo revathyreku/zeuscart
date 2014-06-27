@@ -37,6 +37,7 @@ class Bin_Core_Assembler
 	public function __construct()
 	{
 
+
 		Bin_Core_Assembler::PowerSecurity();
 		include(ROOT_FOLDER.'Built/'.CURRENT_FOLDER."/Dll.php");	
 		if(isset($_GET['action']) && isset($_GET['action']{1}))
@@ -44,9 +45,11 @@ class Bin_Core_Assembler
 		else
 			$this->do = trim($_GET['do']);
 
-			
+	
+
 		if(array_key_exists($this->do,$domapping))
 		{
+
 			if(!(int)$domapping[$this->do]['loadlib'])
 			{
 				$this->loadModelFiles($domapping, $globalmapping);			
@@ -58,8 +61,10 @@ class Bin_Core_Assembler
 				$this->loadModelFiles($domapping, $globalmapping);			
 			}
 		}
+
 		else
 		{
+
 			if(!(int)$globalmapping['invalidrequest']['loadlib'])
 			{
 				$this->loadModelFiles($domapping, $globalmapping);			
@@ -78,6 +83,8 @@ class Bin_Core_Assembler
 	private function loadSystemFiles($system)
 	{
 		foreach($system as $key=>$item)	
+
+
 			include(ROOT_FOLDER.$item);	
 	}
 	
@@ -86,26 +93,48 @@ class Bin_Core_Assembler
 	private function loadLibrayFiles($library)
 	{
 		foreach($library as $key=>$item)	
+
+
 			include(ROOT_FOLDER.$item);	
 	}
 	
-	private function loadModelFiles($domapping,$globalmapping)
+	function loadModelFiles($domapping,$globalmapping)
 	{
+
 		if(array_key_exists($this->do,$domapping))
 		{
 			include_once('classes/Model/'.$domapping[$this->do]['model'].'.php');
 			$class = "Model_".$domapping[$this->do]['model'];			
 			$function = $domapping[$this->do]['function'];
 			$obj = new $class;
-			$obj->$function();			
+			$obj->$function();	
+
+		}
+		elseif($_GET['do']!='' && $_GET['do']!='index')  // newlt includeed file for sef url
+		{
+				if(isset($_GET['action']) && isset($_GET['action']{1}))
+				$join_do = trim($_GET['do']).':'.trim($_GET['action']);
+				else
+				$join_do = trim($_GET['do']);
+
+			include_once('classes/Model/'.$domapping[$join_do ]['model'].'.php');
+			$class = "Model_".$domapping[$join_do]['model'];	
+		    $function = $domapping[$join_do ]['function'];
+ 			$obj = new $class;
+	 		$obj->$function();
+
+
 		}
 		else 
 		{
+
+
 			include_once('classes/Model/'.$globalmapping['invalidrequest']['model'].'.php');
 			$class = "Model_".$globalmapping['invalidrequest']['model'];					
 			$function = $globalmapping['invalidrequest']['function'];		
 			$obj = new $class;	
 			$obj->$function();
+
 		}
 	}	
 	
@@ -223,6 +252,8 @@ class Bin_Core_Assembler
 	function PHPrecuresiveArray($itemm)
 	{
  
+
+
 		foreach($itemm as $key=>$item)
 		{
 			if(!is_array($item))
