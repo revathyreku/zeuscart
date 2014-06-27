@@ -40,6 +40,35 @@ class Model_MAddCart
 	 * @var array 
 	 */
 	var $output = array();	
+
+	/**
+	* This function is constructor of this class
+ 	*
+ 	* @return string
+	*/
+	function Model_MAddCart()
+	{
+		include_once('classes/Core/CLanguage.php');
+		include_once('classes/Core/CAddCart.php');	
+		include('classes/Core/CHome.php');	
+		include_once('classes/Core/CLastViewedProducts.php');
+		include('classes/Core/CKeywordSearch.php');	
+		include('classes/Core/CNews.php');
+		include('classes/Core/CUserRegistration.php');	
+		include_once('classes/Core/CCurrencySettings.php');
+		include('classes/Lib/TagClouds.php');
+		include('classes/Core/CTagClouds.php');
+
+		//Display files
+		Core_CLanguage::setDisplay('DAddCart.php');		
+		Core_CLanguage::setDisplay('DHome.php');
+		Core_CLanguage::setDisplay('DLastViewedProducts.php');
+		Core_CLanguage::setDisplay('DKeywordSearch.php');
+		Core_CLanguage::setDisplay('DNews.php');	
+		Core_CLanguage::setDisplay('DUserRegistration.php');
+
+	}
+
 	
 	/**
 	 * This function is used to view the add to cart  page.
@@ -51,28 +80,24 @@ class Model_MAddCart
 	function addCart()
 	{
 
-		include("classes/Lib/HandleErrors.php");
-		$output['val']=$Err->values;
-		$output['msg']=$Err->messages;
+		//language	
+		Core_CLanguage::setLanguage('CHECK_OUT');
+
+
+
 	
 		if(!isset($_SESSION['user_id']))
 		{
-			$prodid = $_GET['prodid'];
+
+			include("classes/Lib/HandleErrors.php");
+
+			$prodid = $_GET['prodid'];			
 			
-			include_once('classes/Core/CAddCart.php');
-			include('classes/Core/CUserRegistration.php');
-			include('classes/Display/DUserRegistration.php');
-			include('classes/Core/CKeywordSearch.php');
-  			include('classes/Display/DKeywordSearch.php');
-			include('classes/Core/CHome.php');
-			include_once('classes/Core/CLastViewedProducts.php');
-			include_once('classes/Display/DLastViewedProducts.php');
-			include('classes/Lib/TagClouds.php');
-			include('classes/Core/CTagClouds.php');
-			
-			include_once('classes/Core/CCurrencySettings.php');
 			Core_CCurrencySettings::getDefaultCurrency();
-				
+			
+			$output['val']=$Err->values;
+			$output['msg']=$Err->messages;
+
 			$output['sitelogo']=Core_CHome::getLogo();
 			$output['pagetitle']=Core_CHome::pageTitle();
 			$output['timezone']=Core_CHome::setTimeZone();	
@@ -100,23 +125,14 @@ class Model_MAddCart
 			$output['headermenuhidden']= Core_CUserRegistration::showHeaderMenuHidden();
 			$output['currencysettings']=Core_CUserRegistration::showCurrencySettings();
 			$output['headertext'] = Core_CUserRegistration::showHeaderText();
+
 			Bin_Template::createTemplate('addtocart.html',$output);
 			UNSET($_SESSION['cartmsg']);
 		}
 		else
 		{
-			include_once('classes/Core/CAddCart.php');
-			include('classes/Core/CUserRegistration.php');
-			include('classes/Display/DUserRegistration.php');
-			include('classes/Core/CKeywordSearch.php');
-  			include('classes/Display/DKeywordSearch.php');
-			include('classes/Core/CHome.php');
-			include_once('classes/Core/CLastViewedProducts.php');
-			include_once('classes/Display/DLastViewedProducts.php');
-			include('classes/Lib/TagClouds.php');
-			include('classes/Core/CTagClouds.php');
 			
-			include_once('classes/Core/CCurrencySettings.php');
+
 			Core_CCurrencySettings::getDefaultCurrency();
 			
 			$output['sitelogo']=Core_CHome::getLogo();
@@ -145,6 +161,7 @@ class Model_MAddCart
 			$output['headermenuhidden']= Core_CUserRegistration::showHeaderMenuHidden();
 			$output['currencysettings']=Core_CUserRegistration::showCurrencySettings();
 			$output['headertext'] = Core_CUserRegistration::showHeaderText();
+
 			Bin_Template::createTemplate('addtocart.html',$output);
 			UNSET($_SESSION['cartmsg']);
 		}
@@ -160,9 +177,12 @@ class Model_MAddCart
 	function addCartFromProductDetail()
 	{
 
-		include("classes/Lib/HandleErrors.php");
-		$output['val']=$Err->values;
-		$output['msg']=$Err->messages;
+		//language	
+
+		Core_CLanguage::setLanguage('CHECK_OUT');
+
+
+
 		if($_GET['vid']=='1')
 		{
 			include('classes/Lib/CheckInputs.php');
@@ -175,21 +195,14 @@ class Model_MAddCart
 		}
 		if(!isset($_SESSION['user_id']) && isset($_POST['addtocart']))
 		{
+
+			include("classes/Lib/HandleErrors.php");
+
 			$prodid = $_GET['prodid'];
 			
-			
-			include_once('classes/Core/CAddCart.php');
-			include('classes/Core/CUserRegistration.php');
-			include('classes/Display/DUserRegistration.php');
-			include('classes/Core/CKeywordSearch.php');
-  			include('classes/Display/DKeywordSearch.php');
-			include('classes/Core/CHome.php');
-			include_once('classes/Core/CLastViewedProducts.php');
-			include_once('classes/Display/DLastViewedProducts.php');
-			include('classes/Lib/TagClouds.php');
-			include('classes/Core/CTagClouds.php');
-			
-			include_once('classes/Core/CCurrencySettings.php');
+			$output['val']=$Err->values;
+			$output['msg']=$Err->messages;
+		
 			Core_CCurrencySettings::getDefaultCurrency();
 			
 			$output['sitelogo']=Core_CHome::getLogo();
@@ -226,18 +239,7 @@ class Model_MAddCart
 		}
 		else
 		{
-			include_once('classes/Core/CAddCart.php');
-			include('classes/Core/CUserRegistration.php');
-			include('classes/Display/DUserRegistration.php');
-			include('classes/Core/CKeywordSearch.php');
-  			include('classes/Display/DKeywordSearch.php');
-			include('classes/Core/CHome.php');
-			include_once('classes/Core/CLastViewedProducts.php');
-			include_once('classes/Display/DLastViewedProducts.php');
-			include('classes/Lib/TagClouds.php');
-			include('classes/Core/CTagClouds.php');
 			
-			include_once('classes/Core/CCurrencySettings.php');
 			Core_CCurrencySettings::getDefaultCurrency();
 			
 			$output['sitelogo']=Core_CHome::getLogo();
@@ -280,29 +282,23 @@ class Model_MAddCart
 	 */
 	function showCart() 
 	{
+	
+		//language	
 
-		include("classes/Lib/HandleErrors.php");
-		$output['val']=$Err->values;
-		$output['msg']=$Err->messages;
+		Core_CLanguage::setLanguage('CHECK_OUT');
+
+		
 		if(!isset($_SESSION['user_id']))
 		{
+			include("classes/Lib/HandleErrors.php");
 
 			$prodid = $_GET['prodid'];
 			$_SESSION['RequestUrl'] = '?do=showcart';
 		
 			
-			include_once('classes/Core/CAddCart.php');
-			include('classes/Core/CUserRegistration.php');
-			include('classes/Display/DUserRegistration.php');
-			include('classes/Core/CKeywordSearch.php');
-	  		include('classes/Display/DKeywordSearch.php');
-			include('classes/Core/CHome.php');
-			include_once('classes/Core/CLastViewedProducts.php');
-			include_once('classes/Display/DLastViewedProducts.php');
-			include('classes/Lib/TagClouds.php');
-			include('classes/Core/CTagClouds.php');
+			$output['val']=$Err->values;
+			$output['msg']=$Err->messages;
 			
-			include_once('classes/Core/CCurrencySettings.php');
 			Core_CCurrencySettings::getDefaultCurrency();
 			
 			$output['sitelogo']=Core_CHome::getLogo();
@@ -336,18 +332,7 @@ class Model_MAddCart
 		else
 		{
 		
-			include_once('classes/Core/CAddCart.php');
-			include('classes/Core/CUserRegistration.php');
-			include('classes/Display/DUserRegistration.php');
-			include('classes/Core/CKeywordSearch.php');
-	  		include('classes/Display/DKeywordSearch.php');
-			include('classes/Core/CHome.php');
-			include_once('classes/Core/CLastViewedProducts.php');
-			include_once('classes/Display/DLastViewedProducts.php');
-			include('classes/Lib/TagClouds.php');
-			include('classes/Core/CTagClouds.php');
 			
-			include_once('classes/Core/CCurrencySettings.php');
 			Core_CCurrencySettings::getDefaultCurrency();
 			
 			$output['sitelogo']=Core_CHome::getLogo();
@@ -391,18 +376,13 @@ class Model_MAddCart
 	
 	function deleteCart()
 	{
-		include_once('classes/Core/CAddCart.php');
-		include('classes/Core/CUserRegistration.php');
-		include('classes/Display/DUserRegistration.php');
-		include('classes/Core/CKeywordSearch.php');
-  		include('classes/Display/DKeywordSearch.php');
-		include('classes/Core/CHome.php');
-		include_once('classes/Core/CLastViewedProducts.php');
-		include_once('classes/Display/DLastViewedProducts.php');
-		include('classes/Lib/TagClouds.php');
-		include('classes/Core/CTagClouds.php');
 		
-		include_once('classes/Core/CCurrencySettings.php');
+		
+		//language	
+
+		Core_CLanguage::setLanguage('CHECK_OUT');
+		
+	
 		Core_CCurrencySettings::getDefaultCurrency();
 		
 		$output['sitelogo']=Core_CHome::getLogo();
@@ -442,20 +422,14 @@ class Model_MAddCart
 	 */
 	function updateCart()
 	{
-		include_once('classes/Core/CAddCart.php');
-		$default=new Core_CAddCart();
-		include_once('classes/Core/CAddCart.php');
-		include('classes/Core/CUserRegistration.php');
-		include('classes/Display/DUserRegistration.php');
-		include('classes/Core/CKeywordSearch.php');
-		include('classes/Display/DKeywordSearch.php');
-		include('classes/Core/CHome.php');
-		include_once('classes/Core/CLastViewedProducts.php');
-		include_once('classes/Display/DLastViewedProducts.php');
-		include('classes/Lib/TagClouds.php');
-		include('classes/Core/CTagClouds.php');
 		
-		include_once('classes/Core/CCurrencySettings.php');
+
+		//language	
+		Core_CLanguage::setLanguage('CHECK_OUT');
+
+
+		$default=new Core_CAddCart();
+	
 		Core_CCurrencySettings::getDefaultCurrency();
 		
 		$output['sitelogo']=Core_CHome::getLogo();
@@ -497,38 +471,30 @@ class Model_MAddCart
 	 */
 	function showQuickRegistration() 
 	{
+		
 
-		include_once('classes/Core/CCurrencySettings.php');
-		Core_CCurrencySettings::getDefaultCurrency();
+		//language	
+		Core_CLanguage::setLanguage('CHECK_OUT');	
 		
-		if($_POST['addwish']=='on')
-				$chk=1;
-		else
-				$chk=0;
-		
-		include("classes/Lib/HandleErrors.php");	
-		$output['val']=$Err->values;
-		$output['msg']=$Err->messages;
+
 		if(!isset($_SESSION['user_id']))
 		{
 
-
+			include("classes/Lib/HandleErrors.php");	
+			$output['val']=$Err->values;
+			$output['msg']=$Err->messages;
 
 			$prodid = $_GET['prodid'];
 			$_SESSION['RequestUrl'] = '?do=showcart';
 			
-			include_once('classes/Core/CAddCart.php');
-			include_once('classes/Display/DAddCart.php');
-			include('classes/Core/CUserRegistration.php');
-			include('classes/Display/DUserRegistration.php');
-			include('classes/Core/CKeywordSearch.php');
-	  		include('classes/Display/DKeywordSearch.php');
-			include('classes/Core/CHome.php');
-			include_once('classes/Core/CLastViewedProducts.php');
-			include_once('classes/Display/DLastViewedProducts.php');
-			include('classes/Lib/TagClouds.php');
-			include('classes/Core/CTagClouds.php');
-			
+		
+			Core_CCurrencySettings::getDefaultCurrency();
+		
+			if($_POST['addwish']=='on')
+					$chk=1;
+			else
+					$chk=0;
+
 			$output['sitelogo']=Core_CHome::getLogo();
 			$output['pagetitle']=Core_CHome::pageTitle();
 			$output['timezone']=Core_CHome::setTimeZone();	
@@ -574,37 +540,32 @@ class Model_MAddCart
 	 */
 	function doQuickRegistration() 
 	{
-
-
-		include_once('classes/Core/CCurrencySettings.php');
-		Core_CCurrencySettings::getDefaultCurrency();
-			
-		if($_POST['addwish']=='on')
-				$chk=1;
-		else
-				$chk=0;				
-				
 		
+
+		//language	
+
+		Core_CLanguage::setLanguage('CHECK_OUT');
 		
-		include('classes/Lib/CheckInputs.php');
-		$obj = new Lib_CheckInputs('quickregister');	
+	
 		if(!isset($_SESSION['user_id']))
 		{
+
+			include('classes/Lib/CheckInputs.php');
 			$prodid = $_GET['prodid'];
-			$_SESSION['RequestUrl'] = '?do=showcart';
+
+			$_SESSION['RequestUrl'] = '?do=showcart';		
 			
 			
-			include_once('classes/Core/CAddCart.php');
-			include_once('classes/Display/DAddCart.php');
-			include('classes/Core/CUserRegistration.php');
-			include('classes/Display/DUserRegistration.php');
-			include('classes/Core/CKeywordSearch.php');
-	  		include('classes/Display/DKeywordSearch.php');
-			include('classes/Core/CHome.php');
-			include_once('classes/Core/CLastViewedProducts.php');
-			include_once('classes/Display/DLastViewedProducts.php');
-			include('classes/Lib/TagClouds.php');
-			include('classes/Core/CTagClouds.php');
+				Core_CCurrencySettings::getDefaultCurrency();
+					
+				if($_POST['addwish']=='on')
+						$chk=1;
+				else
+						$chk=0;				
+					
+		
+		
+			$obj = new Lib_CheckInputs('quickregister');
 			
 			$output['sitelogo']=Core_CHome::getLogo();
 			$output['pagetitle']=Core_CHome::pageTitle();
@@ -654,32 +615,24 @@ class Model_MAddCart
 	 */
 	function showBillingDetails()
 	{
+		
+		//language	
+		Core_CLanguage::setLanguage('CHECK_OUT');
 
-		include("classes/Lib/HandleErrors.php");
-		$output['val']=$Err->values;
-		$output['msg']=$Err->messages;
 	
-		include_once('classes/Core/CCurrencySettings.php');
-		Core_CCurrencySettings::getDefaultCurrency();
-			
 			
 			if($_SESSION['user_id']!='')
 			{
 				
 				$_SESSION['RequestUrl'] = '?do=showcart';
 				
-				include_once('classes/Core/CAddCart.php');
-				include_once('classes/Display/DAddCart.php');
-				include('classes/Core/CUserRegistration.php');
-				include('classes/Display/DUserRegistration.php');
-				include('classes/Core/CKeywordSearch.php');
-				include('classes/Display/DKeywordSearch.php');
-				include('classes/Core/CHome.php');
-				include_once('classes/Core/CLastViewedProducts.php');
-				include_once('classes/Display/DLastViewedProducts.php');
-				include('classes/Lib/TagClouds.php');
-				include('classes/Core/CTagClouds.php');
+				include("classes/Lib/HandleErrors.php");
+				$output['val']=$Err->values;
+				$output['msg']=$Err->messages;
+
+				Core_CCurrencySettings::getDefaultCurrency();
 				
+			
 				$output['sitelogo']=Core_CHome::getLogo();
 				$output['pagetitle']=Core_CHome::pageTitle();
 				$output['timezone']=Core_CHome::setTimeZone();	
@@ -724,30 +677,23 @@ class Model_MAddCart
 	 */
 	function showShippingDetails()
 	{
-		include("classes/Lib/HandleErrors.php");
-		$output['val']=$Err->values;
-		$output['msg']=$Err->messages;
+		
+
+		//language	
+		Core_CLanguage::setLanguage('CHECK_OUT');
+
 	
-		include_once('classes/Core/CCurrencySettings.php');
-		Core_CCurrencySettings::getDefaultCurrency();
 			
 		if($_SESSION['user_id']!='')
 		{
 			
 			$_SESSION['RequestUrl'] = '?do=showcart';
-	
+			include("classes/Lib/HandleErrors.php");
 			
-			include_once('classes/Core/CAddCart.php');
-			include_once('classes/Display/DAddCart.php');
-			include('classes/Core/CUserRegistration.php');
-			include('classes/Display/DUserRegistration.php');
-			include('classes/Core/CKeywordSearch.php');
-	  		include('classes/Display/DKeywordSearch.php');
-			include('classes/Core/CHome.php');
-			include_once('classes/Core/CLastViewedProducts.php');
-			include_once('classes/Display/DLastViewedProducts.php');
-			include('classes/Lib/TagClouds.php');
-			include('classes/Core/CTagClouds.php');
+			$output['val']=$Err->values;
+			$output['msg']=$Err->messages;
+		
+			Core_CCurrencySettings::getDefaultCurrency();
 			
 			$output['sitelogo']=Core_CHome::getLogo();
 			$output['pagetitle']=Core_CHome::pageTitle();
@@ -793,29 +739,21 @@ class Model_MAddCart
 	function showShippingMethod()
 	{
 
-		include_once('classes/Core/CCurrencySettings.php');
-		Core_CCurrencySettings::getDefaultCurrency();
+		//language	
+		Core_CLanguage::setLanguage('CHECK_OUT');
+
+	
 			
 		if($_SESSION['user_id']!='')
 		{
 			
 			$_SESSION['RequestUrl'] = '?do=showcart';
 			
-			include_once('classes/Core/CAddCart.php');
-			include_once('classes/Display/DAddCart.php');
-			include('classes/Core/CUserRegistration.php');
-			include('classes/Display/DUserRegistration.php');
-			include('classes/Core/CKeywordSearch.php');
-	  		include('classes/Display/DKeywordSearch.php');
-			include('classes/Core/CHome.php');
-			include_once('classes/Core/CLastViewedProducts.php');
-			include_once('classes/Display/DLastViewedProducts.php');
-			include('classes/Lib/TagClouds.php');
-			include('classes/Core/CTagClouds.php');
 			include("classes/Lib/HandleErrors.php");
 			$output['val']=$Err->values;
 			$output['msg']=$Err->messages;
 
+			Core_CCurrencySettings::getDefaultCurrency();
 			$output['sitelogo']=Core_CHome::getLogo();
 			$output['pagetitle']=Core_CHome::pageTitle();
 			$output['timezone']=Core_CHome::setTimeZone();	
@@ -860,9 +798,12 @@ class Model_MAddCart
 	 */	
 	function showOrderConfirmation() 
 	{
+		
 
+		//language	
+		Core_CLanguage::setLanguage('CHECK_OUT');
 			
-		include_once('classes/Core/CCurrencySettings.php');
+
 		Core_CCurrencySettings::getDefaultCurrency();
 
 		
@@ -872,20 +813,7 @@ class Model_MAddCart
 		}
 		else
 		{
-		
-			include_once('classes/Core/CAddCart.php');
-			include_once('classes/Display/DAddCart.php');
-			include('classes/Core/CUserRegistration.php');
-			include('classes/Display/DUserRegistration.php');
-			include('classes/Core/CKeywordSearch.php');
-	  		include('classes/Display/DKeywordSearch.php');
-			include('classes/Core/CHome.php');
-			include_once('classes/Core/CLastViewedProducts.php');
-			include_once('classes/Display/DLastViewedProducts.php');
-			include('classes/Lib/TagClouds.php');
-			include('classes/Core/CTagClouds.php');
-			include('classes/Core/CUserAddressBook.php');
-			
+
 			$output['sitelogo']=Core_CHome::getLogo();
 			$output['pagetitle']=Core_CHome::pageTitle();
 			$output['timezone']=Core_CHome::setTimeZone();	
@@ -902,6 +830,8 @@ class Model_MAddCart
 			
 			$default=new Core_CAddCart();
 			$output['showcart']=$default->showOrderConfirmation();
+
+
 			$output['cartcount']=Core_CAddCart::countCart();
 			$output['tagClouds']=Core_CTagClouds::displayTagClouds();
 			
@@ -911,6 +841,8 @@ class Model_MAddCart
 			$output['currencysettings']=Core_CUserRegistration::showCurrencySettings();
 			$output['headertext'] = Core_CUserRegistration::showHeaderText();
 	
+
+
 			Bin_Template::createTemplate('addtocart.html',$output);
 		}
 		
@@ -926,12 +858,10 @@ class Model_MAddCart
 	function displayPaymentGateways()
 	{
 
-		include("classes/Lib/HandleErrors.php");
-		$output['val']=$Err->values;
-		$output['msg']=$Err->messages;
-		
-		include_once('classes/Core/CCurrencySettings.php');
-		Core_CCurrencySettings::getDefaultCurrency();
+		//language	
+		Core_CLanguage::setLanguage('CHECK_OUT');
+
+	
 		
 		if($_SESSION['user_id']=='')
 		{	
@@ -940,18 +870,12 @@ class Model_MAddCart
 		else
 		{
 		
-			include_once('classes/Core/CAddCart.php');
-			include_once('classes/Display/DAddCart.php');
-			include('classes/Core/CUserRegistration.php');
-			include('classes/Display/DUserRegistration.php');
-			include('classes/Core/CKeywordSearch.php');
-	  		include('classes/Display/DKeywordSearch.php');
-			include('classes/Core/CHome.php');
-			include_once('classes/Core/CLastViewedProducts.php');
-			include_once('classes/Display/DLastViewedProducts.php');
-			include('classes/Lib/TagClouds.php');
-			include('classes/Core/CTagClouds.php');
+			include("classes/Lib/HandleErrors.php");
+			$output['val']=$Err->values;
+			$output['msg']=$Err->messages;
 			
+			Core_CCurrencySettings::getDefaultCurrency();	
+
 			$output['sitelogo']=Core_CHome::getLogo();
 			$output['pagetitle']=Core_CHome::pageTitle();
 			$output['timezone']=Core_CHome::setTimeZone();	
@@ -990,10 +914,12 @@ class Model_MAddCart
 	 */
 	function validateCoupon()
 	{
-
-		include_once('classes/Core/CCurrencySettings.php');
-		Core_CCurrencySettings::getDefaultCurrency();
 		
+
+		//language	
+		Core_CLanguage::setLanguage('CHECK_OUT');
+
+
 		if(!isset($_SESSION['user_id']))
 		{	
 			header('Location:?do=showcart');
@@ -1001,20 +927,9 @@ class Model_MAddCart
 		else
 		{
 		
-			include_once('classes/Core/CAddCart.php');
-			include_once('classes/Display/DAddCart.php');
-			include('classes/Core/CUserRegistration.php');
-			include('classes/Display/DUserRegistration.php');
-			include('classes/Core/CKeywordSearch.php');
-	  		include('classes/Display/DKeywordSearch.php');
-			include('classes/Core/CHome.php');
-			include_once('classes/Core/CLastViewedProducts.php');
-			include_once('classes/Display/DLastViewedProducts.php');
-			include('classes/Lib/TagClouds.php');
-			include('classes/Core/CTagClouds.php');
-			include('classes/Core/CUserAddressBook.php');
-
-			
+			include_once('classes/Core/CCurrencySettings.php');
+			Core_CCurrencySettings::getDefaultCurrency();
+		
 			$output['sitelogo']=Core_CHome::getLogo();
 			$output['pagetitle']=Core_CHome::pageTitle();
 			$output['timezone']=Core_CHome::setTimeZone();	
@@ -1055,32 +970,24 @@ class Model_MAddCart
 	 */
 	function showPaymentPageForAuthorizenet() 
 	{
-
-	
-		include("classes/Lib/HandleErrors.php");
-		$output['val']=$Err->values;
-		$output['msg']=$Err->messages;
 		
-		include_once('classes/Core/CCurrencySettings.php');
-		Core_CCurrencySettings::getDefaultCurrency();
+
+		//language	
+		Core_CLanguage::setLanguage('CHECK_OUT');
+	
+
 		
 		if(isset($_SESSION['user_id']))
 		{
 			$prodid = $_GET['prodid'];
 			$_SESSION['RequestUrl'] = '?do=showcart';
 		
-			include_once('classes/Core/CAddCart.php');
-			include_once('classes/Display/DAddCart.php');
-			include('classes/Core/CUserRegistration.php');
-			include('classes/Display/DUserRegistration.php');
-			include('classes/Core/CKeywordSearch.php');
-	  		include('classes/Display/DKeywordSearch.php');
-			include('classes/Core/CHome.php');
-			include_once('classes/Core/CLastViewedProducts.php');
-			include_once('classes/Display/DLastViewedProducts.php');
-			include('classes/Lib/TagClouds.php');
-			include('classes/Core/CTagClouds.php');
+			include("classes/Lib/HandleErrors.php");
+			$output['val']=$Err->values;
+			$output['msg']=$Err->messages;
 			
+
+			Core_CCurrencySettings::getDefaultCurrency();
 			$output['sitelogo']=Core_CHome::getLogo();
 			$output['pagetitle']=Core_CHome::pageTitle();
 			$output['timezone']=Core_CHome::setTimeZone();	
@@ -1122,31 +1029,23 @@ class Model_MAddCart
 	function showPaymentPageForWorldPay() 
 	{
 	
-		include("classes/Lib/HandleErrors.php");
-		$output['val']=$Err->values;
-		$output['msg']=$Err->messages;
+
 		
-		include_once('classes/Core/CCurrencySettings.php');
-		Core_CCurrencySettings::getDefaultCurrency();
+		//language	
+		Core_CLanguage::setLanguage('CHECK_OUT');
+	
 		
 		if(isset($_SESSION['user_id']))
 		{
 			$prodid = $_GET['prodid'];
 			$_SESSION['RequestUrl'] = '?do=showcart';
 			
-			include_once('classes/Core/CAddCart.php');
-			include_once('classes/Display/DAddCart.php');
-			include('classes/Core/CUserRegistration.php');
-			include('classes/Display/DUserRegistration.php');
-			include('classes/Core/CKeywordSearch.php');
-	  		include('classes/Display/DKeywordSearch.php');
-			include('classes/Core/CHome.php');
-			include_once('classes/Core/CLastViewedProducts.php');
-			include_once('classes/Display/DLastViewedProducts.php');
-			include('classes/Lib/TagClouds.php');
-			include('classes/Core/CTagClouds.php');
-			include_once('classes/Core/CPaymentGateways.php');
-			
+			include("classes/Lib/HandleErrors.php");
+			$output['val']=$Err->values;
+			$output['msg']=$Err->messages;
+
+			Core_CCurrencySettings::getDefaultCurrency();
+
 			$output['sitelogo']=Core_CHome::getLogo();
 			$output['pagetitle']=Core_CHome::pageTitle();
 			$output['timezone']=Core_CHome::setTimeZone();	
@@ -1188,30 +1087,22 @@ class Model_MAddCart
 	function showPaymentPageFor2Checkout() 
 	{
 	
-		include("classes/Lib/HandleErrors.php");
-		$output['val']=$Err->values;
-		$output['msg']=$Err->messages;
-		
-		include_once('classes/Core/CCurrencySettings.php');
-		Core_CCurrencySettings::getDefaultCurrency();
+			//language	
+		Core_CLanguage::setLanguage('CHECK_OUT');
+
 		
 		if(isset($_SESSION['user_id']))
 		{
 			$prodid = $_GET['prodid'];
 			$_SESSION['RequestUrl'] = '?do=showcart';
-		
-			include_once('classes/Core/CAddCart.php');
-			include_once('classes/Display/DAddCart.php');
-			include('classes/Core/CUserRegistration.php');
-			include('classes/Display/DUserRegistration.php');
-			include('classes/Core/CKeywordSearch.php');
-	  		include('classes/Display/DKeywordSearch.php');
-			include('classes/Core/CHome.php');
-			include_once('classes/Core/CLastViewedProducts.php');
-			include_once('classes/Display/DLastViewedProducts.php');
-			include('classes/Lib/TagClouds.php');
-			include('classes/Core/CTagClouds.php');
-			include_once('classes/Core/CPaymentGateways.php');
+			
+
+			include("classes/Lib/HandleErrors.php");
+			$output['val']=$Err->values;
+			$output['msg']=$Err->messages;
+			
+
+			Core_CCurrencySettings::getDefaultCurrency();	
 			
 			$output['sitelogo']=Core_CHome::getLogo();
 			$output['pagetitle']=Core_CHome::pageTitle();
@@ -1254,18 +1145,22 @@ class Model_MAddCart
 	function showPaymentPageForBluepay() 
 	{
 	
-		include("classes/Lib/HandleErrors.php");
-		$output['val']=$Err->values;
-		$output['msg']=$Err->messages;
 		
-		include_once('classes/Core/CCurrencySettings.php');
-		Core_CCurrencySettings::getDefaultCurrency();
 		
+			//language	
+		Core_CLanguage::setLanguage('CHECK_OUT');
+
 		if(isset($_SESSION['user_id']))
 		{
 			$prodid = $_GET['prodid'];
 			$_SESSION['RequestUrl'] = '?do=showcart';
-					
+			
+			include("classes/Lib/HandleErrors.php");
+			$output['val']=$Err->values;
+			$output['msg']=$Err->messages;
+			
+			Core_CCurrencySettings::getDefaultCurrency();
+
 			include_once('classes/Core/CAddCart.php');
 			include_once('classes/Display/DAddCart.php');
 			include('classes/Core/CUserRegistration.php');
@@ -1321,29 +1216,20 @@ class Model_MAddCart
 	function doPaymentForAuthorizenet() 
 	{
 	
-		include("classes/Lib/HandleErrors.php");
-		$output['val']=$Err->values;
-		$output['msg']=$Err->messages;
-		
-		include_once('classes/Core/CCurrencySettings.php');
-		Core_CCurrencySettings::getDefaultCurrency();
+				//language	
+		Core_CLanguage::setLanguage('CHECK_OUT');
 		
 		if(isset($_SESSION['user_id']))
 		{
 			$prodid = $_GET['prodid'];
 			$_SESSION['RequestUrl'] = '?do=showcart';
+
+			include("classes/Lib/HandleErrors.php");
+			$output['val']=$Err->values;
+			$output['msg']=$Err->messages;
 			
-			include_once('classes/Core/CAddCart.php');
-			include_once('classes/Display/DAddCart.php');
-			include('classes/Core/CUserRegistration.php');
-			include('classes/Display/DUserRegistration.php');
-			include('classes/Core/CKeywordSearch.php');
-	  		include('classes/Display/DKeywordSearch.php');
-			include('classes/Core/CHome.php');
-			include_once('classes/Core/CLastViewedProducts.php');
-			include_once('classes/Display/DLastViewedProducts.php');
-			include('classes/Lib/TagClouds.php');
-			include('classes/Core/CTagClouds.php');
+
+			Core_CCurrencySettings::getDefaultCurrency();
 			
 			$output['sitelogo']=Core_CHome::getLogo();
 			$output['pagetitle']=Core_CHome::pageTitle();
@@ -1385,11 +1271,8 @@ class Model_MAddCart
 	function validateBillingAddress()
 	{
 
-		include_once('classes/Core/CCurrencySettings.php');
-		Core_CCurrencySettings::getDefaultCurrency();
-		
-		include("classes/Lib/CheckInputs.php");
-		$obj = new Lib_CheckInputs('billingaddress');
+			//language	
+		Core_CLanguage::setLanguage('CHECK_OUT');	
 		
 		if(!isset($_SESSION['user_id']))
 		{	
@@ -1397,20 +1280,13 @@ class Model_MAddCart
 		}
 		else
 		{
-		
-			include_once('classes/Core/CAddCart.php');
-			include_once('classes/Display/DAddCart.php');
-			include('classes/Core/CUserRegistration.php');
-			include('classes/Display/DUserRegistration.php');
-			include('classes/Core/CKeywordSearch.php');
-	  		include('classes/Display/DKeywordSearch.php');
-			include('classes/Core/CHome.php');
-			include_once('classes/Core/CLastViewedProducts.php');
-			include_once('classes/Display/DLastViewedProducts.php');
-			include('classes/Lib/TagClouds.php');
-			include('classes/Core/CTagClouds.php');
-			include('classes/Core/CUserAddressBook.php');
+			include("classes/Lib/CheckInputs.php");
 			
+			Core_CCurrencySettings::getDefaultCurrency();
+
+		
+			$obj = new Lib_CheckInputs('billingaddress');
+
 			$output['sitelogo']=Core_CHome::getLogo();
 			$output['pagetitle']=Core_CHome::pageTitle();
 			$output['timezone']=Core_CHome::setTimeZone();	
@@ -1450,11 +1326,9 @@ class Model_MAddCart
 	function validateShippingAddress()
 	{
 
-		include_once('classes/Core/CCurrencySettings.php');
-		Core_CCurrencySettings::getDefaultCurrency();
-		
-		include("classes/Lib/CheckInputs.php");
-		$obj = new Lib_CheckInputs('shippingaddress');
+	
+			//language	
+		Core_CLanguage::setLanguage('CHECK_OUT');
 		
 		if(!isset($_SESSION['user_id']))
 		{	
@@ -1463,19 +1337,9 @@ class Model_MAddCart
 		else
 		{
 		
-			include_once('classes/Core/CAddCart.php');
-			include_once('classes/Display/DAddCart.php');
-			include('classes/Core/CUserRegistration.php');
-			include('classes/Display/DUserRegistration.php');
-			include('classes/Core/CKeywordSearch.php');
-	  		include('classes/Display/DKeywordSearch.php');
-			include('classes/Core/CHome.php');
-			include_once('classes/Core/CLastViewedProducts.php');
-			include_once('classes/Display/DLastViewedProducts.php');
-			include('classes/Lib/TagClouds.php');
-			include('classes/Core/CTagClouds.php');
-			include('classes/Core/CUserAddressBook.php');
-			
+			include("classes/Lib/CheckInputs.php");
+			$obj = new Lib_CheckInputs('shippingaddress');
+			Core_CCurrencySettings::getDefaultCurrency();
 			$output['sitelogo']=Core_CHome::getLogo();
 			$output['pagetitle']=Core_CHome::pageTitle();
 			$output['timezone']=Core_CHome::setTimeZone();	
@@ -1515,6 +1379,11 @@ class Model_MAddCart
 	function validateShippingMethod()
 	{	
 
+	
+			//language	
+		include_once('classes/Core/CLanguage.php');
+		Core_CLanguage::setLanguage('CHECK_OUT');
+		
 		include_once('classes/Core/CCurrencySettings.php');
 		Core_CCurrencySettings::getDefaultCurrency();
 		
@@ -1547,7 +1416,6 @@ class Model_MAddCart
 
 	function calculateShipCost()
 	{
-		include_once('classes/Core/CAddCart.php');	
 		Core_CAddCart::calculateShipCost();	
 	}	
 }
