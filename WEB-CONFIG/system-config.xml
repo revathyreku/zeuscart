@@ -7,7 +7,6 @@
     	<system name="SetConfiguration" />
 	    <system name="DbConnect" />
     	<system name="Query" />
-    	<system name="UrlHelper" />
     </systemroot>    
 </system-config>
 
