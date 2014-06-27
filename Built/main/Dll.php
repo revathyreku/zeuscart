@@ -7,6 +7,7 @@
   3 => 'Bin/SetConfiguration.php',
   4 => 'Bin/DbConnect.php',
   5 => 'Bin/Query.php',
+   6 => 'Bin/UrlHelper.php',
 );
 
 
