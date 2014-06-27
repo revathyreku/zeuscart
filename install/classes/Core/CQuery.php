@@ -49,12 +49,11 @@ class Core_CQuery
 		`id` int(15) NOT NULL AUTO_INCREMENT,
 		`content` text NOT NULL,
 		PRIMARY KEY (`id`)
-		) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1";
+		) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1";
 		$result=mysql_query($sql);
 		$sql="INSERT INTO `aboutus_table` (`id`, `content`) VALUES
 		(1, '<p>aboutus content comes here</p>\r\n');";
 		$result=mysql_query($sql);
-
 
 
 		$sql="DROP TABLE IF EXISTS `addressbook_table`";
@@ -99,6 +98,7 @@ class Core_CQuery
 		$sql="CREATE TABLE IF NOT EXISTS `admin_settings_table` (
 			`set_id` int(15) NOT NULL AUTO_INCREMENT,
 			`customer_header` varchar(240) NOT NULL,
+			`site_favicon` varchar(200) NOT NULL,		
 			`site_logo` varchar(240) NOT NULL,
 			`google_analytics` text NOT NULL,
 			`time_zone` varchar(100) NOT NULL,
@@ -107,8 +107,9 @@ class Core_CQuery
 			`admin_email` varchar(200) NOT NULL,
 			`meta_kerwords` text NOT NULL,
 			`meta_description` text NOT NULL,
+			`site_language` varchar(10) NOT NULL,
 			PRIMARY KEY (`set_id`)
-			) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;";
+			) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;";
 		$result=mysql_query($sql);
 		
 
@@ -125,8 +126,15 @@ class Core_CQuery
 		$result=mysql_query($sql);
 		$sql="CREATE TABLE attribute_table(attrib_id  INT(15) NOT NULL PRIMARY KEY AUTO_INCREMENT,attrib_name  VARCHAR(200) NOT NULL)";
 		$result=mysql_query($sql);
-		$sql="INSERT INTO `attribute_table` (`attrib_id`, `attrib_name`) VALUES
-		(1, 'Size')";
+		$sql="
+INSERT INTO `attribute_table` (`attrib_id`, `attrib_name`) VALUES
+(1, 'Design'),
+(2, 'Stitching'),
+(3, 'Dress Code'),
+(4, 'Stamping'),
+(5, 'Clockspeed '),
+(6, 'Size');
+";
 		$result=mysql_query($sql);
 
 
@@ -135,8 +143,13 @@ class Core_CQuery
 		$result=mysql_query($sql);
 		$sql="CREATE TABLE attribute_value_table(attrib_value_id  INT(20) NOT NULL PRIMARY KEY AUTO_INCREMENT,attrib_id  INT(20) NOT NULL,attrib_value  VARCHAR(100) NOT NULL)";
 		$result=mysql_query($sql);
-		$sql="INSERT INTO `attribute_value_table` ( `attrib_id`, `attrib_value`) VALUES
-		(1, '22')";
+		$sql="INSERT INTO `attribute_value_table` (`attrib_value_id`, `attrib_id`, `attrib_value`) VALUES
+(1, 1, 'Excellent designing'),
+(2, 2, 'Fine stitching'),
+(3, 3, 'Smart'),
+(4, 4, 'Metal'),
+(5, 5, '5.5 GHz'),
+(6, 6, '10cm');";
 		$result=mysql_query($sql);
 		
 		
@@ -146,7 +159,67 @@ class Core_CQuery
 		$result=mysql_query($sql);
 		$sql="CREATE TABLE category_attrib_table(category_attrib_id  INT(15) NOT NULL PRIMARY KEY AUTO_INCREMENT,subcategory_id  INT(15) NOT NULL,attrib_id  INT(15) NOT NULL)";
 		$result=mysql_query($sql);
-		
+		$sql="INSERT INTO `category_attrib_table` (`category_attrib_id`, `subcategory_id`, `attrib_id`) VALUES
+(1, 29, 1),
+(2, 29, 2),
+(3, 30, 1),
+(42, 31, 1),
+(44, 32, 1),
+(55, 33, 1),
+(48, 34, 1),
+(82, 35, 1),
+(50, 36, 5),
+(10, 37, 5),
+(12, 39, 6),
+(91, 6, 2),
+(14, 40, 0),
+(15, 41, 0),
+(16, 42, 0),
+(18, 44, 0),
+(95, 22, 2),
+(94, 22, 1),
+(74, 7, 2),
+(73, 7, 1),
+(68, 8, 2),
+(67, 8, 1),
+(66, 9, 2),
+(65, 9, 1),
+(61, 11, 5),
+(57, 13, 5),
+(30, 14, 1),
+(31, 14, 2),
+(32, 16, 1),
+(33, 16, 2),
+(90, 6, 6),
+(86, 10, 3),
+(85, 10, 1),
+(59, 12, 5),
+(52, 24, 5),
+(40, 18, 1),
+(41, 18, 2),
+(43, 31, 2),
+(45, 32, 2),
+(46, 15, 1),
+(47, 15, 2),
+(49, 34, 2),
+(51, 36, 1),
+(53, 24, 1),
+(56, 33, 2),
+(58, 13, 1),
+(60, 12, 1),
+(62, 11, 1),
+(75, 2, 1),
+(76, 2, 2),
+(77, 38, 1),
+(78, 38, 2),
+(79, 23, 1),
+(80, 23, 3),
+(81, 23, 2),
+(83, 35, 3),
+(84, 35, 2),
+(87, 10, 2);
+";	
+		$result=mysql_query($sql);
 
 
 
@@ -155,6 +228,7 @@ class Core_CQuery
 		$sql="CREATE TABLE IF NOT EXISTS `category_table` (
 			`category_id` int(15) NOT NULL AUTO_INCREMENT,
 			`category_name` varchar(200) NOT NULL,
+			 `category_alias` varchar(20) NOT NULL,	
 			`category_parent_id` int(15) NOT NULL,
 			`subcat_path` varchar(50) NOT NULL,
 			`category_image` varchar(255) NOT NULL,
@@ -163,38 +237,43 @@ class Core_CQuery
 			`category_content_id` int(15) NOT NULL,
 			`count` int(11) NOT NULL,
 			PRIMARY KEY (`category_id`)
-			) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=29 ";
+			) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=29 ";
 		$result=mysql_query($sql);
-		$sql="INSERT INTO `category_table` (`category_id`, `category_name`, `category_parent_id`, `subcat_path`, `category_image`, `category_desc`, `category_status`, `category_content_id`, `count`) VALUES
-		(1, 'Women', 0, '1', 'uploadedimages/caticons/2013-09-10-170711laptop-bags05.jpg', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet nisl nec nunc ', 1, 0, 0),
-		(2, 'Shoes', 1, '1,2', 'uploadedimages/caticons/2013-09-10-171134formal-shoes03.jpg', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet nisl nec nunc ', 1, 0, 1),
-		(3, 'Clothing', 1, '1,3', 'uploadedimages/caticons/2013-09-10-171416shirt13.jpg', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet nisl nec nunc ', 1, 0, 1),
-		(4, 'Watches', 1, '1,4', 'uploadedimages/caticons/2013-09-10-171824digital-watches03.jpg', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet nisl nec nunc ', 1, 0, 1),
-		(5, 'Bags', 1, '1,5', 'uploadedimages/caticons/2013-09-10-172159wallets03.jpg', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet nisl nec nunc ', 1, 0, 1),
-		(6, 'Boots', 2, '1,2,6', 'uploadedimages/caticons/2013-09-10-172243sports-shoes07.jpg', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet nisl nec nunc ', 1, 0, 2),
-		(7, 'Formal', 2, '1,2,7', 'uploadedimages/caticons/2013-09-10-172328formals06.jpg', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet nisl nec nunc ', 1, 0, 2),
-		(8, 'Sneakers', 2, '1,2,8', 'uploadedimages/caticons/2013-09-10-172414Crafted-Long-Sleeved-Shirt.jpg', 'SneakersSneakersSneakersSneakers', 1, 0, 2),
-		(9, 'Sportsshoes', 2, '1,2,9', 'uploadedimages/caticons/2013-09-10-172458formals06.jpg', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet nisl nec nunc ', 1, 0, 2),
-		(10, 'T-shirts', 3, '1,3,10', 'uploadedimages/caticons/2013-09-10-172543Crafted-Long-Sleeved-Shirt.jpg', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet nisl nec nunc ', 1, 0, 2),
-		(11, 'Analog watches', 4, '1,4,11', 'uploadedimages/caticons/2013-09-10-172631digital-watches06.jpg', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet nisl nec nunc ', 1, 0, 2),
-		(12, 'Digital watches', 4, '1,4,12', 'uploadedimages/caticons/2013-09-10-172714digital-watches03.jpg', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet nisl nec nunc ', 1, 0, 2),
-		(13, 'Chronograhs', 4, '1,4,13', 'uploadedimages/caticons/2013-09-10-172822chronograhs06.jpg', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet nisl nec nunc ', 1, 0, 2),
-		(14, 'Laptop bags', 5, '1,5,14', 'uploadedimages/caticons/2013-09-10-172917laptop-bags06.jpg', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet nisl nec nunc ', 1, 0, 2),
-		(15, 'Backbags', 14, '1,5,14,15', 'uploadedimages/caticons/2013-09-10-172958backpacks03.jpg', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet nisl nec nunc ', 1, 0, 3),
-		(16, 'Wallets', 5, '1,5,16', 'uploadedimages/caticons/2013-09-10-173040Avalanche-Handbag.jpg', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet nisl nec nunc ', 1, 0, 2),
-		(17, 'Men', 0, '17', 'uploadedimages/caticons/2013-09-10-173109shirts07.jpg', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet nisl nec nunc ', 1, 0, 0),
-		(18, 'Shoes', 17, '17,18', 'uploadedimages/caticons/2013-09-10-173157sports-shoes07.jpg', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet nisl nec nunc ', 1, 0, 1),
-		(19, 'Bags', 17, '17,19', 'uploadedimages/caticons/2013-09-10-173249backpacks03.jpg', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet nisl nec nunc ', 1, 0, 1),
-		(20, 'Clothing', 17, '17,20', 'uploadedimages/caticons/2013-09-10-173328Crafted-Long-Sleeved-Shirt.jpg', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet nisl nec nunc ', 1, 0, 1),
-		(21, 'Watches', 17, '17,21', 'uploadedimages/caticons/2013-09-10-173352digital-watches03.jpg', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet nisl nec nunc ', 1, 0, 1),
-		(22, 'Boots', 18, '17,18,22', 'uploadedimages/caticons/2013-09-10-173432digital-watches03.jpg', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet nisl nec nunc ', 1, 0, 2),
-		(23, 'T-shirts', 20, '17,20,23', 'uploadedimages/caticons/2013-09-10-173704Crafted-Long-Sleeved-Shirt.jpg', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet nisl nec nunc ', 1, 0, 2),
-		(24, 'Digital watches', 21, '17,21,24', 'uploadedimages/caticons/2013-09-10-173738digital-watches03.jpg', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet nisl nec nunc ', 1, 0, 2),
-		(25, 'Accessories', 0, '25', 'uploadedimages/caticons/2013-09-10-1738292.jpg', 'AccessoriesAccessories', 1, 0, 0),
-		(26, 'Mobile', 25, '25,26', 'uploadedimages/caticons/2013-09-10-1739106.jpg', 'MobileMobileMobile', 1, 0, 1),
-		(27, 'Slider mobile', 26, '25,26,27', 'uploadedimages/caticons/2013-09-10-1740456.jpg', 'Slider mobileSlider mobileSlider mobile', 1, 0, 2),
-		(28, 'Computes', 25, '25,28', 'uploadedimages/caticons/2013-09-10-1741422.jpg', 'ComputesComputesComputes', 1, 0, 1);
-		";
+		$sql="INSERT INTO `category_table` (`category_id`, `category_name`, `category_alias`, `category_parent_id`, `subcat_path`, `category_image`, `category_desc`, `category_status`, `category_content_id`, `count`) VALUES
+(1, 'Women', 'women', 0, '1', 'uploadedimages/caticons/2013-09-10-170711laptop-bags05.jpg', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet nisl nec nunc ', 1, 0, 0),
+(2, 'Shoes', 'shoes', 1, '1,2', '../uploadedimages/caticons/2013-09-10-171134formal-shoes03.jpg', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet nisl nec nunc ', 1, 0, 1),
+(3, 'Clothing', 'clothing', 1, '1,3', 'uploadedimages/caticons/2013-09-10-171416shirt13.jpg', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet nisl nec nunc ', 1, 0, 1),
+(4, 'Watches', 'watches', 1, '1,4', 'uploadedimages/caticons/2013-09-10-171824digital-watches03.jpg', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet nisl nec nunc ', 1, 0, 1),
+(5, 'Bags', 'bags', 1, '1,5', 'uploadedimages/caticons/2013-09-10-172159wallets03.jpg', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet nisl nec nunc ', 1, 0, 1),
+(6, 'women Racing flat', 'mracing-flat', 2, '1,2,6', '../uploadedimages/caticons/caticons', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet nisl nec nunc ', 1, 0, 2),
+(7, 'Formal', 'foormal', 2, '1,2,7', '../uploadedimages/caticons/caticons', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet nisl nec nunc ', 1, 0, 2),
+(8, 'Sneakers', 'sneakers', 2, '1,2,8', '../uploadedimages/caticons/caticons', 'SneakersSneakersSneakersSneakers', 1, 0, 2),
+(9, 'Sportsshoes', 'sportsshoes', 2, '1,2,9', '../uploadedimages/caticons/caticons', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet nisl nec nunc ', 1, 0, 2),
+(10, 'Tshirts', 'tshirts', 3, '1,3,10', '../uploadedimages/caticons/caticons', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet nisl nec nunc ', 1, 0, 2),
+(11, 'Analog watches', 'analogwatches', 4, '1,4,11', '../uploadedimages/caticons/caticons', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet nisl nec nunc ', 1, 0, 2),
+(12, 'Digital watches', 'digitalwatches', 4, '1,4,12', '../uploadedimages/caticons/caticons', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet nisl nec nunc ', 1, 0, 2),
+(13, 'Chronograhs', 'chronographs', 4, '1,4,13', '../uploadedimages/caticons/caticons', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet nisl nec nunc ', 1, 0, 2),
+(14, 'Laptop bags', 'laptopbags', 5, '1,5,14', '../uploadedimages/caticons/2013-09-10-172917laptop-bags06.jpg', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet nisl nec nunc ', 1, 0, 2),
+(15, 'Backbags', 'backbags', 14, '1,5,14,15', '../uploadedimages/caticons/2013-09-10-172958backpacks03.jpg', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet nisl nec nunc ', 1, 0, 3),
+(16, 'Wallets', 'wallets', 5, '1,5,16', '../uploadedimages/caticons/2013-09-10-173040Avalanche-Handbag.jpg', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet nisl nec nunc ', 1, 0, 2),
+(17, 'Men', 'men', 0, '17', 'uploadedimages/caticons/2013-09-10-173109shirts07.jpg', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet nisl nec nunc ', 1, 0, 0),
+(18, 'Shoes', 'menshoes', 17, '17,18', '../uploadedimages/caticons/2013-09-10-173157sports-shoes07.jpg', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet nisl nec nunc ', 1, 0, 1),
+(19, 'Bags', 'menbags', 17, '17,19', 'uploadedimages/caticons/2013-09-10-173249backpacks03.jpg', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet nisl nec nunc ', 1, 0, 1),
+(20, 'Clothing', 'menclothing', 17, '17,20', 'uploadedimages/caticons/2013-09-10-173328Crafted-Long-Sleeved-Shirt.jpg', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet nisl nec nunc ', 1, 0, 1),
+(21, 'Watches', 'menwatch', 17, '17,21', 'uploadedimages/caticons/2013-09-10-173352digital-watches03.jpg', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet nisl nec nunc ', 1, 0, 1),
+(22, 'Men Racing flat', 'mracingflat', 18, '17,18,22', '../uploadedimages/caticons/caticons', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet nisl nec nunc ', 1, 0, 2),
+(23, 'Tshirts', 'mentshirs', 20, '17,20,23', '../uploadedimages/caticons/caticons', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet nisl nec nunc ', 1, 0, 2),
+(24, 'Digital watches', 'mendigital', 21, '17,21,24', '../uploadedimages/caticons/caticons', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras sit amet nisl nec nunc ', 1, 0, 2),
+(25, 'Accessories', 'menaccess', 0, '25', 'uploadedimages/caticons/2013-09-10-1738292.jpg', 'AccessoriesAccessories', 1, 0, 0),
+(26, 'Mobile', 'mobile', 25, '25,26', 'uploadedimages/caticons/2013-09-10-1739106.jpg', 'MobileMobileMobile', 1, 0, 1),
+(31, 'Sports shoes', 'mensportsshoes', 18, '17,18,31', '../uploadedimages/caticons/', '', 1, 0, 2),
+(32, 'Laptop bags', 'menlaptopbags', 19, '17,19,32', '../uploadedimages/caticons/', '', 1, 0, 2),
+(33, 'Back bags', 'menbackbags', 19, '17,19,33', '../uploadedimages/caticons/', '', 1, 0, 2),
+(34, 'Wallets', 'menwallets', 19, '17,19,34', '../uploadedimages/caticons/', '', 1, 0, 2),
+(35, 'Shirts', 'menshitrs', 20, '17,20,35', '../uploadedimages/caticons/caticons', '', 1, 0, 2),
+(36, 'Analog watch', 'menanalogwatch', 21, '17,21,36', '../uploadedimages/caticons/', '', 1, 0, 2),
+(37, 'chip', 'chip', 28, '25,28,37', '', '', 1, 0, 2),
+(38, 'Formal', 'mformal', 18, '17,18,38', '', '', 1, 0, 2);";
 		$result=mysql_query($sql);
 
 
@@ -211,7 +290,7 @@ class Core_CQuery
 		`cms_page_status` int(20) NOT NULL,
 		`cms_create_date` datetime NOT NULL,
 		PRIMARY KEY (`cms_id`)
-		) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ";
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ";
 		$result=mysql_query($sql);
 
 
@@ -269,9 +348,9 @@ class Core_CQuery
 		$sql="Drop table if exists currency_codes_table";
 		$result=mysql_query($sql);
 		$sql="CREATE TABLE `currency_codes_table` (
-		`currency_code` varchar(10) collate latin1_general_ci NOT NULL,
-		`country_name` varchar(200) collate latin1_general_ci NOT NULL,
-		`currency_name` varchar(200) collate latin1_general_ci NOT NULL,
+		`currency_code` varchar(10) collate utf8_general_ci NOT NULL,
+		`country_name` varchar(200) collate utf8_general_ci NOT NULL,
+		`currency_name` varchar(200) collate utf8_general_ci NOT NULL,
 		`numeric_code` int(11) NOT NULL
 		)";
 		$result=mysql_query($sql);
@@ -511,6 +590,25 @@ class Core_CQuery
 		('TTD', 'TRINIDAD AND TOBAGO', 'Trinidad and Tobago Dollar', 780),
 		('TND', 'TUNISIA', 'Tunisian Dinar', 788),
 		('TRY', 'TURKEY', 'Turkish Lira', 949),
+		('TMM', 'TURKMENISTAN', 'Manat', 795),
+		('USD', 'TURKS AND CAICOS ISLANDS', 'US Dollar', 840),
+		('AUD', 'TUVALU', 'Australian Dollar', 36),
+		('UGX', 'UGANDA', 'Uganda Shilling', 800),
+		('UAH', 'UKRAINE', 'Hryvnia', 980),
+		('AED', 'UNITED ARAB EMIRATES', 'UAE Dirham', 784),
+		('GBP', 'UNITED KINGDOM', 'Pound Sterling', 826),
+		('USD', 'UNITED STATES', 'US Dollar', 840),
+		('USS', 'UNITED STATES', 'US Dollar (Same day)', 998),
+		('USN', 'UNITED STATES', 'S Dollar (Next day)', 997),
+		('USD', 'UNITED STATES MINOR OUTLYING ISLANDS', 'US Dollar', 840),
+		('UYU', 'URUGUAY', 'Peso Uruguayo', 858),
+		('UYI', 'URUGUAY', 'Uruguay Peso en Unidades Indexadas', 940),
+		('UZS', 'UZBEKISTAN', 'Uzbekistan Sum', 860),
+		('VUV', 'VANUATU', 'Vatu', 548),
+		('VEF', 'VENEZUELA', 'Bolivar Fuerte ', 937),
+		('VND', 'VIET NAM', 'Dong', 704),
+		('USD ', 'VIRGIN ISLANDS (BRITISH)', 'US Dollar', 840),
+		('USD', 'VIRGIN ISLANDS (U.S.)', 'US Dollar', 840),
 		('XPF', 'WALLIS AND FUTUNA', 'CFP Franc', 953),
 		('MAD', 'WESTERN SAHARA', 'Moroccan Dirham', 504),
 		('YER', 'YEMEN', 'Yemeni Rial', 886),
@@ -533,8 +631,15 @@ class Core_CQuery
 
 		$sql="Drop table if exists currency_master_table";
 		$result=mysql_query($sql);
-		$sql="CREATE TABLE currency_master_table (id int(11) NOT NULL auto_increment,currency_name varchar(200) NOT NULL,currency_code varchar(50) NOT NULL,country_code varchar(25) NOT NULL,conversion_rate float NOT NULL,currency_tocken varchar(25) NOT NULL,status int(11) NOT NULL,
-		default_currency int(11) NOT NULL default '0',PRIMARY KEY  (`id`))";
+		$sql="CREATE TABLE IF NOT EXISTS `currency_master_table` (
+		`id` int(11) NOT NULL AUTO_INCREMENT,
+		`currency_name` varchar(200) NOT NULL,
+		`currency_code` varchar(50) NOT NULL,
+		`currency_tocken` varchar(25) NOT NULL,
+		`status` int(11) NOT NULL,
+		`default_currency` int(11) NOT NULL DEFAULT '0',
+		PRIMARY KEY (`id`)
+		)";
 		$result=mysql_query($sql);
 
 
@@ -563,14 +668,15 @@ class Core_CQuery
 		$sql="Drop table if exists footer_settings_table";
 		$result=mysql_query($sql);
 		$sql="CREATE TABLE IF NOT EXISTS `footer_settings_table` (
-		`id` int(10) NOT NULL AUTO_INCREMENT,
-		`callus` varchar(50) NOT NULL,
-		`email` varchar(255) NOT NULL,
-		`fax` varchar(50) NOT NULL,
-		`location` varchar(100) NOT NULL,
-		`footercontent` text NOT NULL,
-		PRIMARY KEY (`id`)
-		) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;";
+		  `id` int(10) NOT NULL AUTO_INCREMENT,
+		  `callus` int(50) NOT NULL,
+		  `email` varchar(255) NOT NULL,
+		  `fax` int(50) NOT NULL,
+		  `location` varchar(100) NOT NULL,
+		  `footercontent` text NOT NULL,
+		  `free_shipping_cost` double NOT NULL,
+		  PRIMARY KEY (`id`)
+		)";
 		$result=mysql_query($sql);
 		
 
@@ -606,9 +712,22 @@ class Core_CQuery
 		)";
 		$result=mysql_query($sql);
 		$sql="INSERT INTO `home_page_ads_table` (`home_page_ads_id`, `home_page_ads_title`, `home_page_ads_logo`, `home_page_ads_url`, `status`) VALUES
-		(1, 'polo', 'images/homepageads/2013-04-11-1442011.gif', 'http://www.google.com/', 1),
-		(2, 'polo', 'images/homepageads/2013-04-11-1442252.gif', 'http://www.google.com/', 1)";
+		(1, 'polo', 'images/homepageads/2013-04-11-1442011.gif', 'http://localhost/ajshop/zeuscart', 1),
+		(2, 'polo', 'images/homepageads/2013-04-11-1442252.gif', 'http://localhost/ajshop/zeuscart', 1)";
 		$result=mysql_query($sql);	
+
+
+		$sql="Drop table if exists home_page_content_table";
+		$result=mysql_query($sql);
+		$sql="CREATE TABLE IF NOT EXISTS `home_page_content_table` (
+		`id` int(11) NOT NULL,
+		`home_page_content` text NOT NULL,
+		`status` int(10) NOT NULL COMMENT '0=>active,1=>suspend'
+		)";
+		$result=mysql_query($sql);
+		$sql="INSERT INTO `home_page_content_table` (`id`, `home_page_content`, `status`) VALUES
+		(1, '<h2>About BEAUTY Shop</h2><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit...</p><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit...</p>', 1);";
+		$result=mysql_query($sql);
 
 
 		$sql="Drop table if exists home_slide_parameter_table";
@@ -633,7 +752,7 @@ class Core_CQuery
 		$result=mysql_query($sql);
 		$sql="INSERT INTO `home_slide_show_table` (`id`, `slide_title`, `slide_content`, `slide_content_thumb`, `slide_caption`, `slide_url`) VALUES
 		(1, 'slide1', 'images/b3.jpg', 'images/b3_thumb.jpg', 'zeuscart1', 'http://www.google.co.in/'),
-		(2, 'slide2', 'images/b1.jpg', 'images/b1_thumb.jpg', 'zeuscart2', 'http://www.google.co.in/'),
+		(2, 'slide2', 'images/b3.jpg', 'images/b3_thumb.jpg', 'zeuscart2', 'http://www.google.co.in/'),
 		(3, 'slide3', 'images/b2.jpg', 'images/b2_thumb.jpg', 'zeuscart3', 'http://www.google.co.in/')";
 		$result=mysql_query($sql);
 
@@ -651,55 +770,67 @@ class Core_CQuery
 		PRIMARY KEY (`id`)
 		)";
 		$result=mysql_query($sql);
-	
+		
 
+
+
+		$sql="Drop table if exists language";
+		$result=mysql_query($sql);
+		$sql="CREATE TABLE IF NOT EXISTS `language` (
+		  `lang_id` int(11) NOT NULL AUTO_INCREMENT,
+		  `lang_name` varchar(255) CHARACTER SET utf8 NOT NULL,
+		  `lang_code` varchar(10) CHARACTER SET utf8 NOT NULL,
+		  PRIMARY KEY (`lang_id`),
+		  KEY `lang_name` (`lang_name`,`lang_code`)
+		) ";
+		$result=mysql_query($sql);
+		$sql="INSERT INTO `language` (`lang_id`, `lang_name`, `lang_code`) VALUES
+		(1, 'English', 'en'),
+		(2, 'Chinese', 'cn')";
+		$result=mysql_query($sql);
+
+
+		
 		$sql="Drop table if exists live_chat_table";
 		$result=mysql_query($sql);
-		$sql="CREATE TABLE `zeuscart_master`.`live_chat_table` (
-		`id` INT( 10 ) NOT NULL AUTO_INCREMENT ,
-		`live_chat_script` TEXT NOT NULL ,
-		`live_chat_status` INT( 10 ) NOT NULL COMMENT '0=>on,1=>off',
-		PRIMARY KEY ( `id` )
-		) ENGINE = MYISAM ;";
+		$sql="CREATE TABLE IF NOT EXISTS `live_chat_table` (
+		`id` int(10) NOT NULL AUTO_INCREMENT,
+		`live_chat_script` text NOT NULL,
+		`live_chat_status` int(10) NOT NULL COMMENT '0=>on,1=>off',
+		PRIMARY KEY (`id`)
+		) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1";
 		$result=mysql_query($sql);
-		
-		$sql="INSERT INTO `live_chat_table` (`live_chat_script`, `live_chat_status`) VALUES
-		('Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 0)";
+		$sql="INSERT INTO `live_chat_table` (`id`, `live_chat_script`, `live_chat_status`) VALUES
+		(1, '', 1)";
 		$result=mysql_query($sql);
+
 		
 	
 
 		$sql="Drop table if exists mail_messages_table";
 		$result=mysql_query($sql);
 		$sql="CREATE TABLE IF NOT EXISTS `mail_messages_table` (
-		`mail_msg_id` int(20) NOT NULL AUTO_INCREMENT,
-		`mail_msg_title` varchar(240) NOT NULL,
-		`mail_msg_subject` varchar(300) NOT NULL,
-		`mail_msg` text,
-		`mail_short_code` text NOT NULL,
-		`mail_user` int(10) NOT NULL COMMENT '0=>user,1=>admin',
-		PRIMARY KEY (`mail_msg_id`)
-		) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1";
+		  `mail_msg_id` int(20) NOT NULL AUTO_INCREMENT,
+		  `mail_msg_title` varchar(240) NOT NULL,
+		  `mail_msg_subject` varchar(300) NOT NULL,
+		  `mail_msg` text,
+		  `mail_short_code` text NOT NULL,
+		  `mail_user` int(10) NOT NULL COMMENT '0=>user,1=>admin',
+		  PRIMARY KEY (`mail_msg_id`)
+		) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1";
 		$result=mysql_query($sql);
 
 
 		$sql="INSERT INTO `mail_messages_table` (`mail_msg_id`, `mail_msg_title`, `mail_msg_subject`, `mail_msg`, `mail_short_code`, `mail_user`) VALUES
-(1, 'Registration', 'Registration Info', '<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\r\n<html xmlns=\"http://www.w3.org/1999/xhtml\">\r\n<head>\r\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\r\n<title>:: [title]::</title>\r\n</head>\r\n\r\n<body>\r\n<table width=\"650\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" align=\"center\" style=\"padding:10px; border: rgb(241, 250, 252) 1px solid;\">\r\n  <tr>\r\n    <td align=\"left\" valign=\"top\" style=\"background-color:#e0eee0; padding:10px 10px 20px 10px; border-bottom: rgb(153, 153, 153) 5px solid; \"><img src=\"[logo]\"  alt=\"[title]\" /></td>\r\n  </tr>\r\n  <tr valign=\"top\"><td align=\"left\" style=\"background-color: rgb(224, 224, 224); padding:20px;\"><h1 style=\"color: rgb(68, 68, 68); font-size:15px; font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; margin:0; padding:0; font-weight:normal;\">Welcomes [firstname] [lastname] ,</h1>\r\n  <p style=\"color: rgb(126, 149, 1); font-size:15px; font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; margin:0; padding:0; font-weight:bold;\">Your account  has been registered successfully ...</p>\r\n \r\n  </td></tr>\r\n  <tr><td align=\"left\" valign=\"top\" style=\"background-color: rgb(224, 224, 224); padding:5px 20px 15px 20px;\">\r\n  <table width=\"500\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" style=\"background-color: rgb(255, 255, 255); margin:auto; border: rgb(214, 230, 234) 1px solid; padding:10px;\">\r\n \r\n  <tr>\r\n    <td style=\"padding:10px; font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; font-size:12px; color: rgb(85, 85, 85);\"><p style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; color: rgb(85, 85, 85); font-size:12px; margin:0; padding:0;\">User Name : <span style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; font-size:12px; font-weight:bold; color:rgb(11, 152, 198)\">[user_name]</span></p></td>\r\n  </tr>\r\n  <tr>\r\n    <td style=\"padding:10px; font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; font-size:12px; color: rgb(85, 85, 85);\"><p style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; color: rgb(85, 85, 85); font-size:12px; margin:0; padding:0;\">Password : <span style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; font-size:12px; font-weight:bold; color:rgb(11, 152, 198)\"> [password] </span></p></td>\r\n  </tr>\r\n  <tr>\r\n    <td style=\"padding:10px; font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; font-size:12px; color: rgb(85, 85, 85);\">[confirm_link]</td>\r\n  </tr>\r\n</table>\r\n</td></tr>\r\n  \r\n<tr><td style=\"background-color: rgb(224, 224, 224); padding:5px 20px;\"><p style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; color: rgb(85, 85, 85); font-size:12px; margin:0; padding:0; font-style:italic;\">Thanks & Regards,</p>\r\n<p style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; color: rgb(49, 148, 204); font-size:12px; margin:5px 0 10px 0; padding:0; font-style:italic; font-weight:bold;\">[title] <span style=\"color: rgb(222, 72, 69);\">Team</span></p>\r\n</td></tr>\r\n<tr><td align=\"center\" valign=\"top\" style=\"background-color: #000; padding:5px 20px;\"><p style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; color: rgb(224, 224, 224); font-size:11px; margin:5px 0; padding:0;\">If you have any queries, please feel free to contact us at [site_email] </p>\r\n\r\n\r\n</td></tr>\r\n\r\n</table>\r\n\r\n</body>\r\n</html>', 'Site Title : <code>[title]</code><br/>\r\nSite Logo : <code>[logo]</code><br/>\r\nUser Firstname     :  <code>[firstname] </code> <br/>\r\nUser Last          :  <code>[lastname]</code><br/>\r\nConfirmation Link  :  <code>[confirm_link]</code><br/>\r\nLogin User name    :  <code>[user_name]</code><br/>\r\nLogin Password     :  <code>[password]</code><br/>\r\n\r\nSite mail: <code>[site_email]</code><br>', 0),
-
-
-
+(1, 'Registration', 'Registration Info', '<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\r\n<html xmlns=\"http://www.w3.org/1999/xhtml\">\r\n<head>\r\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\r\n<title>:: [title]::</title>\r\n</head>\r\n\r\n<body>\r\n<table width=\"650\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" align=\"center\" style=\"padding:10px; border: rgb(241, 250, 252) 1px solid;\">\r\n  <tr>\r\n    <td align=\"left\" valign=\"top\" style=\"background-color:#e0eee0; padding:10px 10px 20px 10px; border-bottom: rgb(153, 153, 153) 5px solid; \"><img src=\"[logo]\"  alt=\"[title]\" /></td>\r\n  </tr>\r\n  <tr valign=\"top\"><td align=\"left\" style=\"background-color: rgb(224, 224, 224); padding:20px;\"><h1 style=\"color: rgb(68, 68, 68); font-size:15px; font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; margin:0; padding:0; font-weight:normal;\">Dear  [firstname] [lastname] ,</h1>\r\n  <p style=\"color: rgb(126, 149, 1); font-size:15px; font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; margin:0; padding:0; font-weight:bold;\">Your account  has been registered successfully ...</p>\r\n \r\n  </td></tr>\r\n  <tr><td align=\"left\" valign=\"top\" style=\"background-color: rgb(224, 224, 224); padding:5px 20px 15px 20px;\">\r\n  <table width=\"500\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" style=\"background-color: rgb(255, 255, 255); margin:auto; border: rgb(214, 230, 234) 1px solid; padding:10px;\">\r\n \r\n  <tr>\r\n    <td style=\"padding:10px; font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; font-size:12px; color: rgb(85, 85, 85);\"><p style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; color: rgb(85, 85, 85); font-size:12px; margin:0; padding:0;\">User Name : <span style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; font-size:12px; font-weight:bold; color:rgb(11, 152, 198)\">[user_name]</span></p></td>\r\n  </tr>\r\n  <tr>\r\n    <td style=\"padding:10px; font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; font-size:12px; color: rgb(85, 85, 85);\"><p style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; color: rgb(85, 85, 85); font-size:12px; margin:0; padding:0;\">Password : <span style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; font-size:12px; font-weight:bold; color:rgb(11, 152, 198)\"> [password] </span></p></td>\r\n  </tr>\r\n  <tr>\r\n    <td style=\"padding:10px; font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; font-size:12px; color: rgb(85, 85, 85);\">[confirm_link]</td>\r\n  </tr>\r\n</table>\r\n</td></tr>\r\n  \r\n<tr><td style=\"background-color: rgb(224, 224, 224); padding:5px 20px;\"><p style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; color: rgb(85, 85, 85); font-size:12px; margin:0; padding:0; font-style:italic;\">Thanks & Regards,</p>\r\n<p style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; color: rgb(49, 148, 204); font-size:12px; margin:5px 0 10px 0; padding:0; font-style:italic; font-weight:bold;\">[title] <span style=\"color: rgb(222, 72, 69);\">Team</span></p>\r\n</td></tr>\r\n<tr><td align=\"center\" valign=\"top\" style=\"background-color: #000; padding:5px 20px;\"><p style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; color: rgb(224, 224, 224); font-size:11px; margin:5px 0; padding:0;\">If you have any queries, please feel free to contact us at [site_email] </p>\r\n\r\n\r\n</td></tr>\r\n\r\n</table>\r\n\r\n</body>\r\n</html>', 'Site Title : <code>[title]</code><br/>\r\nSite Logo : <code>[logo]</code><br/>\r\nUser Firstname     :  <code>[firstname] </code> <br/>\r\nUser Last          :  <code>[lastname]</code><br/>\r\nConfirmation Link  :  <code>[confirm_link]</code><br/>\r\nLogin User name    :  <code>[user_name]</code><br/>\r\nLogin Password     :  <code>[password]</code><br/>\r\n\r\nSite mail: <code>[site_email]</code><br>', 0),
 (2, 'Forgot Password', 'Forgot Password', '<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\r\n<html xmlns=\"http://www.w3.org/1999/xhtml\">\r\n<head>\r\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\r\n<title>:: [title]::</title>\r\n</head>\r\n\r\n<body>\r\n<table width=\"650\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" align=\"center\" style=\"padding:10px; border: rgb(241, 250, 252) 1px solid;\">\r\n  <tr>\r\n    <td align=\"left\" valign=\"top\" style=\"background-color:#e0eee0; padding:10px 10px 20px 10px; border-bottom: rgb(153, 153, 153) 5px solid; \"><img src=\"[logo]\"  alt=\"[title]\" /></td>\r\n  </tr>\r\n  <tr valign=\"top\"><td align=\"left\" style=\"background-color: rgb(224, 224, 224); padding:20px;\"><h1 style=\"color: rgb(68, 68, 68); font-size:15px; font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; margin:0; padding:0; font-weight:normal;\">Forgot password</h1>\r\n\r\n \r\n  </td></tr>\r\n  <tr><td align=\"left\" valign=\"top\" style=\"background-color: rgb(224, 224, 224); padding:5px 20px 15px 20px;\">\r\n  <table width=\"500\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" style=\"background-color: rgb(255, 255, 255); margin:auto; border: rgb(214, 230, 234) 1px solid; padding:10px;\">\r\n \r\n  <tr>\r\n    <td style=\"padding:10px; font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; font-size:12px; color: rgb(85, 85, 85);\"><p style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; color: rgb(85, 85, 85); font-size:12px; margin:0; padding:0;\">User Name : <span style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; font-size:12px; font-weight:bold; color:rgb(11, 152, 198)\">[user_name]</span></p></td>\r\n  </tr>\r\n  <tr>\r\n    <td style=\"padding:10px; font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; font-size:12px; color: rgb(85, 85, 85);\"><p style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; color: rgb(85, 85, 85); font-size:12px; margin:0; padding:0;\">Your new password : <span style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; font-size:12px; font-weight:bold; color:rgb(11, 152, 198)\"> [password] </span></p></td>\r\n  </tr>\r\n\r\n</table>\r\n</td></tr>\r\n  \r\n<tr><td style=\"background-color: rgb(224, 224, 224); padding:5px 20px;\"><p style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; color: rgb(85, 85, 85); font-size:12px; margin:0; padding:0; font-style:italic;\">Thanks & Regards,</p>\r\n<p style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; color: rgb(49, 148, 204); font-size:12px; margin:5px 0 10px 0; padding:0; font-style:italic; font-weight:bold;\">Zeus Cart  <span style=\"color: rgb(222, 72, 69);\">Team</span></p>\r\n</td></tr>\r\n<tr><td align=\"center\" valign=\"top\" style=\"background-color: #000; padding:5px 20px;\"><p style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; color: rgb(224, 224, 224); font-size:11px; margin:5px 0; padding:0;\">If you have any queries, please feel free to contact us at [site_email] </p>\r\n\r\n\r\n</td></tr>\r\n\r\n</table>\r\n\r\n</body>\r\n</html>', 'Site Title : <code>[title]</code><br/>\r\nSite Logo : <code>[logo]</code><br/>\r\nUser Firstname     :  <code>[firstname] </code> <br/>\r\nUser Last          :  <code>[lastname]</code><br/>\r\n\r\nLogin User name    :  <code>[user_name]</code><br/>\r\nLogin New Password     :  <code>[password]</code><br/>\r\n\r\nSite mail: <code>[site_email]</code><br>', 0),
-
 (3, 'Notification to Admin', 'User Registration Notification to Admin', '<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\r\n<html xmlns=\"http://www.w3.org/1999/xhtml\">\r\n<head>\r\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\r\n<title>:: [title]::</title>\r\n</head>\r\n\r\n<body>\r\n<table width=\"650\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" align=\"center\" style=\"padding:10px; border: rgb(241, 250, 252) 1px solid;\">\r\n  <tr>\r\n    <td align=\"left\" valign=\"top\" style=\"background-color:#e0eee0; padding:10px 10px 20px 10px; border-bottom: rgb(153, 153, 153) 5px solid; \"><img src=\"[logo]\"  alt=\"[title]\" /></td>\r\n  </tr>\r\n  <tr valign=\"top\"><td align=\"left\" style=\"background-color: rgb(224, 224, 224); padding:20px;\"><h1 style=\"color: rgb(68, 68, 68); font-size:15px; font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; margin:0; padding:0; font-weight:normal;\">New  User has been registered</h1>\r\n\r\n \r\n  </td></tr>\r\n  \r\n  \r\n<tr><td style=\"background-color: rgb(224, 224, 224); padding:5px 20px;\"><p style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; color: rgb(85, 85, 85); font-size:12px; margin:0; padding:0; font-style:italic;\">Thanks & Regards,</p>\r\n<p style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; color: rgb(49, 148, 204); font-size:12px; margin:5px 0 10px 0; padding:0; font-style:italic; font-weight:bold;\">Zeus Cart  <span style=\"color: rgb(222, 72, 69);\">Team</span></p>\r\n</td></tr>\r\n<tr><td align=\"center\" valign=\"top\" style=\"background-color: #000; padding:5px 20px;\"><p style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; color: rgb(224, 224, 224); font-size:11px; margin:5px 0; padding:0;\">If you have any queries, please feel free to contact us at [site_email] </p>\r\n\r\n\r\n</td></tr>\r\n\r\n</table>\r\n\r\n</body>\r\n</html>', '', 1),
-
-(4, 'Order Placement', 'Your order has has been placed successfully', '<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\r\n<html xmlns=\"http://www.w3.org/1999/xhtml\">\r\n<head>\r\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\r\n<title>:: [title]::</title>\r\n</head>\r\n\r\n<body>\r\n<table width=\"650\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" align=\"center\" style=\"padding:10px; border: rgb(241, 250, 252) 1px solid;\">\r\n  <tr>\r\n    <td align=\"left\" valign=\"top\" style=\"background-color:#e0eee0; padding:10px 10px 20px 10px; border-bottom: rgb(153, 153, 153) 5px solid; \"><img src=\"[logo]\"  alt=\"[title]\" /></td>\r\n  </tr>\r\n  <tr valign=\"top\"><td align=\"left\" style=\"background-color: rgb(224, 224, 224); padding:20px;\"><h1 style=\"color: rgb(68, 68, 68); font-size:15px; font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; margin:0; padding:0; font-weight:normal;\">Order Placement</h1>\r\n\r\n \r\n  </td></tr>\r\n  <tr><td align=\"left\" valign=\"top\" style=\"background-color: rgb(224, 224, 224); padding:5px 20px 15px 20px;\">\r\n  <table width=\"500\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" style=\"background-color: rgb(255, 255, 255); margin:auto; border: rgb(214, 230, 234) 1px solid; padding:10px;\">\r\n \r\n  <tr>\r\n    <td style=\"padding:10px; font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; font-size:12px; color: rgb(85, 85, 85);\"><p style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; color: rgb(85, 85, 85); font-size:12px; margin:0; padding:0;\">User Name : <span style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; font-size:12px; font-weight:bold; color:rgb(11, 152, 198)\">[user_name]</span></p></td>\r\n  </tr>\r\n  <tr>\r\n    <td style=\"padding:10px; font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; font-size:12px; color: rgb(85, 85, 85);\"><p style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; color: rgb(85, 85, 85); font-size:12px; margin:0; padding:0;\">Email : <span style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; font-size:12px; font-weight:bold; color:rgb(11, 152, 198)\"> [email] </span></p></td>\r\n  </tr>\r\n  <tr>\r\n    <td style=\"padding:10px; font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; font-size:12px; color: rgb(85, 85, 85);\"><p style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; color: rgb(85, 85, 85); font-size:12px; margin:0; padding:0;\">Order ID : <span style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; font-size:12px; font-weight:bold; color:rgb(11, 152, 198)\"> [orderid] </span></p></td>\r\n  </tr>\r\n<tr>\r\n    <td style=\"padding:10px; font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; font-size:12px; color: rgb(85, 85, 85);\"><p style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; color: rgb(85, 85, 85); font-size:12px; margin:0; padding:0;\">Order Amount: <span style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; font-size:12px; font-weight:bold; color:rgb(11, 152, 198)\"> [amount] </span></p></td>\r\n  </tr>	\r\n<tr>\r\n    <td style=\"padding:10px; font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; font-size:12px; color: rgb(85, 85, 85);\"><p style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; color: rgb(85, 85, 85); font-size:12px; margin:0; padding:0;\">Billing Address : <span style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; font-size:12px; font-weight:bold; color:rgb(11, 152, 198)\"> [billingaddress] </span></p></td>\r\n  </tr>\r\n<tr>\r\n    <td style=\"padding:10px; font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; font-size:12px; color: rgb(85, 85, 85);\"><p style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; color: rgb(85, 85, 85); font-size:12px; margin:0; padding:0;\">Shipping Address: <span style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; font-size:12px; font-weight:bold; color:rgb(11, 152, 198)\"> [shippingaddress] </span></p></td>\r\n  </tr>	\r\n  \r\n</table>\r\n</td></tr>\r\n  \r\n<tr><td style=\"background-color: rgb(224, 224, 224); padding:5px 20px;\"><p style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; color: rgb(85, 85, 85); font-size:12px; margin:0; padding:0; font-style:italic;\">Thanks & Regards,</p>\r\n<p style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; color: rgb(49, 148, 204); font-size:12px; margin:5px 0 10px 0; padding:0; font-style:italic; font-weight:bold;\">Zeus Cart  <span style=\"color: rgb(222, 72, 69);\">Team</span></p>\r\n</td></tr>\r\n<tr><td align=\"center\" valign=\"top\" style=\"background-color: #000; padding:5px 20px;\"><p style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; color: rgb(224, 224, 224); font-size:11px; margin:5px 0; padding:0;\">If you have any queries, please feel free to contact us at [site_email] </p>\r\n\r\n\r\n</td></tr>\r\n\r\n</table>\r\n\r\n</body>\r\n</html>', '              Site Title : <code>[title]</code><br/>\r\nSite Logo : <code>[logo]</code><br/>\r\nUser name   :  <code>[user_name] </code> <br/>\r\nEmail : <code>[email]</code></br>\r\nOrder ID: <code>[orderid]</code><br/> \r\nOrder Amount : <code>[amount]</code><br/>\r\nBilling Address : <code>[billingaddress]</code><br/>\r\nShipping Address : <code>[shippingaddress]</code><br/>\r\n\r\nSite mail: <code>[site_email]</code><br>', 0),
-
+(4, 'Order Placement', 'Your order has has been placed successfully', '', '              Site Title : <code>[title]</code><br/>\r\nSite Logo : <code>[logo]</code><br/>\r\nUser name   :  <code>[user_name] </code> <br/>\r\nEmail : <code>[email]</code></br>\r\nOrder ID: <code>[orderid]</code><br/> \r\nOrder Amount : <code>[amount]</code><br/>\r\nBilling Address : <code>[billingaddress]</code><br/>\r\nShipping Address : <code>[shippingaddress]</code><br/>\r\n\r\nSite mail: <code>[site_email]</code><br>', 0),
 (5, 'Order Placement', 'New Order Placed', '<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\r\n<html xmlns=\"http://www.w3.org/1999/xhtml\">\r\n<head>\r\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\r\n<title>:: [title]::</title>\r\n</head>\r\n\r\n<body>\r\n<table width=\"650\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" align=\"center\" style=\"padding:10px; border: rgb(241, 250, 252) 1px solid;\">\r\n  <tr>\r\n    <td align=\"left\" valign=\"top\" style=\"background-color:#e0eee0; padding:10px 10px 20px 10px; border-bottom: rgb(153, 153, 153) 5px solid; \"><img src=\"[logo]\"  alt=\"[title]\" /></td>\r\n  </tr>\r\n  <tr valign=\"top\"><td align=\"left\" style=\"background-color: rgb(224, 224, 224); padding:20px;\"><h1 style=\"color: rgb(68, 68, 68); font-size:15px; font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; margin:0; padding:0; font-weight:normal;\">Order Placement</h1>\r\n\r\n \r\n  </td></tr>\r\n  <tr><td align=\"left\" valign=\"top\" style=\"background-color: rgb(224, 224, 224); padding:5px 20px 15px 20px;\">\r\n  <table width=\"500\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" style=\"background-color: rgb(255, 255, 255); margin:auto; border: rgb(214, 230, 234) 1px solid; padding:10px;\">\r\n <tr>\r\n    <td style=\"padding:10px; font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; font-size:12px; color: rgb(85, 85, 85);\"><p style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; color: rgb(85, 85, 85); font-size:12px; margin:0; padding:0;\">Admin can receive the new order,the order detail is given below </p></td>\r\n  </tr>\r\n	\r\n   <tr>\r\n    <td style=\"padding:10px; font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; font-size:12px; color: rgb(85, 85, 85);\"><p style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; color: rgb(85, 85, 85); font-size:12px; margin:0; padding:0;\">Order Details</p></td>\r\n  </tr>\r\n  <tr>\r\n    <td style=\"padding:10px; font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; font-size:12px; color: rgb(85, 85, 85);\"><p style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; color: rgb(85, 85, 85); font-size:12px; margin:0; padding:0;\">User Name : <span style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; font-size:12px; font-weight:bold; color:rgb(11, 152, 198)\">[user_name]</span></p></td>\r\n  </tr>\r\n  <tr>\r\n    <td style=\"padding:10px; font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; font-size:12px; color: rgb(85, 85, 85);\"><p style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; color: rgb(85, 85, 85); font-size:12px; margin:0; padding:0;\">Email : <span style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; font-size:12px; font-weight:bold; color:rgb(11, 152, 198)\"> [email] </span></p></td>\r\n  </tr>\r\n  <tr>\r\n    <td style=\"padding:10px; font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; font-size:12px; color: rgb(85, 85, 85);\"><p style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; color: rgb(85, 85, 85); font-size:12px; margin:0; padding:0;\">Order ID : <span style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; font-size:12px; font-weight:bold; color:rgb(11, 152, 198)\"> [orderid] </span></p></td>\r\n  </tr>\r\n<tr>\r\n    <td style=\"padding:10px; font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; font-size:12px; color: rgb(85, 85, 85);\"><p style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; color: rgb(85, 85, 85); font-size:12px; margin:0; padding:0;\">Order Amount : <span style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; font-size:12px; font-weight:bold; color:rgb(11, 152, 198)\"> [amount] </span></p></td>\r\n  </tr>	\r\n<tr>\r\n    <td style=\"padding:10px; font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; font-size:12px; color: rgb(85, 85, 85);\"><p style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; color: rgb(85, 85, 85); font-size:12px; margin:0; padding:0;\">Billing Address : <span style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; font-size:12px; font-weight:bold; color:rgb(11, 152, 198)\"> [billingaddress] </span></p></td>\r\n  </tr>\r\n<tr>\r\n    <td style=\"padding:10px; font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; font-size:12px; color: rgb(85, 85, 85);\"><p style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; color: rgb(85, 85, 85); font-size:12px; margin:0; padding:0;\">Shipping Address : <span style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; font-size:12px; font-weight:bold; color:rgb(11, 152, 198)\"> [shippingaddress] </span></p></td>\r\n  </tr>	\r\n  \r\n</table>\r\n</td></tr>\r\n  \r\n<tr><td style=\"background-color: rgb(224, 224, 224); padding:5px 20px;\"><p style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; color: rgb(85, 85, 85); font-size:12px; margin:0; padding:0; font-style:italic;\">Thanks & Regards,</p>\r\n<p style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; color: rgb(49, 148, 204); font-size:12px; margin:5px 0 10px 0; padding:0; font-style:italic; font-weight:bold;\">Zeus Cart  <span style=\"color: rgb(222, 72, 69);\">Team</span></p>\r\n</td></tr>\r\n<tr><td align=\"center\" valign=\"top\" style=\"background-color: #000; padding:5px 20px;\"><p style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; color: rgb(224, 224, 224); font-size:11px; margin:5px 0; padding:0;\">If you have any queries, please feel free to contact us at [site_email] </p>\r\n\r\n\r\n</td></tr>\r\n\r\n</table>\r\n\r\n</body>\r\n</html>', '       Site Title : <code>[title]</code><br/>\r\nSite Logo : <code>[logo]</code><br/>\r\nUser name   :  <code>[user_name] </code> <br/>\r\nEmail : <code>[email]</code></br>\r\nOrder ID: <code>[orderid]</code><br/> \r\nOrder Amount : <code>[amount]</code><br/>\r\nBilling Address : <code>[billingaddress]</code><br/>\r\nShipping Address : <code>[shippingaddress]</code><br/>\r\n\r\nSite mail: <code>[site_email]</code><br>', 1),
-
-
-(6, 'Gift voucher', 'GIft voucher ', '<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\r\n<html xmlns=\"http://www.w3.org/1999/xhtml\">\r\n<head>\r\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\r\n<title>:: [title]::</title>\r\n</head>\r\n\r\n<body>\r\n<table width=\"650\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" align=\"center\" style=\"padding:10px; border: rgb(241, 250, 252) 1px solid;\">\r\n  <tr>\r\n    <td align=\"left\" valign=\"top\" style=\"background-color:#e0eee0; padding:10px 10px 20px 10px; border-bottom: rgb(153, 153, 153) 5px solid; \"><img src=\"[logo]\"  alt=\"[title]\" /></td>\r\n  </tr>\r\n  <tr valign=\"top\"><td align=\"left\" style=\"background-color: rgb(224, 224, 224); padding:20px;\"><h1 style=\"color: rgb(68, 68, 68); font-size:15px; font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; margin:0; padding:0; font-weight:normal;\">Hi [reciuser] </h1>\r\n\r\n \r\n  </td></tr>\r\n  <tr><td align=\"left\" valign=\"top\" style=\"background-color: rgb(224, 224, 224); padding:5px 20px 15px 20px;\">\r\n  <table width=\"500\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" style=\"background-color: rgb(255, 255, 255); margin:auto; border: rgb(214, 230, 234) 1px solid; padding:10px;\">\r\n <tr>\r\n    <td style=\"padding:10px; font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; font-size:12px; color: rgb(85, 85, 85);\"><p style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; color: rgb(85, 85, 85); font-size:12px; margin:0; padding:0;\">\r\nYou have been received the gift voucher from [senduser]  </p></td>\r\n  </tr>\r\n	\r\n   <tr>\r\n    <td style=\"padding:10px; font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; font-size:12px; color: rgb(85, 85, 85);\"><p style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; color: rgb(85, 85, 85); font-size:12px; margin:0; padding:0;\">[giftimage] </p></td>\r\n  </tr>\r\n  <tr>\r\n    <td style=\"padding:10px; font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; font-size:12px; color: rgb(85, 85, 85);\"><p style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; color: rgb(85, 85, 85); font-size:12px; margin:0; padding:0;\">Your Gift Voucher Code <span style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; font-size:12px; font-weight:bold; color:rgb(11, 152, 198)\">[giftcode]</span></p></td>\r\n  </tr>\r\n  <tr>\r\n    <td style=\"padding:10px; font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; font-size:12px; color: rgb(85, 85, 85);\"><p style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; color: rgb(85, 85, 85); font-size:12px; margin:0; padding:0;\">\r\nUsing this gift voucher  you can purchase the product worth of <span style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; font-size:12px; font-weight:bold; color:rgb(11, 152, 198)\">[amount]   </span>from our online store</p></td>\r\n  </tr>\r\n\r\n  \r\n</table>\r\n</td></tr>\r\n  \r\n<tr><td style=\"background-color: rgb(224, 224, 224); padding:5px 20px;\"><p style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; color: rgb(85, 85, 85); font-size:12px; margin:0; padding:0; font-style:italic;\">Thanks & Regards,</p>\r\n<p style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; color: rgb(49, 148, 204); font-size:12px; margin:5px 0 10px 0; padding:0; font-style:italic; font-weight:bold;\">[title]  <span style=\"color: rgb(222, 72, 69);\">Team</span></p>\r\n</td></tr>\r\n<tr><td align=\"center\" valign=\"top\" style=\"background-color: #000; padding:5px 20px;\"><p style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; color: rgb(224, 224, 224); font-size:11px; margin:5px 0; padding:0;\">If you have any queries, please feel free to contact us at [site_email] </p>\r\n\r\n\r\n</td></tr>\r\n\r\n</table>\r\n\r\n</body>\r\n</html>', '[title] : <code>Site Title</code><br/>\r\n\r\n[logo] : <code>Site Logo</code><br/>\r\n[reciuser]  : <code>Recipient''s Name</code><br/>\r\n[senduser] : <code>Sender Name</code><br/>\r\n[giftimage]  : <code>Gift Image</code></br>\r\n[giftcode]  : <code>Gift Coupon Code</code><br/>\r\n[amount]  : <code>Amount</code><br/>\r\n [site_email]  : <code>Admin Email</code>', 0),
-(7, 'Inventory', 'Admin upgrade the product inventory', '<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\r\n<html xmlns=\"http://www.w3.org/1999/xhtml\">\r\n<head>\r\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\r\n<title>:: [title]::</title>\r\n</head>\r\n\r\n<body>\r\n<table width=\"650\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" align=\"center\" style=\"padding:10px; border: rgb(241, 250, 252) 1px solid;\">\r\n  <tr>\r\n    <td align=\"left\" valign=\"top\" style=\"background-color:#e0eee0; padding:10px 10px 20px 10px; border-bottom: rgb(153, 153, 153) 5px solid; \"><img src=\"[logo]\"  alt=\"[title]\" /></td>\r\n  </tr>\r\n  <tr valign=\"top\"><td align=\"left\" style=\"background-color: rgb(224, 224, 224); padding:20px;\"><h1 style=\"color: rgb(68, 68, 68); font-size:15px; font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; margin:0; padding:0; font-weight:normal;\">Hi Admin </h1>\r\n\r\n \r\n  </td></tr>\r\n  <tr><td align=\"left\" valign=\"top\" style=\"background-color: rgb(224, 224, 224); padding:5px 20px 15px 20px;\">\r\n  <table width=\"500\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" style=\"background-color: rgb(255, 255, 255); margin:auto; border: rgb(214, 230, 234) 1px solid; padding:10px;\">\r\n <tr>\r\n    <td style=\"padding:10px; font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; font-size:12px; color: rgb(85, 85, 85);\"><p style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; color: rgb(85, 85, 85); font-size:12px; margin:0; padding:0;\">\r\nThe stock of hands of the  product ID  [product_id] is reached the reorder level.So admin can reorder the product.\r\n\r\n </p></td>\r\n  </tr>\r\n	\r\n    <tr>\r\n    <td style=\"padding:10px; font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; font-size:12px; color: rgb(85, 85, 85);\"><p style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; color: rgb(85, 85, 85); font-size:12px; margin:0; padding:0;\">\r\nThe product current inventory details is given below :\r\nProduct ID : [product_id]\r\nrol         : [rol] \r\nsoh         : [soh]\r\n </p></td>\r\n  </tr>\r\n\r\n  <tr>\r\n    <td style=\"padding:10px; font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; font-size:12px; color: rgb(85, 85, 85);\"><p style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; color: rgb(85, 85, 85); font-size:12px; margin:0; padding:0;\">\r\n\r\nProduct ID : [product_id]\r\n\r\n </p></td>\r\n  </tr>\r\n  <tr>\r\n    <td style=\"padding:10px; font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; font-size:12px; color: rgb(85, 85, 85);\"><p style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; color: rgb(85, 85, 85); font-size:12px; margin:0; padding:0;\">\r\n\r\nrol         : [rol] \r\n\r\n </p></td>\r\n  </tr>\r\n  <tr>\r\n    <td style=\"padding:10px; font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; font-size:12px; color: rgb(85, 85, 85);\"><p style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; color: rgb(85, 85, 85); font-size:12px; margin:0; padding:0;\">\r\n\r\nsoh         : [soh]\r\n </p></td>\r\n  </tr>\r\n</table>\r\n</td></tr>\r\n  \r\n<tr><td style=\"background-color: rgb(224, 224, 224); padding:5px 20px;\"><p style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; color: rgb(85, 85, 85); font-size:12px; margin:0; padding:0; font-style:italic;\">Thanks & Regards,</p>\r\n<p style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; color: rgb(49, 148, 204); font-size:12px; margin:5px 0 10px 0; padding:0; font-style:italic; font-weight:bold;\">[title]  <span style=\"color: rgb(222, 72, 69);\">Team</span></p>\r\n</td></tr>\r\n<tr><td align=\"center\" valign=\"top\" style=\"background-color: #000; padding:5px 20px;\"><p style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; color: rgb(224, 224, 224); font-size:11px; margin:5px 0; padding:0;\">If you have any queries, please feel free to contact us at [site_email] </p>\r\n</td></tr>\r\n</table>\r\n</body>\r\n</html>', '[logo] : <code>Site Logo</code><br/>\r\n[product_id]  : <code>Product ID</code><br/>\r\n[rol] : <code>Reorder Level</code><br/>\r\n[soh]  : <code>Stock of Hands</code></br>\r\n\r\n [site_email]  : <code>Admin Email</code>', 0)";
-		$result=mysql_query($sql);
+(8, 'Inventory', 'Re-order Level', '&lt;table border=&quot;0&quot; cellspacing=&quot;0&quot; cellpadding=&quot;0&quot; width=&quot;70%&quot;&gt;\r\n&lt;tbody&gt;\r\n&lt;tr&gt;\r\n&lt;td&gt;[LOGO]&lt;/td&gt;\r\n&lt;td style=&quot;height: 97px;&quot;&gt;&lt;/td&gt;\r\n&lt;/tr&gt;\r\n&lt;tr&gt;\r\n&lt;td&gt;&lt;/td&gt;\r\n&lt;td&gt;&lt;/td&gt;\r\n&lt;/tr&gt;\r\n&lt;tr&gt;\r\n&lt;td style=&quot;border-bottom: 6px solid #6699cc; padding: 7px 5px; font-weight: bold; font-size: 14px; color: #000000; font-family: Verdana,Arial,Helvetica,sans-serif; background-color: #e8e8e8&quot; colspan=&quot;2&quot;&gt;Hi Admin &lt;br /&gt;&lt;\r\n\r\n\r\n/td&gt;\r\n&lt;/tr&gt;\r\n\r\n Product Id  : [product_id]\r\n rol         : [rol] \r\nsoh         : [soh]\r\n\r\n\r\nThe stock of hands of this product id reached the reorder level.so admin can reorder the product\r\n\r\n&lt;tr&gt;\r\n&lt;td&gt;&lt;/td&gt;\r\n&lt;td&gt;&lt;/td&gt;\r\n&lt;/tr&gt;\r\n&lt;tr height=&quot;20&quot;&gt;\r\n&lt;td style=&quot;font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 13px; color: #000000&quot; colspan=&quot;2&quot;&gt;*** This is an automatically generated email, please do not reply ***&lt;/td&gt;\r\n&lt;/tr&gt;\r\n\r\n&lt;tr&gt;\r\n&lt;td&gt;&lt;/td&gt;\r\n&lt;td&gt;&lt;/td&gt;\r\n&lt;/tr&gt;\r\n&lt;tr&gt;\r\n&lt;td&gt;&lt;/td&gt;\r\n&lt;td&gt;&lt;/td&gt;\r\n&lt;/tr&gt;\r\n&lt;tr height=&quot;20&quot;&gt;\r\n&lt;td style=&quot;font-family: Verdana,Arial,Helvetica,sans-serif; font-size: 11px; color: #999999&quot; colspan=&quot;2&quot;&gt;&amp;copy; 2006 - 2013 AJ Square Inc.All rights reserved&lt;/td&gt;\r\n&lt;/tr&gt;\r\n&lt;/tbody&gt;\r\n&lt;/table&gt;', '', 0),
+(6, 'Gift voucher', 'GIft voucher ', '<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\r\n<html xmlns=\"http://www.w3.org/1999/xhtml\">\r\n<head>\r\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\r\n<title>:: [title]::</title>\r\n</head>\r\n\r\n<body>\r\n<table width=\"650\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" align=\"center\" style=\"padding:10px; border: rgb(241, 250, 252) 1px solid;\">\r\n  <tr>\r\n    <td align=\"left\" valign=\"top\" style=\"background-color:#e0eee0; padding:10px 10px 20px 10px; border-bottom: rgb(153, 153, 153) 5px solid; \"><img src=\"[logo]\"  alt=\"[title]\" /></td>\r\n  </tr>\r\n  <tr valign=\"top\"><td align=\"left\" style=\"background-color: rgb(224, 224, 224); padding:20px;\"><h1 style=\"color: rgb(68, 68, 68); font-size:15px; font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; margin:0; padding:0; font-weight:normal;\">Hi [reciuser] </h1>\r\n\r\n \r\n  </td></tr>\r\n  <tr><td align=\"left\" valign=\"top\" style=\"background-color: rgb(224, 224, 224); padding:5px 20px 15px 20px;\">\r\n  <table width=\"500\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\" style=\"background-color: rgb(255, 255, 255); margin:auto; border: rgb(214, 230, 234) 1px solid; padding:10px;\">\r\n <tr>\r\n    <td style=\"padding:10px; font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; font-size:12px; color: rgb(85, 85, 85);\"><p style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; color: rgb(85, 85, 85); font-size:12px; margin:0; padding:0;\">\r\nYou have been received the gift voucher from [senduser]  </p></td>\r\n  </tr>\r\n	\r\n   <tr>\r\n    <td style=\"padding:10px; font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; font-size:12px; color: rgb(85, 85, 85);\"><p style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; color: rgb(85, 85, 85); font-size:12px; margin:0; padding:0;\">[giftimage] </p></td>\r\n  </tr>\r\n  <tr>\r\n    <td style=\"padding:10px; font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; font-size:12px; color: rgb(85, 85, 85);\"><p style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; color: rgb(85, 85, 85); font-size:12px; margin:0; padding:0;\">Your Gift Voucher Code <span style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; font-size:12px; font-weight:bold; color:rgb(11, 152, 198)\">[giftcode]</span></p></td>\r\n  </tr>\r\n  <tr>\r\n    <td style=\"padding:10px; font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; font-size:12px; color: rgb(85, 85, 85);\"><p style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; color: rgb(85, 85, 85); font-size:12px; margin:0; padding:0;\">\r\nUsing this gift voucher  you can purchase the product worth of <span style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; font-size:12px; font-weight:bold; color:rgb(11, 152, 198)\">[amount]   </span>from our online store</p></td>\r\n  </tr>\r\n\r\n  \r\n</table>\r\n</td></tr>\r\n  \r\n<tr><td style=\"background-color: rgb(224, 224, 224); padding:5px 20px;\"><p style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; color: rgb(85, 85, 85); font-size:12px; margin:0; padding:0; font-style:italic;\">Thanks & Regards,</p>\r\n<p style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; color: rgb(49, 148, 204); font-size:12px; margin:5px 0 10px 0; padding:0; font-style:italic; font-weight:bold;\">[title]  <span style=\"color: rgb(222, 72, 69);\">Team</span></p>\r\n</td></tr>\r\n<tr><td align=\"center\" valign=\"top\" style=\"background-color: #000; padding:5px 20px;\"><p style=\"font-family:Arial, Helvetica, sans-serif, ''Myriad Pro'', Calibri; color: rgb(224, 224, 224); font-size:11px; margin:5px 0; padding:0;\">If you have any queries, please feel free to contact us at [site_email] </p>\r\n\r\n\r\n</td></tr>\r\n\r\n</table>\r\n\r\n</body>\r\n</html>', '[title] : <code>Site Title</code><br/>\r\n\r\n[logo] : <code>Site Logo</code><br/>\r\n[reciuser]  : <code>Recipient''s Name</code><br/>\r\n[senduser] : <code>Sender Name</code><br/>\r\n[giftimage]  : <code>Gift Image</code></br>\r\n[giftcode]  : <code>Gift Coupon Code</code><br/>\r\n[amount]  : <code>Amount</code><br/>\r\n [site_email]  : <code>Admin Email</code>', 0);
+";
+			$result=mysql_query($sql);
 
 
 
@@ -721,9 +852,7 @@ class Core_CQuery
 		$result=mysql_query($sql);
 		$sql="CREATE TABLE newsletter_table(newsletter_id  INT(20) NOT NULL PRIMARY KEY AUTO_INCREMENT,newsletter_title  TEXT(65535) NOT NULL ,newsletter_content  TEXT(65535) NOT NULL ,newsletter_date_added  datetime NOT NULL ,newsletter_date_sent  datetime NOT NULL ,newsletter_status  INT(4) NOT NULL)";
 		$result=mysql_query($sql);
-// 		$sql="INSERT INTO `newsletter_table` (`newsletter_id`, `newsletter_title`, `newsletter_content`, `newsletter_date_added`, `newsletter_date_sent`, `newsletter_status`) VALUES
-// 		(1, 'new', '<p>new</p>\r\n<!--?phpif(get_magic_quotes_gpc()) echo stripslashes($_POST[''newslettercontent'']); else echo $_POST[''newslettercontent''];?-->', '2013-03-20 00:00:00', '0000-00-00 00:00:00', 0)";
-// 		$result=mysql_query($sql);
+
 
 		$sql="Drop table if exists news_table";
 		$result=mysql_query($sql);
@@ -735,13 +864,12 @@ class Core_CQuery
 
 		$sql="Drop table if exists order_products_table";
 		$result=mysql_query($sql);
-		$sql="CREATE TABLE order_products_table(order_id  INT(25) NOT NULL,product_id  INT(25) NOT NULL,product_qty  INT(10) NOT NULL,product_unit_price  real NOT NULL,shipping_cost  real NOT NULL)";
+		$sql="CREATE TABLE order_products_table(order_id  INT(25) NOT NULL,product_id  INT(25) NOT NULL,variation_id INT(25) NOT NULL,product_qty  INT(10) NOT NULL,product_unit_price  real NOT NULL,shipping_cost  real NOT NULL)";
 		$result=mysql_query($sql);
 
 
 
 
-	
 		$sql="Drop table if exists orders_status_table";
 		$result=mysql_query($sql);
 		$sql="CREATE TABLE orders_status_table(orders_status_id  INT(20) NOT NULL PRIMARY KEY AUTO_INCREMENT,orders_status_name  VARCHAR(100) NOT NULL)";
@@ -756,10 +884,11 @@ class Core_CQuery
 
 
 
-	$sql="Drop table if exists orders_table";
+		$sql="Drop table if exists orders_table";
 		$result=mysql_query($sql);
 		$sql="CREATE TABLE orders_table(orders_id  INT(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,customers_id  INT(11) NOT NULL,shipping_name  VARCHAR(64) NOT NULL,shipping_company  VARCHAR(32) ,shipping_street_address  VARCHAR(64) NOT NULL,shipping_suburb  VARCHAR(32) ,shipping_city  VARCHAR(32) NOT NULL,shipping_postcode  VARCHAR(10) NOT NULL,shipping_state  VARCHAR(32) ,shipping_country  VARCHAR(32) NOT NULL,billing_name  VARCHAR(64) NOT NULL,billing_company  VARCHAR(32) ,billing_street_address  VARCHAR(64) NOT NULL,billing_suburb  VARCHAR(32) ,billing_city  VARCHAR(32) NOT NULL,billing_postcode  VARCHAR(10) NOT NULL,billing_state  VARCHAR(32) ,billing_country  VARCHAR(32) NOT NULL,payment_method  VARCHAR(128) NOT NULL,shipping_method  VARCHAR(128) NOT NULL,coupon_code  VARCHAR(32) NOT NULL,date_purchased  datetime  ,orders_date_closed  datetime ,orders_status  INT(5) NOT NULL ,order_total  real ,order_tax  real ,order_ship real,`currency_id` int(20) NOT NULL default '1',ipn_id  INT(11) NOT NULL DEFAULT '0',ip_address  VARCHAR(96) NOT NULL,shipment_id_selected  INT(11) NOT NULL,shipment_track_id  VARCHAR(200) NOT NULL)";
 		$result=mysql_query($sql);
+
 
 
 		$sql="Drop table if exists order_history_table";
@@ -1027,16 +1156,141 @@ class Core_CQuery
 		$result=mysql_query($sql);
 		$sql="CREATE TABLE product_attrib_values_table(product_attrib_value_id  INT(15) NOT NULL PRIMARY KEY AUTO_INCREMENT,product_id  INT(15) NOT NULL,attrib_value_id  INT(15) NOT NULL)";
 		$result=mysql_query($sql);
-
+		$sql="INSERT INTO `product_attrib_values_table` (`product_attrib_value_id`, `product_id`, `attrib_value_id`) VALUES
+(108, 1, 1),
+(107, 1, 2),
+(110, 2, 2),
+(109, 2, 1),
+(118, 3, 2),
+(117, 3, 1),
+(114, 4, 2),
+(113, 4, 1),
+(116, 5, 2),
+(115, 5, 1),
+(73, 6, 2),
+(72, 6, 1),
+(121, 7, 2),
+(120, 7, 3),
+(119, 7, 1),
+(124, 8, 2),
+(123, 8, 3),
+(122, 8, 1),
+(81, 9, 1),
+(80, 9, 5),
+(83, 10, 1),
+(82, 10, 5),
+(126, 11, 6),
+(125, 11, 2),
+(128, 12, 1),
+(127, 12, 2),
+(130, 13, 1),
+(129, 13, 2),
+(132, 14, 1),
+(131, 14, 2),
+(135, 15, 2),
+(134, 15, 1),
+(133, 15, 3),
+(96, 16, 1),
+(95, 16, 5),
+(98, 17, 1),
+(97, 17, 5),
+(100, 18, 1),
+(99, 18, 5);";
+		$result=mysql_query($sql);
 
 		$sql="Drop table if exists product_images_table";
 		$result=mysql_query($sql);
-		$sql="CREATE TABLE product_images_table(product_images_id  INT(20) NOT NULL PRIMARY KEY AUTO_INCREMENT,product_id  INT(20) NOT NULL,image_path  VARCHAR(200) NOT NULL,large_image_path VARCHAR(200) NOT NULL,thumb_image_path  VARCHAR(200) NOT NULL,type  VARCHAR(40) NOT NULL)";
-		$result=mysql_query($sql);
 		$sql="INSERT INTO `product_images_table` (`product_images_id`, `product_id`, `image_path`, `large_image_path`, `thumb_image_path`, `type`) VALUES
-		(1, 1, 'images/products/shoes_is93535.jpg', 'images/products/large_image/shoes_is93535.jpg', 'images/products/thumb/shoes_is93535.jpg', 'main'),
-		(2, 2, 'images/products/2013-03-02-122103analog-watches03.jpg', 'images/products/large_image/2013-03-02-122103analog-watches03.jpg', 'images/products/thumb/2013-03-02-122103analog-watches03.jpg', 'main');
-		";
+(1, 1, 'images/products/2014-06-20-18151601.jpg', 'images/products/large_image/2014-06-20-18151601.jpg', 'images/products/thumb/2014-06-20-18151601.jpg', 'main'),
+(2, 1, 'images/products/2014-06-20-18151602.jpg', 'images/products/large_image/2014-06-20-18151602.jpg', 'images/products/thumb/2014-06-20-18151602.jpg', 'sub'),
+(3, 1, 'images/products/2014-06-20-18151703.jpg', 'images/products/large_image/2014-06-20-18151703.jpg', 'images/products/thumb/2014-06-20-18151703.jpg', 'sub'),
+(4, 1, 'images/products/2014-06-20-18151804.jpg', 'images/products/large_image/2014-06-20-18151804.jpg', 'images/products/thumb/2014-06-20-18151804.jpg', 'sub'),
+(5, 1, 'images/products/2014-06-20-18151902.jpg', 'images/products/large_image/2014-06-20-18151902.jpg', 'images/products/thumb/2014-06-20-18151902.jpg', 'sub'),
+(6, 2, 'images/products/2014-06-20-15000801.jpg', 'images/products/large_image/2014-06-20-15000801.jpg', 'images/products/thumb/2014-06-20-15000801.jpg', 'main'),
+(7, 2, 'images/products/2014-06-20-15000902.jpg', 'images/products/large_image/2014-06-20-15000902.jpg', 'images/products/thumb/2014-06-20-15000902.jpg', 'sub'),
+(8, 2, 'images/products/2014-06-20-15001003.jpg', 'images/products/large_image/2014-06-20-15001003.jpg', 'images/products/thumb/2014-06-20-15001003.jpg', 'sub'),
+(16, 4, 'images/products/2014-06-20-15070401.jpg', 'images/products/large_image/2014-06-20-15070401.jpg', 'images/products/thumb/2014-06-20-15070401.jpg', 'main'),
+(9, 2, 'images/products/2014-06-20-15001104.jpg', 'images/products/large_image/2014-06-20-15001104.jpg', 'images/products/thumb/2014-06-20-15001104.jpg', 'sub'),
+(10, 2, 'images/products/2014-06-20-15001105.jpg', 'images/products/large_image/2014-06-20-15001105.jpg', 'images/products/thumb/2014-06-20-15001105.jpg', 'sub'),
+(11, 3, 'images/products/2014-06-20-14591601.jpg', 'images/products/large_image/2014-06-20-14591601.jpg', 'images/products/thumb/2014-06-20-14591601.jpg', 'main'),
+(12, 3, 'images/products/2014-06-20-14591602.jpg', 'images/products/large_image/2014-06-20-14591602.jpg', 'images/products/thumb/2014-06-20-14591602.jpg', 'sub'),
+(13, 3, 'images/products/2014-06-20-14591703.jpg', 'images/products/large_image/2014-06-20-14591703.jpg', 'images/products/thumb/2014-06-20-14591703.jpg', 'sub'),
+(14, 3, 'images/products/2014-06-20-14591804.jpg', 'images/products/large_image/2014-06-20-14591804.jpg', 'images/products/thumb/2014-06-20-14591804.jpg', 'sub'),
+(15, 3, 'images/products/2014-06-20-14591905.jpg', 'images/products/large_image/2014-06-20-14591905.jpg', 'images/products/thumb/2014-06-20-14591905.jpg', 'sub'),
+(17, 4, 'images/products/2014-06-20-15070502.jpg', 'images/products/large_image/2014-06-20-15070502.jpg', 'images/products/thumb/2014-06-20-15070502.jpg', 'sub'),
+(18, 4, 'images/products/2014-06-20-15070503.jpg', 'images/products/large_image/2014-06-20-15070503.jpg', 'images/products/thumb/2014-06-20-15070503.jpg', 'sub'),
+(19, 4, 'images/products/2014-06-20-15070604.jpg', 'images/products/large_image/2014-06-20-15070604.jpg', 'images/products/thumb/2014-06-20-15070604.jpg', 'sub'),
+(20, 4, 'images/products/2014-06-20-15070705.jpg', 'images/products/large_image/2014-06-20-15070705.jpg', 'images/products/thumb/2014-06-20-15070705.jpg', 'sub'),
+(21, 5, 'images/products/2014-06-20-15092501.jpg', 'images/products/large_image/2014-06-20-15092501.jpg', 'images/products/thumb/2014-06-20-15092501.jpg', 'main'),
+(22, 5, 'images/products/2014-06-20-15092602.jpg', 'images/products/large_image/2014-06-20-15092602.jpg', 'images/products/thumb/2014-06-20-15092602.jpg', 'sub'),
+(23, 5, 'images/products/2014-06-20-15092703.jpg', 'images/products/large_image/2014-06-20-15092703.jpg', 'images/products/thumb/2014-06-20-15092703.jpg', 'sub'),
+(24, 5, 'images/products/2014-06-20-15092804.jpg', 'images/products/large_image/2014-06-20-15092804.jpg', 'images/products/thumb/2014-06-20-15092804.jpg', 'sub'),
+(25, 5, 'images/products/2014-06-20-15092805.jpg', 'images/products/large_image/2014-06-20-15092805.jpg', 'images/products/thumb/2014-06-20-15092805.jpg', 'sub'),
+(26, 6, 'images/products/2014-06-20-15140001.jpg', 'images/products/large_image/2014-06-20-15140001.jpg', 'images/products/thumb/2014-06-20-15140001.jpg', 'main'),
+(27, 6, 'images/products/2014-06-20-15140102.jpg', 'images/products/large_image/2014-06-20-15140102.jpg', 'images/products/thumb/2014-06-20-15140102.jpg', 'sub'),
+(28, 6, 'images/products/2014-06-20-15140203.jpg', 'images/products/large_image/2014-06-20-15140203.jpg', 'images/products/thumb/2014-06-20-15140203.jpg', 'sub'),
+(29, 6, 'images/products/2014-06-20-15140304.jpg', 'images/products/large_image/2014-06-20-15140304.jpg', 'images/products/thumb/2014-06-20-15140304.jpg', 'sub'),
+(30, 6, 'images/products/2014-06-20-15140402.jpg', 'images/products/large_image/2014-06-20-15140402.jpg', 'images/products/thumb/2014-06-20-15140402.jpg', 'sub'),
+(31, 7, 'images/products/2014-06-20-15202101.jpg', 'images/products/large_image/2014-06-20-15202101.jpg', 'images/products/thumb/2014-06-20-15202101.jpg', 'main'),
+(32, 7, 'images/products/2014-06-20-15202202.jpg', 'images/products/large_image/2014-06-20-15202202.jpg', 'images/products/thumb/2014-06-20-15202202.jpg', 'sub'),
+(33, 7, 'images/products/2014-06-20-15202203.jpg', 'images/products/large_image/2014-06-20-15202203.jpg', 'images/products/thumb/2014-06-20-15202203.jpg', 'sub'),
+(34, 7, 'images/products/2014-06-20-15202304.jpg', 'images/products/large_image/2014-06-20-15202304.jpg', 'images/products/thumb/2014-06-20-15202304.jpg', 'sub'),
+(35, 7, 'images/products/2014-06-20-15202405.jpg', 'images/products/large_image/2014-06-20-15202405.jpg', 'images/products/thumb/2014-06-20-15202405.jpg', 'sub'),
+(36, 8, 'images/products/2014-06-20-15244201.jpg', 'images/products/large_image/2014-06-20-15244201.jpg', 'images/products/thumb/2014-06-20-15244201.jpg', 'main'),
+(37, 8, 'images/products/2014-06-20-15244302.jpg', 'images/products/large_image/2014-06-20-15244302.jpg', 'images/products/thumb/2014-06-20-15244302.jpg', 'sub'),
+(38, 8, 'images/products/2014-06-20-15244403.jpg', 'images/products/large_image/2014-06-20-15244403.jpg', 'images/products/thumb/2014-06-20-15244403.jpg', 'sub'),
+(39, 8, 'images/products/2014-06-20-15244504.jpg', 'images/products/large_image/2014-06-20-15244504.jpg', 'images/products/thumb/2014-06-20-15244504.jpg', 'sub'),
+(40, 8, 'images/products/2014-06-20-15244505.jpg', 'images/products/large_image/2014-06-20-15244505.jpg', 'images/products/thumb/2014-06-20-15244505.jpg', 'sub'),
+(41, 9, 'images/products/2014-06-20-17112301.jpg', 'images/products/large_image/2014-06-20-17112301.jpg', 'images/products/thumb/2014-06-20-17112301.jpg', 'main'),
+(42, 9, 'images/products/2014-06-20-17112402.jpg', 'images/products/large_image/2014-06-20-17112402.jpg', 'images/products/thumb/2014-06-20-17112402.jpg', 'sub'),
+(43, 9, 'images/products/2014-06-20-17112503.jpg', 'images/products/large_image/2014-06-20-17112503.jpg', 'images/products/thumb/2014-06-20-17112503.jpg', 'sub'),
+(44, 9, 'images/products/2014-06-20-17112604.jpg', 'images/products/large_image/2014-06-20-17112604.jpg', 'images/products/thumb/2014-06-20-17112604.jpg', 'sub'),
+(45, 9, 'images/products/2014-06-20-17112705.jpg', 'images/products/large_image/2014-06-20-17112705.jpg', 'images/products/thumb/2014-06-20-17112705.jpg', 'sub'),
+(46, 10, 'images/products/2014-06-20-17123501.jpg', 'images/products/large_image/2014-06-20-17123501.jpg', 'images/products/thumb/2014-06-20-17123501.jpg', 'main'),
+(47, 10, 'images/products/2014-06-20-17123602.jpg', 'images/products/large_image/2014-06-20-17123602.jpg', 'images/products/thumb/2014-06-20-17123602.jpg', 'sub'),
+(48, 10, 'images/products/2014-06-20-17123603.jpg', 'images/products/large_image/2014-06-20-17123603.jpg', 'images/products/thumb/2014-06-20-17123603.jpg', 'sub'),
+(49, 10, 'images/products/2014-06-20-17123704.jpg', 'images/products/large_image/2014-06-20-17123704.jpg', 'images/products/thumb/2014-06-20-17123704.jpg', 'sub'),
+(50, 10, 'images/products/2014-06-20-17123805.jpg', 'images/products/large_image/2014-06-20-17123805.jpg', 'images/products/thumb/2014-06-20-17123805.jpg', 'sub'),
+(51, 11, 'images/products/2014-06-20-18171701.jpg', 'images/products/large_image/2014-06-20-18171701.jpg', 'images/products/thumb/2014-06-20-18171701.jpg', 'main'),
+(52, 11, 'images/products/2014-06-20-18171702.jpg', 'images/products/large_image/2014-06-20-18171702.jpg', 'images/products/thumb/2014-06-20-18171702.jpg', 'sub'),
+(53, 11, 'images/products/2014-06-20-18171803.jpg', 'images/products/large_image/2014-06-20-18171803.jpg', 'images/products/thumb/2014-06-20-18171803.jpg', 'sub'),
+(54, 11, 'images/products/2014-06-20-18171904.jpg', 'images/products/large_image/2014-06-20-18171904.jpg', 'images/products/thumb/2014-06-20-18171904.jpg', 'sub'),
+(55, 11, 'images/products/2014-06-20-18172005.jpg', 'images/products/large_image/2014-06-20-18172005.jpg', 'images/products/thumb/2014-06-20-18172005.jpg', 'sub'),
+(56, 12, 'images/products/2014-06-20-15540201.jpg', 'images/products/large_image/2014-06-20-15540201.jpg', 'images/products/thumb/2014-06-20-15540201.jpg', 'main'),
+(57, 12, 'images/products/2014-06-20-15540302.jpg', 'images/products/large_image/2014-06-20-15540302.jpg', 'images/products/thumb/2014-06-20-15540302.jpg', 'sub'),
+(58, 12, 'images/products/2014-06-20-15540303.jpg', 'images/products/large_image/2014-06-20-15540303.jpg', 'images/products/thumb/2014-06-20-15540303.jpg', 'sub'),
+(59, 12, 'images/products/2014-06-20-15540404.jpg', 'images/products/large_image/2014-06-20-15540404.jpg', 'images/products/thumb/2014-06-20-15540404.jpg', 'sub'),
+(60, 12, 'images/products/2014-06-20-15540505.jpg', 'images/products/large_image/2014-06-20-15540505.jpg', 'images/products/thumb/2014-06-20-15540505.jpg', 'sub'),
+(61, 13, 'images/products/2014-06-20-15530501.jpg', 'images/products/large_image/2014-06-20-15530501.jpg', 'images/products/thumb/2014-06-20-15530501.jpg', 'main'),
+(62, 13, 'images/products/2014-06-20-15530602.jpg', 'images/products/large_image/2014-06-20-15530602.jpg', 'images/products/thumb/2014-06-20-15530602.jpg', 'sub'),
+(63, 13, 'images/products/2014-06-20-15530703.jpg', 'images/products/large_image/2014-06-20-15530703.jpg', 'images/products/thumb/2014-06-20-15530703.jpg', 'sub'),
+(64, 13, 'images/products/2014-06-20-15530704.jpg', 'images/products/large_image/2014-06-20-15530704.jpg', 'images/products/thumb/2014-06-20-15530704.jpg', 'sub'),
+(65, 13, 'images/products/2014-06-20-15530805.jpg', 'images/products/large_image/2014-06-20-15530805.jpg', 'images/products/thumb/2014-06-20-15530805.jpg', 'sub'),
+(66, 14, 'images/products/2014-06-20-15561701.jpg', 'images/products/large_image/2014-06-20-15561701.jpg', 'images/products/thumb/2014-06-20-15561701.jpg', 'main'),
+(67, 14, 'images/products/2014-06-20-15561802.jpg', 'images/products/large_image/2014-06-20-15561802.jpg', 'images/products/thumb/2014-06-20-15561802.jpg', 'sub'),
+(68, 14, 'images/products/2014-06-20-15561803.jpg', 'images/products/large_image/2014-06-20-15561803.jpg', 'images/products/thumb/2014-06-20-15561803.jpg', 'sub'),
+(69, 14, 'images/products/2014-06-20-15561904.jpg', 'images/products/large_image/2014-06-20-15561904.jpg', 'images/products/thumb/2014-06-20-15561904.jpg', 'sub'),
+(70, 14, 'images/products/2014-06-20-15562005.jpg', 'images/products/large_image/2014-06-20-15562005.jpg', 'images/products/thumb/2014-06-20-15562005.jpg', 'sub'),
+(71, 15, 'images/products/2014-06-20-15595001.jpg', 'images/products/large_image/2014-06-20-15595001.jpg', 'images/products/thumb/2014-06-20-15595001.jpg', 'main'),
+(72, 15, 'images/products/2014-06-20-15595002.jpg', 'images/products/large_image/2014-06-20-15595002.jpg', 'images/products/thumb/2014-06-20-15595002.jpg', 'sub'),
+(73, 15, 'images/products/2014-06-20-15595103.jpg', 'images/products/large_image/2014-06-20-15595103.jpg', 'images/products/thumb/2014-06-20-15595103.jpg', 'sub'),
+(74, 15, 'images/products/2014-06-20-15595204.jpg', 'images/products/large_image/2014-06-20-15595204.jpg', 'images/products/thumb/2014-06-20-15595204.jpg', 'sub'),
+(75, 15, 'images/products/2014-06-20-15595305.jpg', 'images/products/large_image/2014-06-20-15595305.jpg', 'images/products/thumb/2014-06-20-15595305.jpg', 'sub'),
+(76, 16, 'images/products/2014-06-20-17064901.jpg', 'images/products/large_image/2014-06-20-17064901.jpg', 'images/products/thumb/2014-06-20-17064901.jpg', 'main'),
+(77, 16, 'images/products/2014-06-20-17065002.jpg', 'images/products/large_image/2014-06-20-17065002.jpg', 'images/products/thumb/2014-06-20-17065002.jpg', 'sub'),
+(78, 16, 'images/products/2014-06-20-17065103.jpg', 'images/products/large_image/2014-06-20-17065103.jpg', 'images/products/thumb/2014-06-20-17065103.jpg', 'sub'),
+(79, 16, 'images/products/2014-06-20-17065204.jpg', 'images/products/large_image/2014-06-20-17065204.jpg', 'images/products/thumb/2014-06-20-17065204.jpg', 'sub'),
+(80, 16, 'images/products/2014-06-20-17065205.jpg', 'images/products/large_image/2014-06-20-17065205.jpg', 'images/products/thumb/2014-06-20-17065205.jpg', 'sub'),
+(81, 17, 'images/products/2014-06-20-17082201.jpg', 'images/products/large_image/2014-06-20-17082201.jpg', 'images/products/thumb/2014-06-20-17082201.jpg', 'main'),
+(82, 17, 'images/products/2014-06-20-17082302.jpg', 'images/products/large_image/2014-06-20-17082302.jpg', 'images/products/thumb/2014-06-20-17082302.jpg', 'sub'),
+(83, 17, 'images/products/2014-06-20-17082403.jpg', 'images/products/large_image/2014-06-20-17082403.jpg', 'images/products/thumb/2014-06-20-17082403.jpg', 'sub'),
+(84, 17, 'images/products/2014-06-20-17082504.jpg', 'images/products/large_image/2014-06-20-17082504.jpg', 'images/products/thumb/2014-06-20-17082504.jpg', 'sub'),
+(85, 17, 'images/products/2014-06-20-17082605.jpg', 'images/products/large_image/2014-06-20-17082605.jpg', 'images/products/thumb/2014-06-20-17082605.jpg', 'sub'),
+(86, 18, 'images/products/2014-06-20-17092501.jpg', 'images/products/large_image/2014-06-20-17092501.jpg', 'images/products/thumb/2014-06-20-17092501.jpg', 'main'),
+(87, 18, 'images/products/2014-06-20-17092602.jpg', 'images/products/large_image/2014-06-20-17092602.jpg', 'images/products/thumb/2014-06-20-17092602.jpg', 'sub'),
+(88, 18, 'images/products/2014-06-20-17092703.jpg', 'images/products/large_image/2014-06-20-17092703.jpg', 'images/products/thumb/2014-06-20-17092703.jpg', 'sub'),
+(89, 18, 'images/products/2014-06-20-17092804.jpg', 'images/products/large_image/2014-06-20-17092804.jpg', 'images/products/thumb/2014-06-20-17092804.jpg', 'sub'),
+(90, 18, 'images/products/2014-06-20-17092905.jpg', 'images/products/large_image/2014-06-20-17092905.jpg', 'images/products/thumb/2014-06-20-17092905.jpg', 'sub');";
 		$result=mysql_query($sql);
 
 
@@ -1046,8 +1300,24 @@ class Core_CQuery
 		$sql="CREATE TABLE product_inventory_table(inventory_id  INT(20) NOT NULL PRIMARY KEY AUTO_INCREMENT,product_id  INT(20) NOT NULL,rol  INT(15) NOT NULL,soh  INT(20) NOT NULL)";
 		$result=mysql_query($sql);
 		$sql="INSERT INTO `product_inventory_table` (`inventory_id`, `product_id`, `rol`, `soh`) VALUES
-		(1, 1, 10, 150),
-		(2, 2, 10, 20);";
+(1, 1, 10, 10),
+(2, 2, 10, 10),
+(3, 3, 10, 10),
+(4, 4, 10, 10),
+(5, 5, 10, 10),
+(6, 6, 10, 10),
+(7, 7, 10, 10),
+(8, 8, 10, 10),
+(9, 9, 10, 10),
+(10, 10, 10, 10),
+(11, 11, 10, 10),
+(12, 12, 10, 10),
+(13, 13, 10, 10),
+(14, 14, 10, 10),
+(15, 15, 10, 15),
+(16, 16, 10, 10),
+(17, 17, 10, 10),
+(18, 18, 10, 10);";
 		$result=mysql_query($sql);
 
 
@@ -1066,7 +1336,7 @@ class Core_CQuery
 		$result=mysql_query($sql);
 		$sql="CREATE TABLE IF NOT EXISTS `products_table` (
 		`product_id` int(25) NOT NULL AUTO_INCREMENT,
-		`category_id` varchar(100) NOT NULL,
+		`category_id` varchar(100) CHARACTER SET utf8 NOT NULL,
 		`sku` varchar(100) NOT NULL,
 		`title` varchar(250) NOT NULL,
 		`alias` varchar(100) NOT NULL,
@@ -1092,17 +1362,35 @@ class Core_CQuery
 		`digital` int(10) NOT NULL,
 		`gift` int(20) NOT NULL,
 		`digital_product_path` varchar(200) NOT NULL,
-		 `has_variation` tinyint(10) NOT NULL,
-		`product_status` int(1) NOT NULL COMMENT '1=>new products,2=>discount product',
+		`has_variation` tinyint(11) NOT NULL,
+		`product_status` int(1) NOT NULL COMMENT '1=>new products,2=>discount product,3=>deleted products',
+		`deleted_reason` varchar(240) NOT NULL,
 		PRIMARY KEY (`product_id`)
-		) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1";
+		) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;";
 		$result=mysql_query($sql);
-		$sql="INSERT INTO `products_table` (`product_id`, `category_id`, `sku`, `title`, `alias`, `description`, `brand`, `model`, `msrp`, `price`, `cse_enabled`, `cse_key`, `weight`, `dimension`, `thumb_image`, `image`, `large_image_path`, `shipping_cost`, `status`, `tag`, `meta_desc`, `meta_keywords`, `intro_date`, `is_featured`, `digital`, `gift`, `digital_product_path`, `product_status`) VALUES
-		(1, '18', '10', 'shoes', 'shoes', '', '', '', 150, 100, 0, '', '', '', 'images/products/thumb/yonsht250wb.jpg', 'images/products/yonsht250wb.jpg', 'images/products/large_image/yonsht250wb.jpg', 0, 1, '', '', '', '0000-00-00', 1, 0, 0, '', 1),
-		(2, '11', '10', 'watches', 'watches', '', '', '', 800, 500, 0, '', '', '', 'images/products/thumb/2013-03-02-122103analog-watches03.jpg', 'images/products/2013-03-02-122103analog-watches03.jpg', 'images/products/large_image/2013-03-02-122103analog-watches03.jpg', 0, 1, '', '', '', '0000-00-00', 0, 0, 0, '', 0)";
+		$sql="INSERT INTO `products_table` (`product_id`, `category_id`, `sku`, `title`, `alias`, `description`, `brand`, `model`, `msrp`, `price`, `cse_enabled`, `cse_key`, `weight`, `dimension`, `thumb_image`, `image`, `large_image_path`, `shipping_cost`, `status`, `tag`, `meta_desc`, `meta_keywords`, `intro_date`, `is_featured`, `digital`, `gift`, `digital_product_path`, `has_variation`, `product_status`, `deleted_reason`) VALUES
+(1, '22', 'mrf', 'Men Racing flat', 'mrflat', '<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit.</p><p>&nbsp;</p>', 'Bata', '', 1200, 1000, 0, '', '20', '', 'images/products/thumb/2014-06-20-18151601.jpg', 'images/products/2014-06-20-18151601.jpg', 'images/products/large_image/2014-06-20-18151601.jpg', 10, 1, '', '', '', '2014-06-20', 1, 0, 0, '', 1, 1, ''),
+(2, '31', 'mss', 'men sportshoes', 'msport', '<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit.</p><p>&nbsp;</p>', 'Adidas', '', 1800, 1500, 0, '', '20', '', 'images/products/thumb/2014-06-20-15000801.jpg', 'images/products/2014-06-20-15000801.jpg', 'images/products/large_image/2014-06-20-15000801.jpg', 10, 1, '', '', '', '2014-06-20', 1, 0, 0, '', 1, 1, ''),
+(3, '38', 'mf', 'formal', 'menformal', '<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit.</p>', 'Bata', '', 1500, 1200, 0, '', '20', '', 'images/products/thumb/2014-06-20-14591601.jpg', 'images/products/2014-06-20-14591601.jpg', 'images/products/large_image/2014-06-20-14591601.jpg', 10, 1, '', '', '', '2014-06-20', 1, 0, 0, '', 1, 1, ''),
+(4, '32', 'mlb', 'Menlaptop bag', 'mlaptopbag', '<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit.</p><p>&nbsp;</p>', 'Dell', '', 1800, 1500, 0, '', '30', '', 'images/products/thumb/2014-06-20-15070401.jpg', 'images/products/2014-06-20-15070401.jpg', 'images/products/large_image/2014-06-20-15070401.jpg', 10, 1, '', '', '', '2014-06-20', 1, 0, 0, '', 1, 1, ''),
+(5, '33', 'mbb', 'Men Backbags', 'mbbags', '<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit.</p><p>&nbsp;</p>', 'Nike', '', 1600, 1400, 0, '', '30', '', 'images/products/thumb/2014-06-20-15092501.jpg', 'images/products/2014-06-20-15092501.jpg', 'images/products/large_image/2014-06-20-15092501.jpg', 10, 1, '', '', '', '2014-06-20', 1, 0, 0, '', 1, 1, ''),
+(6, '34', 'mw', 'Men Wallet', 'mwallet', '<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit.</p><p></p>', 'Puma', '', 400, 350, 0, '', '10', '', 'images/products/thumb/2014-06-20-15140001.jpg', 'images/products/2014-06-20-15140001.jpg', 'images/products/large_image/2014-06-20-15140001.jpg', 10, 1, '', '', '', '2014-06-20', 1, 0, 0, '', 0, 1, ''),
+(7, '23', 'mts', 'men tshirt', 'mtshirst', '<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit.</p>', 'Levis', '', 500, 450, 0, '', '15', '', 'images/products/thumb/2014-06-20-15202101.jpg', 'images/products/2014-06-20-15202101.jpg', 'images/products/large_image/2014-06-20-15202101.jpg', 10, 1, '', '', '', '2014-06-20', 1, 0, 0, '', 1, 1, ''),
+(8, '35', 'ms', 'men shirts', 'mshirt', '<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit.</p><p>&nbsp;</p>', 'Pan america', '', 1600, 1200, 0, '', '10', '', 'images/products/thumb/2014-06-20-15244201.jpg', 'images/products/2014-06-20-15244201.jpg', 'images/products/large_image/2014-06-20-15244201.jpg', 10, 1, '', '', '', '2014-06-20', 1, 0, 0, '', 1, 1, ''),
+(9, '24', 'mdw', 'Men digitalwatches', 'mdigital', '<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit.</p><p>&nbsp;</p>', 'Fast Track', '', 1800, 1500, 0, '', '25', '', 'images/products/thumb/2014-06-20-17112301.jpg', 'images/products/2014-06-20-17112301.jpg', 'images/products/large_image/2014-06-20-17112301.jpg', 10, 1, '', '', '', '2014-06-20', 1, 0, 0, '', 0, 1, ''),
+(10, '36', 'maw', 'Men analogwatches', 'manalog', '', 'Fast Track', '', 1600, 1500, 0, '', '15', '', 'images/products/thumb/2014-06-20-17123501.jpg', 'images/products/2014-06-20-17123501.jpg', 'images/products/large_image/2014-06-20-17123501.jpg', 10, 1, '', '', '', '2014-06-20', 1, 0, 0, '', 0, 1, ''),
+(11, '6', 'wrf', 'Women racing flat', 'wrflat', '<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit.</p><p>&nbsp;</p>', 'Bata', '', 1300, 1000, 0, '', '20', '', 'images/products/thumb/2014-06-20-18171701.jpg', 'images/products/2014-06-20-18171701.jpg', 'images/products/large_image/2014-06-20-18171701.jpg', 10, 1, '', '', '', '2014-06-20', 1, 0, 0, '', 1, 1, ''),
+(12, '7', 'wf', 'Women formal', 'wformal', '<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit.</p><p>&nbsp;</p>', 'Adidas', '', 1200, 1000, 0, '', '15', '', 'images/products/thumb/2014-06-20-15540201.jpg', 'images/products/2014-06-20-15540201.jpg', 'images/products/large_image/2014-06-20-15540201.jpg', 10, 1, '', '', '', '2014-06-20', 1, 0, 0, '', 1, 1, ''),
+(13, '8', 'sn', 'Sneakers', 'sneakers', '<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit.</p><p>&nbsp;</p>', 'Reebook', '', 2000, 1800, 0, '', '20', '', 'images/products/thumb/2014-06-20-15530501.jpg', 'images/products/2014-06-20-15530501.jpg', 'images/products/large_image/2014-06-20-15530501.jpg', 10, 1, '', '', '', '2014-06-20', 1, 0, 0, '', 1, 2, ''),
+(14, '9', 'wss', 'Women sport', 'wsport', '<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit.</p><p>&nbsp;</p>', 'Adidas', '', 2200, 2000, 0, '', '25', '', 'images/products/thumb/2014-06-20-15561701.jpg', 'images/products/2014-06-20-15561701.jpg', 'images/products/large_image/2014-06-20-15561701.jpg', 10, 1, '', '', '', '2014-06-20', 1, 0, 0, '', 1, 2, ''),
+(15, '10', 'wt', 'Women tshirts', 'wtshirts', '<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit.</p><p>&nbsp;</p>', 'Levis', '', 1200, 1000, 0, '', '10', '', 'images/products/thumb/2014-06-20-15595001.jpg', 'images/products/2014-06-20-15595001.jpg', 'images/products/large_image/2014-06-20-15595001.jpg', 10, 1, '', '', '', '2014-06-20', 1, 0, 0, '', 1, 2, ''),
+(16, '11', 'wa', 'Women analogwatches', 'wanalog', '<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit.</p><p>&nbsp;</p>', 'Titan', '', 1800, 1500, 0, '', '25', '', 'images/products/thumb/2014-06-20-17064901.jpg', 'images/products/2014-06-20-17064901.jpg', 'images/products/large_image/2014-06-20-17064901.jpg', 10, 1, '', '', '', '2014-06-20', 1, 0, 0, '', 0, 2, ''),
+(17, '12', 'wd', 'Women digitalwatches', 'wdigital', '<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit.</p><p>&nbsp;</p>', 'sonata', '', 1800, 1500, 0, '', '10', '', 'images/products/thumb/2014-06-20-17082201.jpg', 'images/products/2014-06-20-17082201.jpg', 'images/products/large_image/2014-06-20-17082201.jpg', 20, 1, '', '', '', '2014-06-20', 1, 0, 0, '', 0, 2, ''),
+(18, '13', 'chron', 'Chronograhs', 'chronograhs', '<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit.</p><p>&nbsp;</p>', 'Fast Track', '', 1500, 1000, 0, '', '10', '', 'images/products/thumb/2014-06-20-17092501.jpg', 'images/products/2014-06-20-17092501.jpg', 'images/products/large_image/2014-06-20-17092501.jpg', 30, 1, '', '', '', '2014-06-20', 1, 0, 0, '', 0, 2, '');
+";
 		$result=mysql_query($sql);
 
-
+		
 		
 		$sql="Drop table if exists product_variation_table";
 		$result=mysql_query($sql);
@@ -1124,17 +1412,80 @@ class Core_CQuery
 			`rol` bigint(10) NOT NULL,
 			`status` tinyint(1) NOT NULL,
 			PRIMARY KEY (`variation_id`)
-			) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;";
+			)";
 		$result=mysql_query($sql);
+		
+		$sql="INSERT INTO `product_variation_table` (`variation_id`, `product_id`, `sku`, `variation_name`, `description`, `msrp`, `price`, `weight`, `dimension`, `thumb_image`, `image`, `large_image`, `shipping_cost`, `soh`, `rol`, `status`) VALUES
+(1, 1, 'mrf1', '34', '', 1200, 1000, '10', '10 x 5 x 5', 'images/products/thumb/2014-06-20-18212701.jpg', 'images/products/2014-06-20-18212701.jpg', 'images/products/large_image/2014-06-20-18212701.jpg', 10, 10, 10, 1),
+(2, 1, 'mrf2', '36', '', 1400, 1000, '10', '12 x 6 x 6', 'images/products/thumb/2014-06-20-18212802.jpg', 'images/products/2014-06-20-18212802.jpg', 'images/products/large_image/2014-06-20-18212802.jpg', 10, 10, 10, 1),
+(3, 1, 'mrf3', '38', '', 1600, 1000, '10', '14 x 7 x 7', 'images/products/thumb/2014-06-20-18212903.jpg', 'images/products/2014-06-20-18212903.jpg', 'images/products/large_image/2014-06-20-18212903.jpg', 10, 10, 10, 1),
+(4, 1, 'mrf4', '40', '', 1800, 1000, '10', '16 x 8 x 8', 'images/products/thumb/2014-06-20-18213004.jpg', 'images/products/2014-06-20-18213004.jpg', 'images/products/large_image/2014-06-20-18213004.jpg', 10, 10, 10, 1),
+(5, 1, 'mrf5', '42', '', 2000, 1000, '10', '18 x 9 x 9', 'images/products/thumb/2014-06-20-18213102.jpg', 'images/products/2014-06-20-18213102.jpg', 'images/products/large_image/2014-06-20-18213102.jpg', 10, 10, 10, 1),
+(6, 2, 'mss1', '32', '', 1800, 1500, '10', '12 x 5 x 10', 'images/products/thumb/2014-06-20-18252001.jpg', 'images/products/2014-06-20-18252001.jpg', 'images/products/large_image/2014-06-20-18252001.jpg', 10, 10, 10, 1),
+(7, 2, 'mss2', '34', '', 2000, 1500, '10', '14 x 6 x 10', 'images/products/thumb/2014-06-20-18252102.jpg', 'images/products/2014-06-20-18252102.jpg', 'images/products/large_image/2014-06-20-18252102.jpg', 10, 10, 10, 1),
+(8, 2, 'mss3', '36', '', 2200, 1500, '10', '16 x 7 x 12', 'images/products/thumb/2014-06-20-18252203.jpg', 'images/products/2014-06-20-18252203.jpg', 'images/products/large_image/2014-06-20-18252203.jpg', 10, 10, 10, 1),
+(9, 2, 'mss4', '38', '', 2400, 1500, '10', '18 x 8 x 13', 'images/products/thumb/2014-06-20-18252304.jpg', 'images/products/2014-06-20-18252304.jpg', 'images/products/large_image/2014-06-20-18252304.jpg', 10, 10, 10, 1),
+(10, 2, 'mss5', '40', '', 2600, 1500, '10', '20 x 9 x 14', 'images/products/thumb/2014-06-20-18252405.jpg', 'images/products/2014-06-20-18252405.jpg', 'images/products/large_image/2014-06-20-18252405.jpg', 10, 10, 10, 1),
+(11, 3, 'mf1', '34', '', 1500, 1200, '10', '12 x 6 x 8', 'images/products/thumb/2014-06-20-18291901.jpg', 'images/products/2014-06-20-18291901.jpg', 'images/products/large_image/2014-06-20-18291901.jpg', 10, 10, 10, 1),
+(12, 3, 'mf2', '36', '', 1600, 1200, '10', '14 x 7 x 9', 'images/products/thumb/2014-06-20-18292002.jpg', 'images/products/2014-06-20-18292002.jpg', 'images/products/large_image/2014-06-20-18292002.jpg', 10, 10, 10, 1),
+(13, 3, 'mf3', '38', '', 1800, 1200, '10', '16 x 8 x 10', 'images/products/thumb/2014-06-20-18292103.jpg', 'images/products/2014-06-20-18292103.jpg', 'images/products/large_image/2014-06-20-18292103.jpg', 10, 10, 10, 1),
+(14, 3, 'mf4', '40', '', 2000, 1200, '10', '18 x 9 x 11', 'images/products/thumb/2014-06-23-11005704.jpg', 'images/products/2014-06-23-11005704.jpg', 'images/products/large_image/2014-06-23-11005704.jpg', 10, 10, 10, 1),
+(15, 3, 'mf5', '42', '', 2200, 1200, '10', '20 x 10 x 12', 'images/products/thumb/2014-06-20-18292205.jpg', 'images/products/2014-06-20-18292205.jpg', 'images/products/large_image/2014-06-20-18292205.jpg', 10, 10, 10, 1),
+(16, 4, 'mlb1', '24', '', 1800, 1500, '10', '10 x 14 x 10', 'images/products/thumb/2014-06-20-18324401.jpg', 'images/products/2014-06-20-18324401.jpg', 'images/products/large_image/2014-06-20-18324401.jpg', 10, 10, 10, 1),
+(17, 4, 'mlb2', '26', '', 2000, 1500, '10', '12 x 16 x 12', 'images/products/thumb/2014-06-20-18324502.jpg', 'images/products/2014-06-20-18324502.jpg', 'images/products/large_image/2014-06-20-18324502.jpg', 10, 10, 10, 1),
+(18, 4, 'mlb3', '28', '', 2200, 1500, '10', '14 x 18 x 14', 'images/products/thumb/2014-06-20-18324503.jpg', 'images/products/2014-06-20-18324503.jpg', 'images/products/large_image/2014-06-20-18324503.jpg', 10, 10, 10, 1),
+(19, 4, 'mlb4', '30', '', 2400, 1500, '10', '16 x 20 x 16', 'images/products/thumb/2014-06-20-18324604.jpg', 'images/products/2014-06-20-18324604.jpg', 'images/products/large_image/2014-06-20-18324604.jpg', 10, 10, 10, 1),
+(20, 4, 'mlb5', '32', '', 2600, 1500, '10', '18 x 22 x 18', 'images/products/thumb/2014-06-20-18324705.jpg', 'images/products/2014-06-20-18324705.jpg', 'images/products/large_image/2014-06-20-18324705.jpg', 10, 10, 10, 1),
+(21, 5, 'mbb1', '24', '', 1600, 1400, '10', '10 x 14 x 10', 'images/products/thumb/2014-06-20-18353001.jpg', 'images/products/2014-06-20-18353001.jpg', 'images/products/large_image/2014-06-20-18353001.jpg', 10, 10, 10, 1),
+(22, 5, 'mbb2', '26', '', 1800, 1400, '10', '12 x 16 x 12', 'images/products/thumb/2014-06-20-18353102.jpg', 'images/products/2014-06-20-18353102.jpg', 'images/products/large_image/2014-06-20-18353102.jpg', 10, 10, 10, 1),
+(23, 5, 'mbb3', '28', '', 2000, 1400, '10', '14 x 18 x 14', 'images/products/thumb/2014-06-20-18353203.jpg', 'images/products/2014-06-20-18353203.jpg', 'images/products/large_image/2014-06-20-18353203.jpg', 10, 10, 10, 1),
+(24, 5, 'mbb4', '30', '', 2200, 1400, '10', '16 x 20 x 16', 'images/products/thumb/2014-06-20-18353204.jpg', 'images/products/2014-06-20-18353204.jpg', 'images/products/large_image/2014-06-20-18353204.jpg', 10, 10, 10, 1),
+(25, 5, 'mbb5', '32', '', 2400, 1400, '10', '18 x 22 x 18', 'images/products/thumb/2014-06-20-18353305.jpg', 'images/products/2014-06-20-18353305.jpg', 'images/products/large_image/2014-06-20-18353305.jpg', 10, 10, 10, 1),
+(26, 7, 'mts1', '36', '', 500, 450, '10', '25 x 20 x 0', 'images/products/thumb/2014-06-23-11130101.jpg', 'images/products/2014-06-23-11130101.jpg', 'images/products/large_image/2014-06-23-11130101.jpg', 10, 10, 10, 1),
+(27, 7, 'mts2', '38', '', 520, 450, '10', '26 x 21 x 0', 'images/products/thumb/2014-06-23-11130202.jpg', 'images/products/2014-06-23-11130202.jpg', 'images/products/large_image/2014-06-23-11130202.jpg', 10, 10, 10, 1),
+(28, 7, 'mts3', '40', '', 540, 450, '10', '27 x 22 x 0', 'images/products/thumb/2014-06-23-11130303.jpg', 'images/products/2014-06-23-11130303.jpg', 'images/products/large_image/2014-06-23-11130303.jpg', 10, 10, 10, 1),
+(29, 7, 'mts4', '42', '', 560, 450, '10', '28 x 23 x 0', 'images/products/thumb/2014-06-23-11130304.jpg', 'images/products/2014-06-23-11130304.jpg', 'images/products/large_image/2014-06-23-11130304.jpg', 10, 10, 10, 1),
+(30, 7, 'mts5', '44', '', 580, 450, '10', '29 x 24 x 0', 'images/products/thumb/2014-06-23-11130405.jpg', 'images/products/2014-06-23-11130405.jpg', 'images/products/large_image/2014-06-23-11130405.jpg', 10, 10, 10, 1),
+(31, 8, 'ms1', '36', '', 1600, 1200, '10', '25 x 26 x 0', 'images/products/thumb/2014-06-23-11164201.jpg', 'images/products/2014-06-23-11164201.jpg', 'images/products/large_image/2014-06-23-11164201.jpg', 10, 10, 10, 1),
+(32, 8, 'ms2', '38', '', 1800, 1200, '10', '26 x 27 x 0', 'images/products/thumb/2014-06-23-11164302.jpg', 'images/products/2014-06-23-11164302.jpg', 'images/products/large_image/2014-06-23-11164302.jpg', 10, 10, 10, 1),
+(33, 8, 'ms3', '40', '', 2000, 1200, '10', '27 x 28 x 0', 'images/products/thumb/2014-06-23-11164403.jpg', 'images/products/2014-06-23-11164403.jpg', 'images/products/large_image/2014-06-23-11164403.jpg', 10, 10, 10, 1),
+(34, 8, 'ms4', '42', '', 2200, 1200, '10', '28 x 29 x 0', 'images/products/thumb/2014-06-23-11164504.jpg', 'images/products/2014-06-23-11164504.jpg', 'images/products/large_image/2014-06-23-11164504.jpg', 10, 10, 10, 1),
+(35, 8, 'ms5', '44', '', 2400, 1200, '10', '29 x 30 x 0', 'images/products/thumb/2014-06-23-11164605.jpg', 'images/products/2014-06-23-11164605.jpg', 'images/products/large_image/2014-06-23-11164605.jpg', 10, 10, 10, 1),
+(36, 11, 'wrf1', '28', '', 1300, 1000, '10', '8 x 5 x 5', 'images/products/thumb/2014-06-23-11221901.jpg', 'images/products/2014-06-23-11221901.jpg', 'images/products/large_image/2014-06-23-11221901.jpg', 10, 10, 10, 1),
+(37, 11, 'wrf2', '30', '', 1400, 1000, '10', '9 x 6 x 6', 'images/products/thumb/2014-06-23-11222002.jpg', 'images/products/2014-06-23-11222002.jpg', 'images/products/large_image/2014-06-23-11222002.jpg', 10, 10, 10, 1),
+(38, 11, 'wrf3', '32', '', 1600, 1000, '10', '10 x 7 x 7', 'images/products/thumb/2014-06-23-11222003.jpg', 'images/products/2014-06-23-11222003.jpg', 'images/products/large_image/2014-06-23-11222003.jpg', 10, 10, 10, 1),
+(39, 11, 'wrf4', '34', '', 1800, 1000, '10', '11 x 8 x 8', 'images/products/thumb/2014-06-23-11222104.jpg', 'images/products/2014-06-23-11222104.jpg', 'images/products/large_image/2014-06-23-11222104.jpg', 10, 10, 10, 1),
+(40, 11, 'wrf5', '36', '', 2000, 1000, '10', '12 x 9 x 9', 'images/products/thumb/2014-06-23-11222205.jpg', 'images/products/2014-06-23-11222205.jpg', 'images/products/large_image/2014-06-23-11222205.jpg', 10, 10, 10, 1),
+(41, 12, 'wf1', '28', '', 1200, 1000, '10', '6 x 4 x 6', 'images/products/thumb/2014-06-23-11255701.jpg', 'images/products/2014-06-23-11255701.jpg', 'images/products/large_image/2014-06-23-11255701.jpg', 10, 10, 10, 1),
+(42, 12, 'wf2', '30', '', 1400, 1000, '10', '8 x 6 x 8', 'images/products/thumb/2014-06-23-11255702.jpg', 'images/products/2014-06-23-11255702.jpg', 'images/products/large_image/2014-06-23-11255702.jpg', 10, 10, 10, 1),
+(43, 12, 'wf3', '32', '', 1600, 1000, '10', '10 x 8 x 10', 'images/products/thumb/2014-06-23-11255803.jpg', 'images/products/2014-06-23-11255803.jpg', 'images/products/large_image/2014-06-23-11255803.jpg', 10, 10, 10, 1),
+(44, 12, 'wf4', '34', '', 1800, 1000, '10', '12 x 10 x 12', 'images/products/thumb/2014-06-23-11255904.jpg', 'images/products/2014-06-23-11255904.jpg', 'images/products/large_image/2014-06-23-11255904.jpg', 10, 10, 10, 1),
+(45, 12, 'wf5', '36', '', 2000, 1000, '10', '14 x 12 x 14', 'images/products/thumb/2014-06-23-11260005.jpg', 'images/products/2014-06-23-11260005.jpg', 'images/products/large_image/2014-06-23-11260005.jpg', 10, 10, 10, 1),
+(46, 13, 'sn1', '26', '', 2000, 1800, '10', '6 x 4 x 6', 'images/products/thumb/2014-06-23-11291001.jpg', 'images/products/2014-06-23-11291001.jpg', 'images/products/large_image/2014-06-23-11291001.jpg', 10, 10, 10, 1),
+(47, 13, 'sn2', '28', '', 2200, 1800, '10', '8 x 6 x 8', 'images/products/thumb/2014-06-23-11291102.jpg', 'images/products/2014-06-23-11291102.jpg', 'images/products/large_image/2014-06-23-11291102.jpg', 10, 10, 10, 1),
+(48, 13, 'sn3', '30', '', 2400, 1800, '10', '10 x 8 x 10', 'images/products/thumb/2014-06-23-11291103.jpg', 'images/products/2014-06-23-11291103.jpg', 'images/products/large_image/2014-06-23-11291103.jpg', 10, 10, 10, 1),
+(49, 13, 'sn4', '32', '', 2600, 1800, '10', '12 x 10 x 12', 'images/products/thumb/2014-06-23-11291204.jpg', 'images/products/2014-06-23-11291204.jpg', 'images/products/large_image/2014-06-23-11291204.jpg', 10, 10, 10, 1),
+(50, 13, 'sn5', '34', '', 2800, 1800, '10', '14 x 12 x 14', 'images/products/thumb/2014-06-23-11291305.jpg', 'images/products/2014-06-23-11291305.jpg', 'images/products/large_image/2014-06-23-11291305.jpg', 10, 10, 10, 1),
+(51, 14, 'wss1', '26', '', 2200, 2000, '10', '6 x 4 x 6', 'images/products/thumb/2014-06-23-11323501.jpg', 'images/products/2014-06-23-11323501.jpg', 'images/products/large_image/2014-06-23-11323501.jpg', 10, 10, 10, 1),
+(52, 14, 'wss2', '28', '', 2400, 2000, '10', '8 x 6 x 8', 'images/products/thumb/2014-06-23-11323602.jpg', 'images/products/2014-06-23-11323602.jpg', 'images/products/large_image/2014-06-23-11323602.jpg', 10, 10, 10, 1),
+(53, 14, 'wss3', '30', '', 2600, 2000, '10', '10 x 8 x 10', 'images/products/thumb/2014-06-23-11323603.jpg', 'images/products/2014-06-23-11323603.jpg', 'images/products/large_image/2014-06-23-11323603.jpg', 10, 10, 10, 1),
+(54, 14, 'wss4', '32', '', 2800, 2000, '10', '12 x 10 x 12', 'images/products/thumb/2014-06-23-11323704.jpg', 'images/products/2014-06-23-11323704.jpg', 'images/products/large_image/2014-06-23-11323704.jpg', 10, 10, 10, 1),
+(55, 14, 'wss5', '34', '', 3000, 2000, '10', '14 x 12 x 14', 'images/products/thumb/2014-06-23-11323805.jpg', 'images/products/2014-06-23-11323805.jpg', 'images/products/large_image/2014-06-23-11323805.jpg', 10, 10, 10, 1);
+";
+		$result=mysql_query($sql);		
+
+	
 
 		$sql="Drop table if exists search_tags_table";
 		$result=mysql_query($sql);
 		$sql="CREATE TABLE search_tags_table(id  INT(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,search_tag  VARCHAR(250) NOT NULL,search_count  INT(11) NOT NULL)";
 		$result=mysql_query($sql);
+
+
 		
 
 
-	$sql="Drop table if exists shipments_master_table";
+		$sql="Drop table if exists shipments_master_table";
 		$result=mysql_query($sql);
 		$sql="CREATE TABLE IF NOT EXISTS `shipments_master_table` (
 		`shipment_id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1154,18 +1505,19 @@ class Core_CQuery
 		$sql="Drop table if exists shopping_cart_products_table";
 		$result=mysql_query($sql);
 		$sql="CREATE TABLE IF NOT EXISTS `shopping_cart_products_table` (
-			`id` int(20) NOT NULL AUTO_INCREMENT,
-			`cart_id` int(25) NOT NULL,
-			`product_id` varchar(100) NOT NULL,
-			`product_qty` int(10) NOT NULL,
-			`date_added` date NOT NULL,
-			`product_unit_price` double NOT NULL,
-			`shipping_cost` double NOT NULL,
-			`variation_id` int(20) NOT NULL,
-			`original_price` double NOT NULL,
-			`gift_product` int(11) NOT NULL,
-			PRIMARY KEY (`id`)
-			) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1";
+                        `id` int(20) NOT NULL AUTO_INCREMENT,
+                        `cart_id` int(25) NOT NULL,
+                        `product_id` varchar(100) NOT NULL,
+                        `product_qty` int(10) NOT NULL,
+                        `date_added` date NOT NULL,
+                        `product_unit_price` double NOT NULL,
+                        `shipping_cost` double NOT NULL,
+                        `variation_id` int(20) NOT NULL,
+                        `original_price` double NOT NULL,
+			  `add_items` int(15) NOT NULL COMMENT '1=>temporary items,2=>permanent items',
+                        `gift_product` int(11) NOT NULL,
+                        PRIMARY KEY (`id`)
+                        )";
 		$result=mysql_query($sql);
 
 		$sql="DROP TABLE IF EXISTS `site_hit_counter_table`";
@@ -1188,7 +1540,15 @@ class Core_CQuery
 		$result=mysql_query($sql);
 		$sql="CREATE TABLE skins_table(skin_id  INT(20) NOT NULL PRIMARY KEY AUTO_INCREMENT,skin_name  VARCHAR(50) NOT NULL,skin_status  INT(4) NOT NULL)";
 		$result=mysql_query($sql);
-		
+		$sql="INSERT INTO `skins_table` (`skin_id`, `skin_name`, `skin_status`) VALUES
+		(1, 'default', 0),
+		(2, 'black', 0),
+		(3, 'blue', 0),
+		(4, 'brown', 0),
+		(5, 'green', 0),
+		(6, 'orange', 0),
+		(7, 'pink', 0)";
+		$result=mysql_query($sql);
 
 
 		$sql="Drop table if exists social_links_table";
@@ -1263,7 +1623,7 @@ class Core_CQuery
 		`group_name` varchar(60) DEFAULT NULL,
 		`group_discount` varchar(50) DEFAULT NULL,
 		PRIMARY KEY (`group_id`)
-		) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1";
+		) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1";
 		$result=mysql_query($sql);
 		
 
@@ -1295,11 +1655,11 @@ class Core_CQuery
 		`ipaddress` varchar(100) NOT NULL,
 		`social_link_id` varchar(100) NOT NULL,
 		`is_from_social_link` int(20) NOT NULL,
-		`confirmation_code` int(20) NOT NULL,
+		`confirmation_code` int(20) NOT NULL,	
 		PRIMARY KEY (`user_id`)
-		) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2";
+		) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2";
 		$result=mysql_query($sql);
-		$sql="INSERT INTO `users_table` (`user_id`, `user_display_name`, `user_fname`, `user_lname`, `user_email`, `user_pwd`, `user_group`, `user_country`, `user_status`, `user_doj`, `billing_address_id`, `shipping_address_id`, `ipaddress`, `social_link_id`, `is_from_social_link`) VALUES(1, 'demouser', 'demouser', 'demouser', 'demouser@ajsquare.net', 'e10adc3949ba59abbe56e057f20f883e', 1, 'IN', 1, '2013-09-12', 1, 1, '192.168.1.69', '',0)";
+		$sql="INSERT INTO `users_table` (`user_id`, `user_display_name`, `user_fname`, `user_lname`, `user_email`, `user_pwd`, `user_group`, `user_country`, `user_status`, `user_doj`, `billing_address_id`, `shipping_address_id`, `ipaddress`, `social_link_id`, `is_from_social_link`) VALUES(1, 'demouser', 'demouser', 'demouser', 'demouser@ajsquare.net', 'e10adc3949ba59abbe56e057f20f883e', 1, 'IN', 1, '2013-09-12', 1, 1, '192.168.1.69', '', 0)";
 		$result=mysql_query($sql);
 
 
